@@ -1,3 +1,4 @@
+import AcademicExperiences from "./components/academic-experiences";
 import Grid from "./components/grid";
 import Hero from "./components/hero";
 import RecentProjets from "./components/recent-projets";
@@ -12,6 +13,7 @@ const Home = () => {
         <Hero />
         <Grid />
         <RecentProjets />
+        <AcademicExperiences />
       </div>
     </main>
   );
