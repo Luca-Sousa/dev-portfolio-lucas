@@ -14,6 +14,7 @@ const Home = () => {
         <Grid />
         <RecentProjets />
         <AcademicExperiences />
+        {/* <WorkExperiences /> */}
       </div>
     </main>
   );
