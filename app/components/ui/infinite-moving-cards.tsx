@@ -18,6 +18,7 @@ export const InfiniteMovingCards = ({
     subTitle: string;
     description: string;
     img: string;
+    link: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -77,7 +78,7 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 w-screen overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-20 w-screen overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className
       )}
     >
@@ -90,9 +91,10 @@ export const InfiniteMovingCards = ({
         )}
       >
         {items.map((item, idx) => (
+          // adicionei o border-b
           <li
-            className="w-[90vw] max-w-full relative rounded-2xl border border-b-0
-             flex-shrink-0 border-slate-800 p-5 md:p-16 md:w-[60vw]"
+            className="w-[90vw] max-w-full relative rounded-2xl border
+             flex-shrink-0 border-slate-800 p-5 md:p-10 md:w-[60vw]"
             style={{
               background: "rgb(4,7,29)",
               backgroundColor:
@@ -107,16 +109,13 @@ export const InfiniteMovingCards = ({
               ></div>
               <div className="relative z-20 flex flex-row items-center">
                 <div className="me-3">
-                  <Link
-                    href="https://www.linkedin.com/showcase/saper-dot-edu/about/"
-                    target="_blank"
-                  >
+                  <Link href={item.link} target="_blank">
                     <Image
                       src={item.img}
                       alt="profile"
-                      width={50}
-                      height={50}
-                      className="rounded-full object-cover size-full"
+                      width={64}
+                      height={64}
+                      className="rounded-full"
                     />
                   </Link>
                 </div>
@@ -133,7 +132,7 @@ export const InfiniteMovingCards = ({
 
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className="text-xl font-bold leading-[1.6] text-white">
+                  <span className="text-sm md:text-base lg:text-xl font-normal leading-[1.6] text-white">
                     {item.description}
                   </span>
                   {/* <span className=" text-sm leading-[1.6] text-white-200 font-normal">

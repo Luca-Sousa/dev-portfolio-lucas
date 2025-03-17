@@ -51,8 +51,8 @@ export const BentoGridItem = ({
   titleClassName?: string;
   spareImg?: string;
 }) => {
-  const leftLists = ["ReactJS", "Express", "Typescript"];
-  const rightLists = ["VueJS", "NuxtJS", "GraphQL"];
+  const leftLists = ["ReactJS", "NextJS", "TailwindCSS"];
+  const rightLists = ["Typescript", "ShacnUI", "PrismaORM"];
 
   const [copied, setCopied] = useState(false);
 
@@ -66,7 +66,7 @@ export const BentoGridItem = ({
   };
 
   const handleCopy = () => {
-    const text = "hsu@jsmastery.pro";
+    const text = "luke.sousa.dev@gmail.com";
     navigator.clipboard.writeText(text);
     setCopied(true);
   };
@@ -122,7 +122,7 @@ export const BentoGridItem = ({
             {description}
           </div>
           <div
-            className={`font-sans text-lg lg:text-3xl max-w-96 font-bold z-10`}
+            className={`font-sans text-lg lg:text-2xl max-w-96 font-bold z-10`}
           >
             {title}
           </div>
@@ -135,7 +135,7 @@ export const BentoGridItem = ({
                 {leftLists.map((item, i) => (
                   <span
                     key={i}
-                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
+                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-sm opacity-50 
                     lg:opacity-100 rounded-lg text-center bg-[#10132E]"
                   >
                     {item}
@@ -148,7 +148,7 @@ export const BentoGridItem = ({
                 {rightLists.map((item, i) => (
                   <span
                     key={i}
-                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
+                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-sm opacity-50 
                     lg:opacity-100 rounded-lg text-center bg-[#10132E]"
                   >
                     {item}
@@ -169,7 +169,9 @@ export const BentoGridItem = ({
               </div>
 
               <MagicButton
-                title={copied ? "Email is Copied!" : "Copy my email address"}
+                title={
+                  copied ? "E-mail Copiado!" : "Copiar E-mail"
+                }
                 icon={<IoCopyOutline />}
                 position="left"
                 handleClick={handleCopy}
