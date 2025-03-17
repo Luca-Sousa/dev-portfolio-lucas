@@ -5,9 +5,9 @@ import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 const AcademicExperiences = () => {
   return (
-    <section id="testimonials" className="py-20">
+    <section id="academic-experiencies" className="py-20">
       <h1 className="heading">
-        Minha <span className="text-purple">Experiência Acadêmica</span>
+        Minhas <span className="text-purple">Experiências Acadêmicas</span>
       </h1>
 
       <div className="flex flex-col items-center max-lg:mt-10">

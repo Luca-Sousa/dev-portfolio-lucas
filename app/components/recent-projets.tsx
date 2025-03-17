@@ -1,11 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+
 import { FaLocationArrow } from "react-icons/fa6";
 import { projects } from "../data";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const RecentProjets = () => {
+  const router = useRouter();
+
   return (
     <div className="py-20" id="projects">
       <h1 className="heading">
@@ -15,7 +19,7 @@ const RecentProjets = () => {
       <div className="grid lg:grid-cols-2 w-full items-center justify-center lg:flex-wrap lg:flex-row py-20 gap-y-20 gap-x-10">
         {projects.map((item) => (
           <CardContainer className="inter-var w-full" key={item.id}>
-            <CardBody className="relative group/card hover:shadow-2xl hover:shadow-emerald-500/[0.1] bg-black border-white/[0.2] rounded-xl w-fit h-fit p-6 lg:p-10 border">
+            <CardBody className="relative group/card hover:shadow-2xl hover:shadow-emerald-500/[0.1] border-white/[0.2] rounded-xl w-fit h-fit p-6 lg:p-8 border">
               <CardItem
                 translateZ="50"
                 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1"
@@ -59,9 +63,12 @@ const RecentProjets = () => {
                     {item.iconLists.map((icon, index) => (
                       <div
                         key={index}
-                        className="border border-white/[.2] rounded-full bg-black size-9 md:size-10 flex justify-center items-center"
+                        className="border border-white/[.2] rounded-full size-9 md:size-10 flex justify-center items-center"
                         style={{
                           transform: `translateX(-${5 * index + 2}px)`,
+                          background: "rgb(4,7,29)",
+                          backgroundColor:
+                            "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
                         }}
                       >
                         <Image
@@ -76,18 +83,16 @@ const RecentProjets = () => {
                   </div>
                 </CardItem>
 
-                <CardItem
-                  translateZ={20}
-                  as={Link}
-                  href="https://twitter.com/mannupaaji"
-                  target="__blank"
-                >
-                  <div className="flex justify-center items-center">
+                <CardItem translateZ={20} as={"button"}>
+                  <button
+                    className="flex justify-center items-center"
+                    onClick={() => router.push(`/projects/${item.id}`)}
+                  >
                     <p className="flex lg:text-xl text-base text-purple">
                       Ver Projeto
                     </p>
                     <FaLocationArrow className="ms-3" color="#CBACF9" />
-                  </div>
+                  </button>
                 </CardItem>
               </div>
             </CardBody>
