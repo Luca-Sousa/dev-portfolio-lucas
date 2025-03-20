@@ -28,7 +28,10 @@ export const MenuItem = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <div onMouseEnter={() => setActive(item)} className="relative ">
+    <div
+      onMouseEnter={() => setActive(item)}
+      className="relative flex items-center"
+    >
       <motion.p
         transition={{ duration: 0.3 }}
         className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
@@ -42,11 +45,11 @@ export const MenuItem = ({
           transition={transition}
         >
           {active === item && (
-            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 transform -translate-x-1/2 pt-4">
+            <div className="absolute left-1/2 top-[calc(100%_+_1.2rem)] -translate-x-1/2 transform pt-2">
               <motion.div
                 transition={transition}
                 layoutId="active" // layoutId ensures smooth animation
-                className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl"
+                className="overflow-hidden rounded-2xl border border-black/[0.2] bg-white shadow-xl backdrop-blur-sm dark:border-white/[0.2] dark:bg-black"
                 style={{
                   background: "rgb(4,7,29)",
                   backgroundColor:
@@ -55,7 +58,7 @@ export const MenuItem = ({
               >
                 <motion.div
                   layout // layout ensures smooth animation
-                  className="w-max h-full p-2 md:p-4"
+                  className="h-full w-max p-2 md:p-4"
                 >
                   {children}
                 </motion.div>
@@ -78,7 +81,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative shadow-input flex justify-center space-x-4 px-8 py-6 "
+      className="relative flex justify-center space-x-4 px-6 py-4 shadow-input"
     >
       {children}
     </nav>
@@ -111,10 +114,10 @@ export const ProductItem = ({
         className="shrink-0 rounded-md shadow-2xl"
       />
       <div>
-        <h4 className="md:text-sm text-xs font-medium md:font-bold mb-1 text-black dark:text-white">
+        <h4 className="mb-1 text-xs font-medium text-black dark:text-white md:text-sm md:font-bold">
           {title}
         </h4>
-        <p className="text-neutral-700 text-xs max-w-[10rem] md:max-w-[14rem] line-clamp-4 dark:text-neutral-300">
+        <p className="line-clamp-4 max-w-[10rem] text-xs text-neutral-700 dark:text-neutral-300 md:max-w-[14rem]">
           {description}
         </p>
       </div>
@@ -126,7 +129,7 @@ export const HoveredLink = ({ children, ...rest }: any) => {
   return (
     <Link
       {...rest}
-      className="text-neutral-700 dark:text-neutral-200 hover:text-purple flex items-center gap-1.5"
+      className="flex items-center gap-1.5 text-neutral-700 hover:text-purple dark:text-neutral-200"
     >
       {children}
     </Link>

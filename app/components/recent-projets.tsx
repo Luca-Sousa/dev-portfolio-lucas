@@ -7,22 +7,27 @@ import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const RecentProjets = () => {
+interface RecentProjetsPros {
+  isPage?: boolean;
+}
+
+const RecentProjets = ({ isPage }: RecentProjetsPros) => {
   const router = useRouter();
 
   return (
     <div className="py-20" id="projects">
       <h1 className="heading">
-        Meus <span className="text-purple">Projetos Recentes</span>
+        Meus{" "}
+        <span className="text-purple">Projetos {!isPage && "Recentes"}</span>
       </h1>
 
-      <div className="grid lg:grid-cols-2 w-full items-center justify-center lg:flex-wrap lg:flex-row py-20 gap-y-20 gap-x-10">
+      <div className="grid w-full items-center justify-center gap-x-10 gap-y-20 py-20 lg:grid-cols-2 lg:flex-row lg:flex-wrap">
         {projects.map((item) => (
-          <CardContainer className="inter-var w-full" key={item.id}>
-            <CardBody className="relative group/card hover:shadow-2xl hover:shadow-emerald-500/[0.1] border-white/[0.2] rounded-xl w-fit h-fit p-6 lg:p-8 border">
+          <CardContainer className="inter-var !z-[9999] w-full" key={item.id}>
+            <CardBody className="group/card relative h-fit w-fit rounded-xl border border-white/[0.2] p-6 hover:shadow-2xl hover:shadow-emerald-500/[0.1] lg:p-8">
               <CardItem
                 translateZ="50"
-                className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1"
+                className="line-clamp-1 text-base font-bold md:text-xl lg:text-2xl"
               >
                 {item.title}
               </CardItem>
@@ -30,7 +35,7 @@ const RecentProjets = () => {
               <CardItem
                 as="p"
                 translateZ="60"
-                className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
+                className="line-clamp-2 text-sm font-light lg:text-xl lg:font-normal"
                 style={{
                   color: "#BEC1DD",
                   margin: "1vh 0",
@@ -41,7 +46,7 @@ const RecentProjets = () => {
 
               <CardItem
                 translateZ="100"
-                className="relative size-full flex items-center justify-center overflow-hidden mb-10"
+                className="relative mb-10 flex size-full items-center justify-center overflow-hidden"
               >
                 <div
                   className="relative size-full overflow-hidden lg:rounded-3xl"
@@ -53,17 +58,17 @@ const RecentProjets = () => {
                 <img
                   src={item.img}
                   alt="cover"
-                  className="z-10 absolute bottom-0"
+                  className="absolute bottom-0 z-10"
                 />
               </CardItem>
 
-              <div className="flex items-center justify-between mt-7 mb-3">
+              <div className="mb-3 mt-7 flex items-center justify-between">
                 <CardItem translateZ={20} className="flex items-center">
                   <div className="flex items-center">
                     {item.iconLists.map((icon, index) => (
                       <div
                         key={index}
-                        className="border border-white/[.2] rounded-full size-9 md:size-10 flex justify-center items-center"
+                        className="flex size-9 items-center justify-center rounded-full border border-white/[.2] md:size-10"
                         style={{
                           transform: `translateX(-${5 * index + 2}px)`,
                           background: "rgb(4,7,29)",
@@ -83,16 +88,14 @@ const RecentProjets = () => {
                   </div>
                 </CardItem>
 
-                <CardItem translateZ={20} as={"button"}>
-                  <button
-                    className="flex justify-center items-center"
-                    onClick={() => router.push(`/projects/${item.id}`)}
-                  >
-                    <p className="flex lg:text-xl text-base text-purple">
-                      Ver Projeto
-                    </p>
-                    <FaLocationArrow className="ms-3" color="#CBACF9" />
-                  </button>
+                <CardItem
+                  translateZ={20}
+                  as={"button"}
+                  onClick={() => router.push(`/projects/${item.id}`)}
+                  className="flex items-center justify-center gap-3 text-base text-purple lg:text-xl"
+                >
+                  Ver Projeto
+                  <FaLocationArrow />
                 </CardItem>
               </div>
             </CardBody>

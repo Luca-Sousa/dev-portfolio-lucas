@@ -1,7 +1,15 @@
+import Footer from "@/app/components/footer";
+import Hero from "@/app/components/hero";
 import RecentProjets from "@/app/components/recent-projets";
 
 const Projects = () => {
-  return <RecentProjets />;
+  return (
+    <>
+      <Hero isPages />
+      <RecentProjets isPage />
+      <Footer />
+    </>
+  );
 };
 
 export default Projects;

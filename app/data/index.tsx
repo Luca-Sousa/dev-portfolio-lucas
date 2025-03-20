@@ -4,18 +4,18 @@ import { HiMiniAcademicCap } from "react-icons/hi2";
 import { MdContacts } from "react-icons/md";
 
 export const navItemsHome = [
-  { name: "Sobre", link: "/home/#about", icon: <IoHome size={16} /> },
+  { name: "Sobre", link: "/#about", icon: <IoHome size={16} /> },
   {
     name: "Projetos",
-    link: "/home/#projects",
+    link: "/#projects",
     icon: <GoProjectSymlink size={16} />,
   },
   {
     name: "Exp. Acadêmicas",
-    link: "/home/#academic-experiencies",
+    link: "/#academic-experiencies",
     icon: <HiMiniAcademicCap size={16} />,
   },
-  { name: "Contato", link: "/home/#contact", icon: <MdContacts size={16} /> },
+  { name: "Contato", link: "/#contact", icon: <MdContacts size={16} /> },
 ];
 
 export const gridItems = [
