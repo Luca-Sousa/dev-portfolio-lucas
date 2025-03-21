@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { z } from "zod";
-import { randomUUID } from "node:crypto";
+import { v4 as uuidv4 } from "uuid";
 import { r2 } from "@/app/lib/r2client";
 
 export async function POST(request: Request) {
   try {
-    // Valida o corpo da requisição
     const uploadBodySchema = z.object({
       fileName: z.string().min(1),
       fileContent: z.string().regex(/\w+\/[-+.\w]+/),
@@ -17,7 +16,7 @@ export async function POST(request: Request) {
     const { fileName, fileContent } = uploadBodySchema.parse(body);
 
     // Gera uma chave única para o arquivo
-    const fileKey = randomUUID().concat("-").concat(fileName);
+    const fileKey = uuidv4().concat("-").concat(fileName);
 
     // Configura o comando para o S3/R2
     const command = new PutObjectCommand({
@@ -39,3 +38,54 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const deleteBodySchema = z.object({
+      fileKey: z.string().min(1),
+    });
+
+    const body = await request.json();
+    const { fileKey } = deleteBodySchema.parse(body);
+
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.CLOUDFLARE_R2_BUCKET,
+      Key: fileKey,
+    });
+
+    await r2.send(command);
+
+    return NextResponse.json(
+      { message: "Arquivo deletado com sucesso" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Erro ao deletar o arquivo:", error);
+    return NextResponse.json(
+      { error: "Falha ao deletar o arquivo" },
+      { status: 500 },
+    );
+  }
+}
+
+export const deleteFileFromBucket = async (fileKey: string) => {
+  try {
+    const response = await fetch("/api/upload", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fileKey }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Falha ao deletar o arquivo");
+    }
+
+    const data = await response.json();
+    return data.message;
+  } catch (error) {
+    console.error("Erro ao deletar o arquivo:", error);
+    throw new Error("Erro ao deletar o arquivo");
+  }
+};
