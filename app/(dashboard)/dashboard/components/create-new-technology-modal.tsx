@@ -32,6 +32,7 @@ import { FileUpload } from "@/app/components/ui/file-upload";
 import { createTechnology } from "../../actions/technology/create-technology";
 import { toast } from "sonner";
 import { Input } from "@/app/components/ui/input";
+import { deleteFileFromBucket } from "@/app/api/upload/route";
 
 const ModalCreateNewTechnology = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
@@ -50,7 +51,6 @@ const ModalCreateNewTechnology = () => {
       const fileName = file.name;
       const fileContent = file.type;
 
-      // Passo 1: Obter a URL pré-assinada
       const uploadResponse = await fetch("/api/upload", {
         method: "POST",
         headers: {
@@ -68,13 +68,12 @@ const ModalCreateNewTechnology = () => {
 
       const { signedUrl, fileKey } = await uploadResponse.json();
 
-      // Passo 2: Usar a URL pré-assinada para enviar o arquivo
       const fileUploadResponse = await fetch(signedUrl, {
         method: "PUT",
         headers: {
           "Content-Type": fileContent,
         },
-        body: file, // Envia o arquivo diretamente
+        body: file,
       });
 
       if (!fileUploadResponse.ok) {
@@ -82,7 +81,6 @@ const ModalCreateNewTechnology = () => {
       }
 
       const customUrl = `https://pub-14cdb793b4b54085abc21edea67d935a.r2.dev/${fileKey}`;
-
       setUploadedFileUrl(customUrl);
       return customUrl;
     } catch (error) {
@@ -93,28 +91,49 @@ const ModalCreateNewTechnology = () => {
 
   const handleCreateTechnology = async (data: CreateTechnologySchema) => {
     try {
-      console.log("Formulário submetido");
-
       if (!uploadedFileUrl) {
         throw new Error("Nenhum arquivo carregado");
       }
 
-      // Salva a tecnologia no banco de dados
       await createTechnology({
         name: data.name,
-        iconURL: uploadedFileUrl, // Usa a URL já carregada
+        iconURL: uploadedFileUrl,
       });
 
+      setUploadedFileUrl("");
+      setDialogIsOpen(false);
       toast.success("Tecnologia criada com sucesso!");
     } catch (error) {
       toast.error("Erro ao criar a tecnologia! " + error);
     }
   };
 
+  const handleDeleteFile = async (fileKey: string, onSuccess?: () => void) => {
+    try {
+      await deleteFileFromBucket(fileKey);
+
+      setUploadedFileUrl("");
+      form.setValue("iconURL", "");
+      onSuccess?.();
+    } catch (error) {
+      console.error("Erro ao deletar o arquivo:", error);
+    }
+  };
+
   return (
-    <Dialog open={dialogIsOpen} onOpenChange={(open) => setDialogIsOpen(open)}>
+    <Dialog
+      open={dialogIsOpen}
+      onOpenChange={(open) => {
+        if (uploadedFileUrl) {
+          const fileKey = uploadedFileUrl.split("/").pop() || "";
+          handleDeleteFile(fileKey);
+        }
+
+        setDialogIsOpen(open);
+      }}
+    >
       <DialogTrigger asChild>
-        <Button className="flex h-8 items-center gap-2 font-medium text-secondary">
+        <Button className="flex items-center gap-2 font-medium">
           <CirclePlusIcon size={16} />
           Nova Tecnologia
         </Button>
@@ -166,6 +185,7 @@ const ModalCreateNewTechnology = () => {
                         }}
                         singleFile
                         uploadedFileUrl={form.getValues("iconURL")}
+                        handleDeleteFile={handleDeleteFile}
                       />
                     </div>
                   </FormControl>
@@ -179,7 +199,7 @@ const ModalCreateNewTechnology = () => {
                 <Button
                   type="reset"
                   variant="secondary"
-                  className="flex-1 gap-1.5"
+                  className="gap-1.5"
                   disabled={form.formState.isSubmitting}
                 >
                   Cancelar
@@ -188,7 +208,7 @@ const ModalCreateNewTechnology = () => {
 
               <Button
                 type="submit"
-                className="flex items-center gap-2 text-secondary"
+                className="flex items-center gap-2"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (

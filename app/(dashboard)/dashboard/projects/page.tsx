@@ -16,7 +16,7 @@ const DashboardProjectsPage = async () => {
 
           <div className="flex items-center gap-6">
             <Link href="/dashboard/projects/create-new-project">
-              <Button className="flex h-8 items-center gap-2 font-medium text-secondary">
+              <Button className="flex items-center gap-2 font-medium">
                 <FilePlus2 size={14} />
                 Novo Projeto
               </Button>
@@ -31,7 +31,7 @@ const DashboardProjectsPage = async () => {
             {technologies.map((tech) => (
               <div
                 key={tech.id}
-                className="flex h-20 w-full items-center justify-between gap-2 rounded-lg bg-neutral-800 px-6"
+                className="flex h-16 w-full items-center justify-between gap-2 rounded-lg bg-neutral-800 px-6"
               >
                 <span>Nome da Tecnologia: {tech.name}</span>
                 <div className="relative size-full">
@@ -42,7 +42,6 @@ const DashboardProjectsPage = async () => {
                     className="object-contain"
                   />
                 </div>
-                <span>{tech.id}</span>
               </div>
             ))}
           </div>

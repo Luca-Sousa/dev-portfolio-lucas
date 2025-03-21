@@ -30,10 +30,12 @@ export const FileUpload = ({
   onChange,
   singleFile,
   uploadedFileUrl,
+  handleDeleteFile,
 }: {
   onChange?: (files: File[]) => void;
   singleFile?: boolean;
   uploadedFileUrl?: string;
+  handleDeleteFile: (fileKey: string, onSuccess: () => void) => void;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,10 +59,6 @@ export const FileUpload = ({
 
   const handleClick = () => {
     fileInputRef.current?.click();
-  };
-
-  const handleRemoveFile = (index: number) => {
-    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const { getRootProps, isDragActive } = useDropzone({
@@ -171,12 +169,18 @@ export const FileUpload = ({
                   </div>
 
                   <motion.button
+                    type="button"
                     className="h-full w-10 rounded-md transition-colors hover:bg-neutral-700"
                     onClick={(event) => {
                       event.stopPropagation();
-                      handleRemoveFile(idx);
-                      setUploading(true);
-                      setPreviewUrl(null);
+                      const fileKey = previewUrl?.split("/").pop() || "";
+                      handleDeleteFile(fileKey, () => {
+                        setFiles((prevFiles) =>
+                          prevFiles.filter((_, i) => i !== idx),
+                        );
+                        setUploading(true);
+                        setPreviewUrl(null);
+                      });
                     }}
                   >
                     <IconTrash className="mx-auto size-5 text-neutral-600 dark:text-neutral-400" />

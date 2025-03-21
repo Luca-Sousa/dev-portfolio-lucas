@@ -6,8 +6,8 @@ import {
   IconBrandGoogle,
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
-import { Label } from "@/app/components/ui/label";
-import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label-aceternity";
+import { Input } from "@/app/components/ui/input-aceternity";
 import { cn } from "@/app/lib/utils";
 import { signIn } from "next-auth/react";
 
