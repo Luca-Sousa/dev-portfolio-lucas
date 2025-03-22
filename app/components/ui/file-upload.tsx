@@ -91,7 +91,7 @@ export const FileUpload = ({
           <p className="relative z-20 font-sans text-base font-bold text-neutral-700 dark:text-neutral-300">
             Carregar arquivo
           </p>
-          <p className="relative z-20 mt-2 font-sans text-base font-normal text-neutral-400 dark:text-neutral-400">
+          <p className="relative z-20 mt-2 max-w-[16rem] text-center font-sans text-sm font-normal text-neutral-400 dark:text-neutral-400">
             Arraste ou solte seus arquivos aqui ou clique para fazer upload
           </p>
           <div className="relative mx-auto mt-10 w-full max-w-xl">
@@ -177,9 +177,9 @@ export const FileUpload = ({
                       handleDeleteFile(fileKey, () => {
                         setFiles((prevFiles) =>
                           prevFiles.filter((_, i) => i !== idx),
-                        );
-                        setUploading(true);
-                        setPreviewUrl(null);
+                        ); // Remove o arquivo da lista
+                        setPreviewUrl(null); // Limpa a URL de pré-visualização
+                        setUploading(false); // Define o estado de upload como falso
                       });
                     }}
                   >

@@ -21,8 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang="en">
-        <body className={`${inter.className}`}>
+      <html lang="en" className="h-full">
+        <body className={`${inter.className} h-full`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -31,12 +31,11 @@ export default function RootLayout({
           >
             <div
               className={cn(
-                ":border-neutral-700 flex h-screen flex-1 flex-col overflow-hidden rounded-md border bg-neutral-800 md:flex-row",
+                ":border-neutral-700 flex h-full flex-1 flex-col overflow-hidden rounded-md border bg-neutral-800 md:flex-row",
               )}
             >
               <SidebarDemo />
               {children}
-
               <Toaster />
             </div>
           </ThemeProvider>

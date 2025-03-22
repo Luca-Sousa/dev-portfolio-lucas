@@ -1,9 +1,7 @@
-import Link from "next/link";
 import ModalCreateNewTechnology from "../components/create-new-technology-modal";
-import { Button } from "@/app/components/ui/button";
-import { FilePlus2 } from "lucide-react";
 import { db } from "@/app/lib/prisma";
 import Image from "next/image";
+import CreateProjectButton from "../components/create-project-button";
 
 const DashboardProjectsPage = async () => {
   const technologies = await db.technology.findMany();
@@ -15,12 +13,7 @@ const DashboardProjectsPage = async () => {
           <span className="text-2xl font-bold">Projetos</span>
 
           <div className="flex items-center gap-6">
-            <Link href="/dashboard/projects/create-new-project">
-              <Button className="flex items-center gap-2 font-medium">
-                <FilePlus2 size={14} />
-                Novo Projeto
-              </Button>
-            </Link>
+            <CreateProjectButton />
 
             <ModalCreateNewTechnology />
           </div>
