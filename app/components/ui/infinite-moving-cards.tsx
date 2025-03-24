@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -53,12 +54,12 @@ export const InfiniteMovingCards = ({
       if (direction === "left") {
         containerRef.current.style.setProperty(
           "--animation-direction",
-          "forwards"
+          "forwards",
         );
       } else {
         containerRef.current.style.setProperty(
           "--animation-direction",
-          "reverse"
+          "reverse",
         );
       }
     }
@@ -79,22 +80,21 @@ export const InfiniteMovingCards = ({
       ref={containerRef}
       className={cn(
         "scroller relative z-20 w-screen overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
-        className
+        className,
       )}
     >
       <ul
         ref={scrollerRef}
         className={cn(
-          " flex min-w-full shrink-0 gap-16 py-4 w-max flex-nowrap",
-          start && "animate-scroll ",
-          pauseOnHover && "hover:[animation-play-state:paused]"
+          "flex w-max min-w-full shrink-0 flex-nowrap gap-16 py-4",
+          start && "animate-scroll",
+          pauseOnHover && "hover:[animation-play-state:paused]",
         )}
       >
         {items.map((item, idx) => (
           // adicionei o border-b
           <li
-            className="w-[90vw] max-w-full relative rounded-2xl border
-             flex-shrink-0 border-slate-800 p-5 md:p-10 md:w-[60vw]"
+            className="relative w-[90vw] max-w-full flex-shrink-0 rounded-2xl border border-slate-800 p-5 md:w-[60vw] md:p-10"
             style={{
               background: "rgb(4,7,29)",
               backgroundColor:
@@ -121,10 +121,10 @@ export const InfiniteMovingCards = ({
                 </div>
 
                 <div>
-                  <h1 className=" relative z-20 text-sm md:text-lg xl:text-xl leading-[1.6] text-white font-bold">
+                  <h1 className="relative z-20 text-sm font-bold leading-[1.6] text-white md:text-lg xl:text-xl">
                     {item.title}
                   </h1>
-                  <span className=" relative z-20 text-xs md:text-sm leading-[1.6] text-white-200 font-normal">
+                  <span className="relative z-20 text-xs font-normal leading-[1.6] text-white-200 md:text-sm">
                     {item.subTitle}
                   </span>
                 </div>
@@ -132,7 +132,7 @@ export const InfiniteMovingCards = ({
 
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className="text-sm md:text-base lg:text-xl font-normal leading-[1.6] text-white">
+                  <span className="text-sm font-normal leading-[1.6] text-white md:text-base lg:text-xl">
                     {item.description}
                   </span>
                   {/* <span className=" text-sm leading-[1.6] text-white-200 font-normal">
