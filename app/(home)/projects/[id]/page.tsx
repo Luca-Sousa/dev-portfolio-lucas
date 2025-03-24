@@ -22,8 +22,8 @@ const ProjectPage = ({ params }: { params: { id: string } }) => {
   ];
 
   return (
-    <div className="w-full">
-      <Hero isPages isName="Meus Projetos" />
+    <div className="w-full pt-16">
+      <Hero isPages />
 
       <TracingBeam className="pb-96 pl-8 xl:pl-0">
         <div className="relative pt-2 antialiased">
@@ -113,7 +113,8 @@ const ProjectPage = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
       </TracingBeam>
-      <Footer />
+
+      <Footer isPages />
     </div>
   );
 };

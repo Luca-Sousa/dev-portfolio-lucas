@@ -4,6 +4,7 @@ import "../globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import { FloatingNav } from "../components/ui/floating-navbar";
 import { navItemsHome } from "../data";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
               <FloatingNav navItemsHome={navItemsHome} />
 
               {children}
+              <Toaster />
             </div>
           </main>
         </ThemeProvider>

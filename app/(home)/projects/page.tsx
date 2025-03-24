@@ -7,7 +7,7 @@ const Projects = () => {
     <>
       <Hero isPages />
       <RecentProjets isPage />
-      <Footer />
+      <Footer isPages />
     </>
   );
 };
