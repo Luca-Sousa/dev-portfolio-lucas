@@ -1,3 +1,13 @@
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/app/components/ui/breadcrumb";
+import { Separator } from "@/app/components/ui/separator";
+import { SidebarInset, SidebarTrigger } from "@/app/components/ui/sidebar";
 import { authOptions } from "@/app/lib/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -7,26 +17,34 @@ const DashboardPage = async () => {
   if (!session?.user) redirect("/login");
 
   return (
-    <div className="flex flex-1">
-      <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-700 bg-neutral-900 p-2 md:p-10">
-        <div className="flex gap-2">
-          {[...new Array(4)].map((i, idx) => (
-            <div
-              key={"first-array-demo-1" + idx}
-              className="h-20 w-full animate-pulse rounded-lg bg-neutral-800"
-            ></div>
-          ))}
+    <SidebarInset>
+      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/">Portfólio</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Dashboard</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
-        <div className="flex flex-1 gap-2">
-          {[...new Array(2)].map((i, idx) => (
-            <div
-              key={"second-array-demo-1" + idx}
-              className="h-full w-full animate-pulse rounded-lg bg-neutral-800"
-            ></div>
-          ))}
+      </header>
+
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+          <div className="aspect-video rounded-xl bg-muted/50"></div>
+          <div className="aspect-video rounded-xl bg-muted/50" />
+          <div className="aspect-video rounded-xl bg-muted/50" />
         </div>
+        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
       </div>
-    </div>
+    </SidebarInset>
   );
 };
 

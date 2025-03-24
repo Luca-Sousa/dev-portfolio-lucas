@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import AuthProvider from "../providers/auth";
 import { ThemeProvider } from "../components/theme-provider";
-import { SidebarDemo } from "./dashboard/components/SidebarDemo";
-import { cn } from "../lib/utils";
 import { Toaster } from "sonner";
+import { SidebarProvider } from "../components/ui/sidebar";
+import { AppSidebar } from "./components/app-sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,15 +29,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div
-              className={cn(
-                ":border-neutral-700 flex h-full flex-1 flex-col overflow-hidden rounded-md border bg-neutral-800 md:flex-row",
-              )}
-            >
-              <SidebarDemo />
+            <SidebarProvider>
+              <AppSidebar />
               {children}
+
               <Toaster />
-            </div>
+            </SidebarProvider>
           </ThemeProvider>
         </body>
       </html>

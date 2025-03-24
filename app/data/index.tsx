@@ -2,6 +2,7 @@ import { IoHome } from "react-icons/io5";
 import { GoProjectSymlink } from "react-icons/go";
 import { HiMiniAcademicCap } from "react-icons/hi2";
 import { MdContacts } from "react-icons/md";
+import { FolderKanbanIcon, LayoutDashboardIcon } from "lucide-react";
 
 export const navItemsHome = [
   { name: "Sobre", link: "/#about", icon: <IoHome size={16} /> },
@@ -224,3 +225,19 @@ export const socialMedia = [
     link: "https://www.linkedin.com/in/lucas-sousa-0b79a72a7/",
   },
 ];
+
+export const data = {
+  navMain: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboardIcon,
+      isActive: true,
+    },
+    {
+      title: "Projetos",
+      url: "/dashboard/projects",
+      icon: FolderKanbanIcon,
+    },
+  ],
+};
