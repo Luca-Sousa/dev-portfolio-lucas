@@ -56,9 +56,11 @@ const RecentProjets = ({ isPage }: RecentProjetsPros) => {
                 </div>
 
                 <img
+                  onClick={() => router.push(`/projects/${item.id}`)}
                   src={item.img}
                   alt="cover"
-                  className="absolute bottom-0 z-10"
+                  className="absolute bottom-0 z-10 cursor-pointer"
+                  title="Ver Projeto"
                 />
               </CardItem>
 
