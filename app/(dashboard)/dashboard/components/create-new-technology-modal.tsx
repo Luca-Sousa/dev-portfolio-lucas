@@ -32,7 +32,7 @@ import { FileUpload } from "@/app/components/ui/file-upload";
 import { createTechnology } from "../../actions/technology/create-technology";
 import { toast } from "sonner";
 import { Input } from "@/app/components/ui/input";
-import { deleteFileFromBucket } from "@/app/api/upload/route";
+import { deleteFileFromBucket } from "@/app/utils/delete-file";
 
 const ModalCreateNewTechnology = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);

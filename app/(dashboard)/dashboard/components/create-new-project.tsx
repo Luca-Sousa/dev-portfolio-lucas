@@ -46,7 +46,7 @@ import {
 } from "../../actions/project/create-project/schema";
 import { getTechnologies } from "@/app/data_access/get-technologies";
 import { createProject } from "../../actions/project/create-project";
-import { deleteFileFromBucket } from "@/app/api/upload/route";
+import { deleteFileFromBucket } from "@/app/utils/delete-file";
 
 interface CreateProjectDialogContentProps {
   onSuccess?: () => void;
