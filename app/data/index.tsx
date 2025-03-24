@@ -214,11 +214,13 @@ export const socialMedia = [
   {
     id: 1,
     img: "/git.svg",
+    title: "Github",
     link: "https://github.com/Luca-Sousa",
   },
   {
     id: 2,
     img: "/link.svg",
+    title: "Linkedin",
     link: "https://www.linkedin.com/in/lucas-sousa-0b79a72a7/",
   },
 ];

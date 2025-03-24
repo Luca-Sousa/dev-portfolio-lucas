@@ -105,6 +105,12 @@ const config = {
             transform: "translate(-50%,-40%) scale(1)",
           },
         },
+        "ping-large": {
+          "75%, 100%": {
+            transform: "scale(3)",
+            opacity: "0",
+          },
+        },
         shimmer: {
           from: {
             backgroundPosition: "0 0",
@@ -164,6 +170,7 @@ const config = {
         fifth: "moveInCircle 20s ease infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        "ping-large": "ping-large 1s ease-in-out infinite",
       },
     },
   },
