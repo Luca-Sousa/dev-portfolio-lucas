@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -28,13 +28,10 @@ export const MenuItem = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <div
-      onMouseEnter={() => setActive(item)}
-      className="relative flex items-center"
-    >
+    <div onMouseEnter={() => setActive(item)} className="relative">
       <motion.p
         transition={{ duration: 0.3 }}
-        className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
+        className="cursor-pointer text-white hover:opacity-[0.9]"
       >
         {item}
       </motion.p>
@@ -45,11 +42,11 @@ export const MenuItem = ({
           transition={transition}
         >
           {active === item && (
-            <div className="absolute left-1/2 top-[calc(100%_+_1.2rem)] -translate-x-1/2 transform pt-2">
+            <div className="absolute left-1/2 top-[calc(100%_+_1.2rem)] -translate-x-1/2 transform pt-2 lg:pt-4">
               <motion.div
                 transition={transition}
                 layoutId="active" // layoutId ensures smooth animation
-                className="overflow-hidden rounded-2xl border border-black/[0.2] bg-white shadow-xl backdrop-blur-sm dark:border-white/[0.2] dark:bg-black"
+                className="overflow-hidden rounded-xl border border-white/[0.2] shadow-xl backdrop-blur-sm"
                 style={{
                   background: "rgb(4,7,29)",
                   backgroundColor:
@@ -81,7 +78,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative flex justify-center space-x-4 px-6 py-4 shadow-input"
+      className="relative flex items-center justify-center space-x-4 rounded-lg px-8 py-6 shadow-input lg:px-6 lg:py-4"
     >
       {children}
     </nav>
@@ -100,10 +97,13 @@ export const ProductItem = ({
   src: string;
 }) => {
   const router = useRouter();
+  const [hovered, setHovered] = useState(false);
 
   return (
     <button
-      className="flex space-x-2"
+      className="group relative flex w-full gap-2 p-2 lg:p-4"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onClick={() => router.push(`/projects/${projectId}`)}
     >
       <Image
@@ -111,13 +111,30 @@ export const ProductItem = ({
         width={140}
         height={70}
         alt={title}
-        className="shrink-0 rounded-md shadow-2xl"
+        className="z-50 shrink-0 shadow-2xl"
       />
-      <div>
-        <h4 className="mb-1 text-xs font-medium text-black dark:text-white md:text-sm md:font-bold">
+      <AnimatePresence>
+        {hovered && (
+          <motion.span
+            className="absolute inset-0 block h-full w-full rounded-xl bg-neutral-200 dark:bg-slate-800/[0.8]"
+            layoutId="hoverBackground"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              transition: { duration: 0.15 },
+            }}
+            exit={{
+              opacity: 0,
+              transition: { duration: 0.15, delay: 0.2 },
+            }}
+          />
+        )}
+      </AnimatePresence>
+      <div className="z-50">
+        <h4 className="mb-1 text-xs font-medium text-white md:text-sm md:font-bold">
           {title}
         </h4>
-        <p className="line-clamp-4 max-w-[10rem] text-xs text-neutral-700 dark:text-neutral-300 md:max-w-[14rem]">
+        <p className="line-clamp-4 max-w-[10rem] text-xs text-neutral-300 md:max-w-[14rem]">
           {description}
         </p>
       </div>
@@ -129,7 +146,7 @@ export const HoveredLink = ({ children, ...rest }: any) => {
   return (
     <Link
       {...rest}
-      className="flex items-center gap-1.5 text-neutral-700 hover:text-purple dark:text-neutral-200"
+      className="flex items-center gap-1.5 text-neutral-200 transition-colors hover:text-purple"
     >
       {children}
     </Link>
