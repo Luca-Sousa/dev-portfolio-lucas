@@ -1,16 +1,15 @@
-import { Button } from "@/app/_components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/app/_components/ui/dropdown-menu";
-import { cn } from "@/app/_lib/utils";
-import { faCaretUp, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from "@/app/components/ui/dropdown-menu";
+import { cn } from "@/app/lib/utils";
 import { Column } from "@tanstack/react-table";
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import { FaCaretUp, FaEyeSlash } from "react-icons/fa6";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -42,7 +41,7 @@ export function DataTableColumnHeader<TData, TValue>({
             ) : column.getIsSorted() === "asc" ? (
               <ArrowUpIcon className="ml-2 h-4 w-4" />
             ) : (
-              <FontAwesomeIcon icon={faCaretUp} className="ml-2 h-4 w-4" />
+              <FaCaretUp className="ml-2 h-4 w-4" />
             )}
           </Button>
         </DropdownMenuTrigger>
@@ -57,10 +56,7 @@ export function DataTableColumnHeader<TData, TValue>({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <FontAwesomeIcon
-              icon={faEyeSlash}
-              className="mr-2 h-3.5 w-3.5 text-muted-foreground/70"
-            />
+            <FaEyeSlash className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Hide
           </DropdownMenuItem>
         </DropdownMenuContent>

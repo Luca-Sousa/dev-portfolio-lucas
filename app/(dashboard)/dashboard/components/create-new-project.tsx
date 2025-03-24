@@ -378,7 +378,7 @@ const CreateProjectDialogContent = ({
                             <Textarea
                               {...field}
                               placeholder="Descrição do Certificado..."
-                              className="min-h-32 resize-none"
+                              className="min-h-32 max-w-lg resize-none"
                             />
                           </FormControl>
                           <FormMessage />

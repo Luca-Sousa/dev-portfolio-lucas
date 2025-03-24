@@ -12,7 +12,7 @@ const CreateProjectButton = () => {
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
-        <Button className="flex h-8 items-center gap-2 font-medium text-secondary">
+        <Button className="flex items-center gap-2 font-medium">
           <FilePlus2 size={14} />
           Novo Projeto
         </Button>

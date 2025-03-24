@@ -1,17 +1,16 @@
 "use client";
 
-import { Button } from "@/app/_components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/app/_components/ui/dropdown-menu";
-import { faTableColumns } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from "@/app/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Table } from "@tanstack/react-table";
+import { FaTableColumns } from "react-icons/fa6";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -23,8 +22,8 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="ml-auto flex h-8 gap-2">
-          <FontAwesomeIcon icon={faTableColumns} />
+        <Button variant="outline" className="ml-auto flex gap-2">
+          <FaTableColumns />
           Colunas
         </Button>
       </DropdownMenuTrigger>

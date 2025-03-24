@@ -133,7 +133,7 @@ export const FileUpload = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         layout
-                        className="max-w-xs truncate text-base text-neutral-700 dark:text-neutral-300"
+                        className="max-w-64 truncate text-base text-neutral-700 dark:text-neutral-300"
                       >
                         {file.name}
                       </motion.p>
