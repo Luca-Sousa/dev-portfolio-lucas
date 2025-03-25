@@ -10,22 +10,28 @@ import {
 } from "framer-motion";
 import { cn } from "@/app/lib/utils";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "./navbar-menu";
-import { projects } from "@/app/data";
 import MagicButton from "../magic-button";
 import { LuCirclePlus } from "react-icons/lu";
 
 import Link from "next/link";
 import { IconHomeShare } from "@tabler/icons-react";
+import { Project } from "@prisma/client";
+
+interface ProjectWithTechs extends Project {
+  technologies: { id: string; name: string; iconURL: string }[];
+}
 
 export const FloatingNav = ({
   className,
   navItemsHome,
+  projects,
 }: {
   navItemsHome: {
     name: string;
     link: string;
     icon?: JSX.Element;
   }[];
+  projects: ProjectWithTechs[];
   className?: string;
 }) => {
   const { scrollYProgress } = useScroll();
@@ -93,8 +99,8 @@ export const FloatingNav = ({
                   <ProductItem
                     title={project.title}
                     projectId={project.id}
-                    src={project.img}
-                    description={project.des}
+                    src={project.thumbnailUrl}
+                    description={project.description}
                   />
                 </div>
               ))}

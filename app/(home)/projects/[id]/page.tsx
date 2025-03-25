@@ -1,16 +1,18 @@
+import CarouselImagesProject from "@/app/components/carousel-images";
 import Footer from "@/app/components/footer";
 import Hero from "@/app/components/hero";
 import { MacbookScroll } from "@/app/components/ui/macbook-scroll";
 import { TextGenerateEffect } from "@/app/components/ui/text-generate-effect";
 import { TracingBeam } from "@/app/components/ui/tracing-beam";
 import { TypewriterEffectSmooth } from "@/app/components/ui/typewriter-effect";
-import { projects } from "@/app/data";
+import { getProjectsData } from "@/app/data_access/get-projects-data";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-const ProjectPage = ({ params }: { params: { id: string } }) => {
-  const project = projects.find((p) => p.id === Number(params.id));
+const ProjectPage = async ({ params }: { params: { id: string } }) => {
+  const projects = await getProjectsData();
+  const project = projects.find((p) => p.id === params.id);
 
   if (!project) return notFound();
 
@@ -59,57 +61,51 @@ const ProjectPage = ({ params }: { params: { id: string } }) => {
             </div>
 
             <TextGenerateEffect
-              words={project.des}
+              words={project.description}
               className="text-xs font-medium sm:text-base"
             />
 
             <div className="prose prose-sm dark:prose-invert text-sm">
-              {project?.img && (
-                <Image
-                  src={project.img}
-                  alt="blog thumbnail"
-                  height="1000"
-                  width="1000"
-                  className="rounded-lg object-cover"
-                />
-              )}
+              <CarouselImagesProject project={project.imagesUrl} />
             </div>
 
             <div className="flex items-center justify-center gap-3">
-              {project.iconLists.map((iconList) => (
-                <Image
-                  key={iconList}
-                  src={iconList}
-                  alt="teste"
-                  width={32}
-                  height={32}
-                />
+              {project.technologies.map((tech) => (
+                <div key={tech.id} className="flex items-center">
+                  <Image
+                    src={tech.iconURL}
+                    alt={tech.name}
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                </div>
               ))}
             </div>
 
-            <div className="w-full overflow-hidden">
-              <MacbookScroll
-                title={
-                  <p className="flex max-w-lg flex-col gap-1.5 sm:max-w-xl lg:max-w-2xl">
-                    <span className="text-5xl uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
-                      Certificação
-                    </span>
-                    <span className="text-xl md:text-lg/5 lg:text-xl/7">
-                      Certificado obtido durante a 6 edição da Full Stact Week,
-                      realizada pelo professor Felipe Rocha da formação online
-                      Full Stack Club.
-                    </span>
-                  </p>
-                }
-                badge={
-                  <Link href="/projects">
-                    <Badge className="size-10 -rotate-12 transform" />
-                  </Link>
-                }
-                src={`/Certificado-FSW-Barber.jpg`}
-                showGradient={false}
-              />
-            </div>
+            {project.certificateUrl && (
+              <div className="w-full overflow-hidden">
+                <MacbookScroll
+                  title={
+                    <p className="flex max-w-lg flex-col gap-1.5 sm:max-w-xl lg:max-w-2xl">
+                      <span className="text-5xl uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+                        Certificação
+                      </span>
+                      <span className="text-xl md:text-lg/5 lg:text-xl/7">
+                        {project.certificateDesc}
+                      </span>
+                    </p>
+                  }
+                  badge={
+                    <Link href="/projects">
+                      <Badge className="size-10 -rotate-12 transform" />
+                    </Link>
+                  }
+                  src={project.certificateUrl}
+                  showGradient={false}
+                />
+              </div>
+            )}
           </div>
         </div>
       </TracingBeam>

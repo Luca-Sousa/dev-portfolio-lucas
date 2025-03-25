@@ -93,7 +93,7 @@ export const ProductItem = ({
 }: {
   title: string;
   description: string;
-  projectId: number;
+  projectId: string;
   src: string;
 }) => {
   const router = useRouter();
