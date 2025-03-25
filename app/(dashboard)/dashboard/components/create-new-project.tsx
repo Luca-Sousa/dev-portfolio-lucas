@@ -46,7 +46,6 @@ import {
 } from "../../actions/project/create-project/schema";
 import { getTechnologies } from "@/app/data_access/get-technologies";
 import { createProject } from "../../actions/project/create-project";
-import { deleteFileFromBucket } from "@/app/utils/delete-file";
 
 interface CreateProjectDialogContentProps {
   onSuccess?: () => void;
@@ -55,30 +54,23 @@ interface CreateProjectDialogContentProps {
 const CreateProjectDialogContent = ({
   onSuccess,
 }: CreateProjectDialogContentProps) => {
-  // Estados para dados externos
   const [technologies, setTechnologies] = useState<Technology[]>([]);
   const [status, setStatus] = useState<ProjectStatus[]>([]);
 
-  // Estados locais para URLs dos uploads
-  const [uploadedThumbnailUrl, setUploadedThumbnailUrl] = useState<
-    string | null
-  >(null);
-  const [uploadedImagesUrl, setUploadedImagesUrl] = useState<string[]>([]);
-  const [uploadedCertificateUrl, setUploadedCertificateUrl] = useState<
-    string | null
-  >(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [imagesFiles, setImagesFiles] = useState<(File | string)[]>([]);
+  const [certificateFile, setCertificateFile] = useState<File | null>(null);
 
-  // Configuração do formulário
-  const form = useForm({
+  const form = useForm<CreateProjectSchema>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
       title: "",
       description: "",
       startDate: new Date(),
-      certificateUrl: "",
+      certificateUrl: undefined,
       certificateDesc: "",
       imagesUrl: [],
-      thumbnailUrl: "",
+      thumbnailUrl: undefined,
       repositoryUrl: "",
       deployUrl: "",
       status: "" as ProjectStatus,
@@ -86,7 +78,6 @@ const CreateProjectDialogContent = ({
     },
   });
 
-  // Buscar tecnologias ao montar o componente
   useEffect(() => {
     const fetchTechnologies = async () => {
       const techs = await getTechnologies();
@@ -95,16 +86,17 @@ const CreateProjectDialogContent = ({
     fetchTechnologies();
   }, []);
 
-  // Configura os status com base no enum ProjectStatus
   useEffect(() => {
     setStatus(Object.values(ProjectStatus));
   }, []);
 
-  // Função para upload de um único arquivo (thumbnail e certificado)
-  const handleSingleFileUpload = async (
-    file: File,
-    field: "thumbnailUrl" | "certificateUrl",
+  const handleFileUpload = async (
+    file: File | string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _type: "thumbnailUrl" | "certificateUrl" | "imagesUrl",
   ): Promise<string | null> => {
+    if (typeof file === "string") return file;
+
     try {
       const fileName = file.name;
       const fileContent = file.type;
@@ -129,105 +121,36 @@ const CreateProjectDialogContent = ({
       if (!fileUploadResponse.ok) throw new Error("Falha no upload");
 
       const customUrl = `https://pub-14cdb793b4b54085abc21edea67d935a.r2.dev/${fileKey}`;
-
-      // Validação para atribuir o valor corretamente
-      if (field === "thumbnailUrl") {
-        setUploadedThumbnailUrl(customUrl);
-      } else if (field === "certificateUrl") {
-        setUploadedCertificateUrl(customUrl);
-      }
-
       return customUrl;
     } catch (error) {
       console.error("Erro ao fazer upload:", error);
-      toast.error("Erro ao subir o arquivo");
+      toast.error(`Erro ao subir o arquivo: ${file.name}`);
       return null;
     }
   };
 
-  // Função para upload de múltiplos arquivos (imagens do projeto)
-  const handleMultipleFileUpload = async (files: File[]): Promise<string[]> => {
-    const uploadedUrls: string[] = [];
-
-    for (const file of files) {
-      try {
-        const fileName = file.name;
-        const fileContent = file.type;
-
-        const uploadResponse = await fetch("/api/upload", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fileName, fileContent }),
-        });
-
-        if (!uploadResponse.ok)
-          throw new Error("Falha ao obter URL pré-assinada");
-
-        const { signedUrl, fileKey } = await uploadResponse.json();
-
-        const fileUploadResponse = await fetch(signedUrl, {
-          method: "PUT",
-          headers: { "Content-Type": fileContent },
-          body: file,
-        });
-
-        if (!fileUploadResponse.ok) throw new Error("Falha no upload");
-
-        const customUrl = `https://pub-14cdb793b4b54085abc21edea67d935a.r2.dev/${fileKey}`;
-        uploadedUrls.push(customUrl);
-      } catch (error) {
-        console.error("Erro ao fazer upload:", error);
-        toast.error(`Erro ao subir o arquivo: ${file.name}`);
-      }
-    }
-    return uploadedUrls;
-  };
-
-  // Função para deletar um arquivo único (thumbnail ou certificado)
-  const handleDeleteSingleFile = async (fileUrl: string, fieldName: string) => {
-    try {
-      const fileKey = fileUrl.split("/").pop();
-      if (!fileKey) return;
-
-      await deleteFileFromBucket(fileKey);
-
-      // Atualiza o estado e o formulário de acordo com o campo
-      if (fieldName === "thumbnailUrl") {
-        setUploadedThumbnailUrl("");
-        form.setValue("thumbnailUrl", "");
-      } else if (fieldName === "certificateUrl") {
-        setUploadedCertificateUrl("");
-        form.setValue("certificateUrl", "");
-      }
-
-      toast.success("Arquivo removido com sucesso!");
-    } catch (error) {
-      console.error("Erro ao deletar o arquivo:", error);
-      toast.error("Erro ao deletar o arquivo");
-    }
-  };
-
-  // Função para deletar uma imagem específica do array de imagens
-  const handleDeleteImageFromArray = async (fileUrl: string) => {
-    try {
-      const fileKey = fileUrl.split("/").pop();
-      if (!fileKey) return;
-      await deleteFileFromBucket(fileKey);
-      // Atualiza o estado e o formulário removendo a imagem específica
-      const updatedImages = uploadedImagesUrl.filter((url) => url !== fileUrl);
-      setUploadedImagesUrl(updatedImages);
-      form.setValue("imagesUrl", updatedImages);
-      toast.success("Imagem removida com sucesso!");
-    } catch (error) {
-      console.error("Erro ao deletar a imagem:", error);
-      toast.error("Erro ao deletar a imagem");
-    }
-  };
-
-  // Submissão do formulário
   const handleSubmitProject = async (data: CreateProjectSchema) => {
     try {
-      await createProject({ ...data });
+      const uploadedThumbnail =
+        thumbnailFile &&
+        (await handleFileUpload(thumbnailFile, "thumbnailUrl"));
+      const uploadedCertificate =
+        certificateFile &&
+        (await handleFileUpload(certificateFile, "certificateUrl"));
+      const uploadedImages = await Promise.all(
+        imagesFiles.map((file) => handleFileUpload(file, "imagesUrl")),
+      );
+
+      const projectData = {
+        ...data,
+        thumbnailUrl: uploadedThumbnail || data.thumbnailUrl,
+        certificateUrl: uploadedCertificate || data.certificateUrl,
+        imagesUrl: uploadedImages.filter((url): url is string => url !== null),
+      };
+
+      await createProject(projectData);
+
+      form.reset();
       toast.success("Projeto criado com sucesso!");
       onSuccess?.();
     } catch (error) {
@@ -249,38 +172,25 @@ const CreateProjectDialogContent = ({
           className="flex h-full flex-col justify-between space-y-2 overflow-hidden"
         >
           <div className="flex h-full justify-between overflow-hidden">
-            {/* Área esquerda: Uploads */}
             <div className="mr-2 flex h-full basis-2/5 flex-col overflow-hidden">
               <ScrollArea>
                 <div className="space-y-4 pb-2">
-                  {/* Thumbnail */}
                   <FormField
                     control={form.control}
                     name="thumbnailUrl"
-                    render={({}) => (
+                    render={() => (
                       <FormItem className="px-4">
                         <FormLabel>Imagem da Thumbnail</FormLabel>
                         <FormControl>
                           <FileUpload
-                            key="thumbnailUrl"
-                            singleFile
-                            onChange={async (files) => {
+                            onChange={(files) => {
                               if (files.length > 0) {
-                                const fileUrl = await handleSingleFileUpload(
-                                  files[0],
-                                  "thumbnailUrl",
-                                );
-                                if (fileUrl) {
-                                  setUploadedThumbnailUrl(fileUrl);
-                                  form.setValue("thumbnailUrl", fileUrl);
-                                }
+                                const file = files[0];
+                                setThumbnailFile(file);
+                                form.setValue("thumbnailUrl", file);
                               }
                             }}
-                            uploadedFileUrl={uploadedThumbnailUrl || ""}
-                            handleDeleteFile={(fileKey, onSuccess) => {
-                              handleDeleteSingleFile(fileKey, "thumbnailUrl");
-                              onSuccess();
-                            }}
+                            singleFile
                           />
                         </FormControl>
                         <FormMessage />
@@ -288,32 +198,18 @@ const CreateProjectDialogContent = ({
                     )}
                   />
 
-                  {/* Imagens do Projeto */}
                   <FormField
                     control={form.control}
                     name="imagesUrl"
-                    render={({}) => (
+                    render={() => (
                       <FormItem className="px-4">
                         <FormLabel>Imagens do Projeto</FormLabel>
                         <FormControl>
                           <FileUpload
-                            key="imagesUrl"
-                            onChange={async (files) => {
-                              if (files.length > 0) {
-                                const fileUrls =
-                                  await handleMultipleFileUpload(files);
-                                const newImages = [
-                                  ...uploadedImagesUrl,
-                                  ...fileUrls,
-                                ];
-                                setUploadedImagesUrl(newImages);
-                                form.setValue("imagesUrl", newImages);
-                              }
+                            onChange={(files) => {
+                              setImagesFiles(files);
+                              form.setValue("imagesUrl", files);
                             }}
-                            uploadedFileUrl={uploadedImagesUrl[0]}
-                            handleDeleteFile={(fileUrl: string) =>
-                              handleDeleteImageFromArray(fileUrl)
-                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -321,11 +217,10 @@ const CreateProjectDialogContent = ({
                     )}
                   />
 
-                  {/* Certificado */}
                   <FormField
                     control={form.control}
                     name="certificateUrl"
-                    render={({}) => (
+                    render={() => (
                       <FormItem className="px-4">
                         <FormLabel>
                           Certificado{" "}
@@ -335,25 +230,14 @@ const CreateProjectDialogContent = ({
                         </FormLabel>
                         <FormControl>
                           <FileUpload
-                            key="certificateUrl"
-                            singleFile
-                            onChange={async (files) => {
+                            onChange={(files) => {
                               if (files.length > 0) {
-                                const fileUrl = await handleSingleFileUpload(
-                                  files[0],
-                                  "certificateUrl",
-                                );
-                                if (fileUrl) {
-                                  setUploadedCertificateUrl(fileUrl);
-                                  form.setValue("certificateUrl", fileUrl);
-                                }
+                                const file = files[0];
+                                setCertificateFile(file);
+                                form.setValue("certificateUrl", file);
                               }
                             }}
-                            uploadedFileUrl={uploadedCertificateUrl || ""}
-                            handleDeleteFile={(fileKey, onSuccess) => {
-                              handleDeleteSingleFile(fileKey, "certificateUrl");
-                              onSuccess();
-                            }}
+                            singleFile
                           />
                         </FormControl>
                         <FormMessage />
@@ -361,8 +245,7 @@ const CreateProjectDialogContent = ({
                     )}
                   />
 
-                  {/* Descrição do Certificado (se houver certificado) */}
-                  {uploadedCertificateUrl && (
+                  {certificateFile && (
                     <FormField
                       control={form.control}
                       name="certificateDesc"
@@ -390,7 +273,6 @@ const CreateProjectDialogContent = ({
               </ScrollArea>
             </div>
 
-            {/* Área direita: Informações do Projeto */}
             <div className="flex basis-3/5 flex-col">
               <ScrollArea>
                 <div className="flex w-full flex-1 flex-col gap-3 pb-2 pl-1 pr-4">

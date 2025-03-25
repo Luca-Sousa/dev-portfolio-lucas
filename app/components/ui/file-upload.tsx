@@ -1,9 +1,10 @@
 import { cn } from "@/app/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { IconLoader, IconTrash, IconUpload } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
+import GridPattern from "../grid-pattern";
 
 const mainVariant = {
   initial: {
@@ -26,35 +27,24 @@ const secondaryVariant = {
   },
 };
 
-export const FileUpload = ({
+interface FileUploadProps {
+  onChange: (files: File[]) => void;
+  singleFile?: boolean;
+}
+
+export const FileUpload: React.FC<FileUploadProps> = ({
   onChange,
   singleFile,
-  uploadedFileUrl,
-  handleDeleteFile,
-}: {
-  onChange?: (files: File[]) => void;
-  singleFile?: boolean;
-  uploadedFileUrl?: string;
-  handleDeleteFile: (fileKey: string, onSuccess: () => void) => void;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState<boolean>(true);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(
-    uploadedFileUrl || null,
-  );
-
-  useEffect(() => {
-    if (uploadedFileUrl) {
-      setPreviewUrl(uploadedFileUrl);
-      setUploading(false);
-    }
-  }, [uploadedFileUrl]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const handleFileChange = (newFiles: File[]) => {
+    const newUrls = newFiles.map((file) => URL.createObjectURL(file));
     setFiles(singleFile ? [newFiles[0]] : [...files, ...newFiles]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onChange && onChange(singleFile ? [newFiles[0]] : [...files, ...newFiles]);
+    setPreviewUrls(singleFile ? [newUrls[0]] : [...previewUrls, ...newUrls]);
+    onChange(singleFile ? [newFiles[0]] : [...files, ...newFiles]);
   };
 
   const handleClick = () => {
@@ -69,6 +59,11 @@ export const FileUpload = ({
       console.log(error);
     },
   });
+
+  const handleDeleteFile = (fileKey: string, callback: () => void) => {
+    URL.revokeObjectURL(fileKey);
+    callback();
+  };
 
   return (
     <div className="w-full" {...getRootProps()}>
@@ -111,14 +106,14 @@ export const FileUpload = ({
                   )}
                 >
                   <motion.div className="relative flex size-16 items-center justify-center text-neutral-600 dark:text-white">
-                    {uploading || !previewUrl ? (
+                    {!previewUrls[idx] ? (
                       <IconLoader
                         size={32}
                         className="animate-spin text-neutral-500 transition-all"
                       />
                     ) : (
                       <Image
-                        src={previewUrl}
+                        src={previewUrls[idx]}
                         alt="Imagem de Previsualização"
                         width={64}
                         height={64}
@@ -173,13 +168,14 @@ export const FileUpload = ({
                     className="h-full w-10 rounded-md transition-colors hover:bg-neutral-700"
                     onClick={(event) => {
                       event.stopPropagation();
-                      const fileKey = previewUrl?.split("/").pop() || "";
+                      const fileKey = previewUrls[idx]?.split("/").pop() || "";
                       handleDeleteFile(fileKey, () => {
                         setFiles((prevFiles) =>
                           prevFiles.filter((_, i) => i !== idx),
                         ); // Remove o arquivo da lista
-                        setPreviewUrl(null); // Limpa a URL de pré-visualização
-                        setUploading(false); // Define o estado de upload como falso
+                        setPreviewUrls((prevUrls) =>
+                          prevUrls.filter((_, i) => i !== idx),
+                        ); // Limpa a URL de pré-visualização
                       });
                     }}
                   >
@@ -229,26 +225,4 @@ export const FileUpload = ({
   );
 };
 
-export function GridPattern() {
-  const columns = 41;
-  const rows = 11;
-  return (
-    <div className="flex shrink-0 scale-105 flex-wrap items-center justify-center gap-x-px gap-y-px bg-gray-100 dark:bg-neutral-900">
-      {Array.from({ length: rows }).map((_, row) =>
-        Array.from({ length: columns }).map((_, col) => {
-          const index = row * columns + col;
-          return (
-            <div
-              key={`${col}-${row}`}
-              className={`flex h-10 w-10 shrink-0 rounded-[2px] ${
-                index % 2 === 0
-                  ? "bg-gray-50 dark:bg-neutral-950"
-                  : "bg-gray-50 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:bg-neutral-950 dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]"
-              }`}
-            />
-          );
-        }),
-      )}
-    </div>
-  );
-}
+export default FileUpload;
