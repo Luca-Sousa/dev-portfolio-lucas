@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
 
 import { academic_experiences } from "../data";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
@@ -11,7 +12,7 @@ const AcademicExperiences = () => {
       </h1>
 
       <div className="flex flex-col items-center max-lg:mt-10">
-        <div className="h-[50vh] md:h-[30rem] rounded-md flex flex-col antialiased  items-center justify-center relative overflow-hidden">
+        <div className="relative flex h-[50vh] flex-col items-center justify-center overflow-hidden rounded-md antialiased md:h-[30rem]">
           <InfiniteMovingCards
             items={academic_experiences}
             direction="right"

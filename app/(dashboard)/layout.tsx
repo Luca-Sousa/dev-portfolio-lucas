@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en" className="h-full">
-        <body className={`${inter.className} h-full`}>
+        <body className={`${inter.className} dark h-full`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"

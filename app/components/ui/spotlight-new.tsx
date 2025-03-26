@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -48,7 +49,7 @@ export const Spotlight = ({
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="absolute top-0 left-0 w-screen h-screen z-40 pointer-events-none"
+        className="pointer-events-none absolute left-0 top-0 z-40 h-screen w-screen"
       >
         <div
           style={{
@@ -57,7 +58,7 @@ export const Spotlight = ({
             width: `${width}px`,
             height: `${height}px`,
           }}
-          className={`absolute top-0 left-0`}
+          className={`absolute left-0 top-0`}
         />
 
         <div
@@ -67,7 +68,7 @@ export const Spotlight = ({
             width: `${smallWidth}px`,
             height: `${height}px`,
           }}
-          className={`absolute top-0 left-0 origin-top-left`}
+          className={`absolute left-0 top-0 origin-top-left`}
         />
 
         <div
@@ -77,7 +78,7 @@ export const Spotlight = ({
             width: `${smallWidth}px`,
             height: `${height}px`,
           }}
-          className={`absolute top-0 left-0 origin-top-left`}
+          className={`absolute left-0 top-0 origin-top-left`}
         />
       </motion.div>
 
@@ -91,7 +92,7 @@ export const Spotlight = ({
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="absolute top-0 right-0 w-screen h-screen z-40 pointer-events-none"
+        className="pointer-events-none absolute right-0 top-0 z-40 h-screen w-screen"
       >
         <div
           style={{
@@ -100,7 +101,7 @@ export const Spotlight = ({
             width: `${width}px`,
             height: `${height}px`,
           }}
-          className={`absolute top-0 right-0`}
+          className={`absolute right-0 top-0`}
         />
 
         <div
@@ -110,7 +111,7 @@ export const Spotlight = ({
             width: `${smallWidth}px`,
             height: `${height}px`,
           }}
-          className={`absolute top-0 right-0 origin-top-right`}
+          className={`absolute right-0 top-0 origin-top-right`}
         />
 
         <div
@@ -120,7 +121,7 @@ export const Spotlight = ({
             width: `${smallWidth}px`,
             height: `${height}px`,
           }}
-          className={`absolute top-0 right-0 origin-top-right`}
+          className={`absolute right-0 top-0 origin-top-right`}
         />
       </motion.div>
     </motion.div>

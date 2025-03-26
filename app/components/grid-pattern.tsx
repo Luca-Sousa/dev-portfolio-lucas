@@ -1,6 +1,9 @@
+"use client";
+
 const GridPattern = () => {
   const columns = 41;
   const rows = 11;
+
   return (
     <div className="flex shrink-0 scale-105 flex-wrap items-center justify-center gap-x-px gap-y-px bg-gray-100 dark:bg-neutral-900">
       {Array.from({ length: rows }).map((_, row) =>
