@@ -14,8 +14,9 @@ import MagicButton from "../magic-button";
 import { LuCirclePlus } from "react-icons/lu";
 
 import Link from "next/link";
-import { IconHomeShare } from "@tabler/icons-react";
+import { IconHomeShare, IconStackPush } from "@tabler/icons-react";
 import { Project } from "@prisma/client";
+import { useIsMobile } from "@/app/hooks/use-mobile";
 
 interface ProjectWithTechs extends Project {
   technologies: { id: string; name: string; iconURL: string }[];
@@ -37,6 +38,7 @@ export const FloatingNav = ({
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
   const [active, setActive] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Check if current is not undefined and is a number
@@ -81,16 +83,30 @@ export const FloatingNav = ({
         }}
       >
         <Menu setActive={setActive}>
-          <MenuItem setActive={setActive} active={active} item="Início">
-            <div className="flex flex-col space-y-4 text-sm">
-              {navItemsHome.map((item, index) => (
-                <HoveredLink key={index} href={item.link}>
-                  {item.icon}
-                  {item.name}
-                </HoveredLink>
-              ))}
-            </div>
-          </MenuItem>
+          {isMobile ? (
+            <MenuItem setActive={setActive} active={active} item="Início">
+              <div className="flex flex-col space-y-4 text-sm">
+                {navItemsHome.map((item, index) => (
+                  <HoveredLink key={index} href={item.link}>
+                    {item.icon}
+                    {item.name}
+                  </HoveredLink>
+                ))}
+              </div>
+            </MenuItem>
+          ) : (
+            <>
+              <HoveredLink href={"/#"}>Início</HoveredLink>
+
+              <HoveredLink href={"/#about"}>Sobre</HoveredLink>
+
+              <HoveredLink href={"/#academic-experiencies"}>
+                Exp. Acadêmicas
+              </HoveredLink>
+
+              <HoveredLink href={"/#contact"}>Contato</HoveredLink>
+            </>
+          )}
 
           <MenuItem setActive={setActive} active={active} item="Projetos">
             <div className="grid grid-cols-1 p-1.5 text-sm md:p-4 lg:grid-cols-2">
@@ -106,24 +122,25 @@ export const FloatingNav = ({
               ))}
             </div>
 
-            <Link
-              href="/projects"
-              className="flex w-full justify-center"
-              onClick={() => setActive(null)}
-            >
-              <MagicButton
-                title="Ver Mais Projetos"
-                icon={<LuCirclePlus size={20} />}
-                position="right"
-              />
-            </Link>
-          </MenuItem>
-          <MenuItem setActive={setActive} active={active} item="teste">
-            <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/hobby">Hobby</HoveredLink>
-              <HoveredLink href="/individual">Individual</HoveredLink>
-              <HoveredLink href="/team">Team</HoveredLink>
-              <HoveredLink href="/enterprise">Enterprise</HoveredLink>
+            <div className="flex w-full flex-col items-center justify-center gap-5 xl:flex-row xl:justify-end">
+              {!isMobile && (
+                <Link href="/#projects" onClick={() => setActive(null)}>
+                  <MagicButton
+                    title="Ver Projetos Recentes"
+                    icon={<IconStackPush size={20} />}
+                    position="right"
+                    otherClasses="bg-gradient-to-t from-purple/20 to-purple/20 hover:from-purple/30 hover:to-purple/30 transition-colors"
+                  />
+                </Link>
+              )}
+
+              <Link href="/projects" onClick={() => setActive(null)}>
+                <MagicButton
+                  title="Ver Mais Projetos"
+                  icon={<LuCirclePlus size={20} />}
+                  position="right"
+                />
+              </Link>
             </div>
           </MenuItem>
 
