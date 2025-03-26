@@ -1,12 +1,14 @@
+import { ButtonLinks } from "@/app/components/button-links";
 import CarouselImagesProject from "@/app/components/carousel-images";
 import Footer from "@/app/components/footer";
 import Hero from "@/app/components/hero";
+import SkillCard from "@/app/components/skill-card";
 import { MacbookScroll } from "@/app/components/ui/macbook-scroll";
 import { TextGenerateEffect } from "@/app/components/ui/text-generate-effect";
 import { TracingBeam } from "@/app/components/ui/tracing-beam";
 import { TypewriterEffectSmooth } from "@/app/components/ui/typewriter-effect";
 import { getProjectsData } from "@/app/data_access/get-projects-data";
-import Image from "next/image";
+import { IconBrandGithub, IconBrandVercelFilled } from "@tabler/icons-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -27,9 +29,9 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
     <div className="w-full pt-16">
       <Hero isPages />
 
-      <TracingBeam className="pb-96 pl-8 xl:pl-0">
+      <TracingBeam className="!z-50 pb-96 pl-8 xl:pl-0">
         <div className="relative pt-2 antialiased">
-          <div className="space-y-10">
+          <div className="space-y-20">
             <div className="space-y-1.5">
               <h2 className="w-fit rounded-full">
                 <TypewriterEffectSmooth words={words} />
@@ -39,7 +41,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
                 <div>
                   Data de Início:{" "}
                   <span className="text-purple underline">
-                    {new Date().toLocaleDateString("pt-BR", {
+                    {project.createdAt.toLocaleDateString("pt-BR", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
@@ -50,7 +52,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
                 <div>
                   Última Atualização:{" "}
                   <span className="text-purple underline">
-                    {new Date().toLocaleDateString("pt-BR", {
+                    {project.updatedAt.toLocaleDateString("pt-BR", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
@@ -65,22 +67,42 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
               className="text-xs font-medium sm:text-base"
             />
 
-            <div className="prose prose-sm dark:prose-invert text-sm">
-              <CarouselImagesProject project={project.imagesUrl} />
+            <CarouselImagesProject project={project.imagesUrl} />
+
+            <div className="space-y-10">
+              <p className="max-w-full text-center text-5xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+                Tecnologias
+              </p>
+
+              <div className="grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] gap-3">
+                {project.technologies.map((tech) => (
+                  <SkillCard
+                    key={tech.id}
+                    imageURL={tech.iconURL}
+                    label={tech.name}
+                  />
+                ))}
+              </div>
             </div>
 
-            <div className="flex items-center justify-center gap-3">
-              {project.technologies.map((tech) => (
-                <div key={tech.id} className="flex items-center">
-                  <Image
-                    src={tech.iconURL}
-                    alt={tech.name}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                </div>
-              ))}
+            <div className="space-y-10">
+              <p className="max-w-full text-center text-5xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+                Links
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-10">
+                <ButtonLinks
+                  icon={<IconBrandGithub className="size-8" />}
+                  link={project.repositoryUrl}
+                  title="Github"
+                />
+
+                <ButtonLinks
+                  icon={<IconBrandVercelFilled className="size-8" />}
+                  link={project.deployUrl}
+                  title="Vercel"
+                />
+              </div>
             </div>
 
             {project.certificateUrl && (
@@ -110,7 +132,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
         </div>
       </TracingBeam>
 
-      <Footer isPages />
+      <Footer />
     </div>
   );
 };

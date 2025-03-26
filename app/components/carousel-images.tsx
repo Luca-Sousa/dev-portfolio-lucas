@@ -56,7 +56,7 @@ const CarouselImagesProject = ({ project }: CarouselImagesProjectProps) => {
                   <Image
                     src={imageURL}
                     alt={`Imagem ${index}`}
-                    className="rounded-lg object-cover"
+                    className="rounded-lg object-cover object-top"
                     fill
                   />
                 </CardContent>
