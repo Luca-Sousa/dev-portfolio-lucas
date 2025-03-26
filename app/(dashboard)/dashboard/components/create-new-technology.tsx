@@ -32,75 +32,33 @@ import { FileUpload } from "@/app/components/ui/file-upload";
 import { createTechnology } from "../../actions/technology/create-technology";
 import { toast } from "sonner";
 import { Input } from "@/app/components/ui/input";
-import { deleteFileFromBucket } from "@/app/utils/delete-file";
+import { handleFileUpload } from "@/app/utils/create-file";
 
-const ModalCreateNewTechnology = () => {
+const CreateNewTechnology = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
-  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+  const [IconFile, setIconFile] = useState<File | null>(null);
 
   const form = useForm({
     resolver: zodResolver(createTechnologySchema),
     defaultValues: {
       name: "",
-      iconURL: "",
+      iconURL: undefined,
     },
   });
 
-  const handleFileUpload = async (file: File) => {
-    try {
-      const fileName = file.name;
-      const fileContent = file.type;
-
-      const uploadResponse = await fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fileName: fileName,
-          fileContent: fileContent,
-        }),
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Falha ao obter a URL pré-assinada");
-      }
-
-      const { signedUrl, fileKey } = await uploadResponse.json();
-
-      const fileUploadResponse = await fetch(signedUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": fileContent,
-        },
-        body: file,
-      });
-
-      if (!fileUploadResponse.ok) {
-        throw new Error("Falha no upload do arquivo");
-      }
-
-      const customUrl = `https://pub-14cdb793b4b54085abc21edea67d935a.r2.dev/${fileKey}`;
-      setUploadedFileUrl(customUrl);
-      return customUrl;
-    } catch (error) {
-      console.error("Erro ao fazer upload do arquivo:", error);
-      throw new Error("Erro ao fazer upload do arquivo");
-    }
-  };
-
   const handleCreateTechnology = async (data: CreateTechnologySchema) => {
     try {
-      if (!uploadedFileUrl) {
-        throw new Error("Nenhum arquivo carregado");
-      }
+      const uploadedIconUrl =
+        IconFile && (await handleFileUpload(IconFile, "iconURL"));
 
-      await createTechnology({
-        name: data.name,
-        iconURL: uploadedFileUrl,
-      });
+      const technologyData = {
+        ...data,
+        iconURL: uploadedIconUrl || data.iconURL,
+      };
 
-      setUploadedFileUrl("");
+      await createTechnology(technologyData);
+
+      form.reset();
       setDialogIsOpen(false);
       toast.success("Tecnologia criada com sucesso!");
     } catch (error) {
@@ -108,27 +66,10 @@ const ModalCreateNewTechnology = () => {
     }
   };
 
-  const handleDeleteFile = async (fileKey: string, onSuccess?: () => void) => {
-    try {
-      await deleteFileFromBucket(fileKey);
-
-      setUploadedFileUrl("");
-      form.setValue("iconURL", "");
-      onSuccess?.();
-    } catch (error) {
-      console.error("Erro ao deletar o arquivo:", error);
-    }
-  };
-
   return (
     <Dialog
       open={dialogIsOpen}
       onOpenChange={(open) => {
-        if (uploadedFileUrl) {
-          const fileKey = uploadedFileUrl.split("/").pop() || "";
-          handleDeleteFile(fileKey);
-        }
-
         setDialogIsOpen(open);
       }}
     >
@@ -170,22 +111,20 @@ const ModalCreateNewTechnology = () => {
             <FormField
               control={form.control}
               name="iconURL"
-              render={({}) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Ícone da Tecnologia</FormLabel>
                   <FormControl>
                     <div className="h-fit rounded-lg border-2 border-dashed border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
                       <FileUpload
-                        onChange={async (files) => {
+                        onChange={(files) => {
                           if (files.length > 0) {
                             const file = files[0];
-                            const fileUrl = await handleFileUpload(file);
-                            form.setValue("iconURL", fileUrl);
+                            setIconFile(file);
+                            form.setValue("iconURL", file);
                           }
                         }}
                         singleFile
-                        uploadedFileUrl={form.getValues("iconURL")}
-                        handleDeleteFile={handleDeleteFile}
                       />
                     </div>
                   </FormControl>
@@ -226,4 +165,4 @@ const ModalCreateNewTechnology = () => {
   );
 };
 
-export default ModalCreateNewTechnology;
+export default CreateNewTechnology;

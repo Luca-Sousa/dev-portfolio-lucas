@@ -25,8 +25,8 @@ import { DataTableViewOptions } from "@/app/(dashboard)/dashboard/projects/compo
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
-import CreateProjectButton from "../../components/create-project-button";
-import ModalCreateNewTechnology from "../../components/create-new-technology-modal";
+import CreateNewTechnology from "../../components/create-new-technology";
+import CreateNewProject from "../../components/create-new-project";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -76,10 +76,10 @@ export function DataTable<TData, TValue>({
 
         <div className="mr-1 flex items-center justify-center gap-3">
           {/* MODAL NOVA TECNOLOGIA */}
-          <ModalCreateNewTechnology />
+          <CreateNewTechnology />
 
           {/* MODAL NOVO PROJETO */}
-          <CreateProjectButton />
+          <CreateNewProject />
 
           {/* VISUALIZAÇÃO DAS COLUNAS */}
           <DataTableViewOptions table={table} />
