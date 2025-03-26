@@ -11,7 +11,7 @@ interface FooterProps {
 
 const Footer = ({ isPages }: FooterProps) => {
   return (
-    <footer className={`w-full pb-10 ${!isPages && "pt-20"} `} id="contact">
+    <footer className={`w-full pb-10 ${!isPages && "pt-10"} `} id="contact">
       {/* background grid */}
       <div className="absolute -bottom-72 left-0 min-h-28 w-full">
         <img

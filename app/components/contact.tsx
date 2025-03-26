@@ -59,14 +59,15 @@ const Contact = () => {
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col items-center gap-14">
-      <h1 className="heading !leading-tight">
-        Gostou do meu <span className="text-purple">trabalho?</span>
-        <br />
-        Entre em contato comigo por <span className="text-purple">
-          email
-        </span>{" "}
-        ou preencha o <span className="text-purple">formulário</span> abaixo.
-      </h1>
+      <div className="space-y-3">
+        <h2 className="heading">
+          Gostou do meu <span className="text-purple">trabalho?</span>
+        </h2>
+        <p className="mx-auto max-w-xl text-center text-3xl font-medium">
+          Entre em contato comigo por <span className="text-purple">email</span>{" "}
+          ou preencha o <span className="text-purple">formulário</span> abaixo.
+        </p>
+      </div>
 
       <Link href="mailto:luke.sousa.dev@gmail.com">
         <MagicButton
