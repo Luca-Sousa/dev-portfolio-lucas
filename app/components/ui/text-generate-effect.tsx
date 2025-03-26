@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect } from "react";
@@ -25,7 +24,7 @@ export const TextGenerateEffect = ({
         delay: stagger(0.2),
       },
     );
-  }, [scope.current]);
+  }, [animate]);
 
   const renderWords = () => {
     return (

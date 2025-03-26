@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { socialMedia } from "../data";
 import Link from "next/link";
@@ -13,7 +13,6 @@ interface FooterProps {
 const Footer = ({ isPages }: FooterProps) => {
   return (
     <footer className={`w-full pb-10 ${!isPages && "pt-10"} `} id="contact">
-      {/* background grid */}
       <div className="absolute -bottom-72 left-0 min-h-28 w-full">
         <img
           src="/footer-grid.svg"

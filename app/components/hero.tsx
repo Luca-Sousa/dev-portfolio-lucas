@@ -1,5 +1,3 @@
-"use client";
-
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 import MagicButton from "./magic-button";
 import { FaArrowDown, FaDownload } from "react-icons/fa6";

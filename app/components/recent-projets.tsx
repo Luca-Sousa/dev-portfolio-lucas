@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { FaLocationArrow } from "react-icons/fa6";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";

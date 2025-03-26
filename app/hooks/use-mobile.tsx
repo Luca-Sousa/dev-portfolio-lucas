@@ -8,10 +8,10 @@ export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(
     undefined,
   );
-  const [isClient, setIsClient] = React.useState(false); // Adicionando um estado para verificar se está no cliente
+  const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
-    setIsClient(true); // Setando como true após a renderização no cliente
+    setIsClient(true);
 
     if (typeof window !== "undefined") {
       const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
@@ -24,7 +24,6 @@ export function useIsMobile() {
     }
   }, []);
 
-  // Só retorna o valor de isMobile depois de garantir que está no cliente
   if (!isClient) return false;
 
   return !!isMobile;
