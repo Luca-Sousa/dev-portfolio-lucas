@@ -5,7 +5,7 @@ import { ThemeProvider } from "../components/theme-provider";
 import { FloatingNav } from "../components/ui/floating-navbar";
 import { navItemsHome } from "../data";
 import { Toaster } from "sonner";
-import { getProjectsData } from "../data_access/get-projects-data";
+import { getProjects } from "../data_access/get-projects";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +19,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const projects = await getProjectsData({}, 4);
+  const projects = await getProjects({
+    limit: 4,
+  });
 
   return (
     <html lang="en">

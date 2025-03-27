@@ -111,7 +111,7 @@ export const ProductItem = ({
         width={140}
         height={70}
         alt={title}
-        className="z-50 shrink-0 shadow-2xl"
+        className="z-50 shrink-0 rounded-xl shadow-2xl"
       />
       <AnimatePresence>
         {hovered && (
@@ -130,7 +130,7 @@ export const ProductItem = ({
           />
         )}
       </AnimatePresence>
-      <div className="z-50">
+      <div className="z-50 text-left">
         <h4 className="mb-1 text-xs font-medium text-white md:text-sm md:font-bold">
           {title}
         </h4>

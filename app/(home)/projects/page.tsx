@@ -1,10 +1,12 @@
 import Footer from "@/app/components/footer";
 import Hero from "@/app/components/hero";
 import RecentProjets from "@/app/components/recent-projets";
-import { getProjectsData } from "@/app/data_access/get-projects-data";
+import { getProjects } from "@/app/data_access/get-projects";
 
 const Projects = async () => {
-  const projects = await getProjectsData();
+  const projects = await getProjects({
+    limit: 4,
+  });
 
   return (
     <>

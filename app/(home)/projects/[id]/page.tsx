@@ -7,13 +7,13 @@ import { MacbookScroll } from "@/app/components/ui/macbook-scroll";
 import { TextGenerateEffect } from "@/app/components/ui/text-generate-effect";
 import { TracingBeam } from "@/app/components/ui/tracing-beam";
 import { TypewriterEffectSmooth } from "@/app/components/ui/typewriter-effect";
-import { getProjectsData } from "@/app/data_access/get-projects-data";
+import { getProjects } from "@/app/data_access/get-projects";
 import { IconBrandGithub, IconBrandVercelFilled } from "@tabler/icons-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const ProjectPage = async ({ params }: { params: { id: string } }) => {
-  const projects = await getProjectsData();
+  const projects = await getProjects({});
   const project = projects.find((p) => p.id === params.id);
 
   if (!project) return notFound();
@@ -37,7 +37,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
                 <TypewriterEffectSmooth words={words} />
               </h2>
 
-              <div className="flex items-center justify-between text-sm/6 font-medium text-neutral-300">
+              <div className="flex flex-col justify-between text-xs/6 font-medium text-neutral-300 sm:flex-row sm:items-center md:text-sm/6">
                 <div>
                   Data de Início:{" "}
                   <span className="text-purple underline">
@@ -64,13 +64,13 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
 
             <TextGenerateEffect
               words={project.description}
-              className="text-xs font-medium sm:text-base"
+              className="text-sm font-medium sm:text-base"
             />
 
             <CarouselImagesProject project={project.imagesUrl} />
 
             <div className="space-y-10">
-              <p className="max-w-full text-center text-5xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+              <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
                 Tecnologias
               </p>
 
@@ -87,11 +87,11 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
             </div>
 
             <div className="space-y-10">
-              <p className="max-w-full text-center text-5xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+              <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
                 Links
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-10">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 md:gap-10">
                 <ButtonLinks
                   icon={<IconBrandGithub className="size-8" />}
                   link={project.repositoryUrl}

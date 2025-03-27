@@ -1,15 +1,13 @@
 "use server";
 
-import { ProjectStatus } from "@prisma/client";
 import { db } from "../lib/prisma";
 
 interface GetProjectsProps {
-  status?: ProjectStatus;
+  limit?: number;
 }
 
-export const getProjects = async ({ status }: GetProjectsProps) => {
+export const getProjects = async ({ limit }: GetProjectsProps) => {
   const projects = await db.project.findMany({
-    where: status ? { status } : {},
     include: {
       technologies: {
         include: {
@@ -17,13 +15,20 @@ export const getProjects = async ({ status }: GetProjectsProps) => {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   const sortedProjects = projects.sort(
     (a, b) => b.technologies.length - a.technologies.length,
   );
 
-  return sortedProjects.map((project) => ({
+  const limitedProjects = limit
+    ? sortedProjects.slice(0, limit)
+    : sortedProjects;
+
+  return limitedProjects.map((project) => ({
     ...project,
     technologies: project.technologies.map((tech) => ({
       id: tech.technologyId,
