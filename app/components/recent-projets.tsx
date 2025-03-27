@@ -67,7 +67,7 @@ const RecentProjets = ({ isPage, projects }: RecentProjetsPros) => {
                   onClick={() => router.push(`/projects/${project.id}`)}
                   src={project.thumbnailUrl}
                   alt="cover"
-                  className="absolute bottom-0 z-10 cursor-pointer"
+                  className="absolute bottom-0 z-10 cursor-pointer lg:rounded-t-3xl"
                   title="Ver Projeto"
                 />
               </CardItem>
