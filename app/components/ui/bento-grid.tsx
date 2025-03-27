@@ -6,9 +6,10 @@ import { IoCopyOutline } from "react-icons/io5";
 import Lottie from "react-lottie";
 
 import { cn } from "@/app/lib/utils";
-
 import animationData from "@/app/data/confetti.json";
-import MagicButton from "@/app/components/magic-button";
+import { BackgroundGradientAnimation } from "./background-gradient-animation";
+import { GridGlobe } from "../grid-globe";
+import MagicButton from "../magic-button";
 
 export const BentoGrid = ({
   className,
@@ -105,11 +106,11 @@ export const BentoGridItem = ({
           )}
         </div>
 
-        {/* {id === 6 && (
+        {id === 6 && (
           <BackgroundGradientAnimation>
             <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center px-4 text-center text-3xl font-bold text-white md:text-4xl lg:text-7xl"></div>
           </BackgroundGradientAnimation>
-        )} */}
+        )}
 
         <div
           className={cn(
@@ -126,7 +127,7 @@ export const BentoGridItem = ({
             {title}
           </div>
 
-          {/* {id === 2 && <GridGlobe />} */}
+          {id === 2 && <GridGlobe />}
 
           {id === 3 && (
             <div className="absolute -right-3 flex w-fit gap-1 lg:-right-2 lg:gap-5">

@@ -93,21 +93,6 @@ export function Globe({ globeConfig, data }: WorldProps) {
   };
 
   useEffect(() => {
-    const _buildMaterial = () => {
-      if (!globeRef.current) return;
-
-      const globeMaterial = globeRef.current.globeMaterial() as unknown as {
-        color: Color;
-        emissive: Color;
-        emissiveIntensity: number;
-        shininess: number;
-      };
-      globeMaterial.color = new Color(globeConfig.globeColor);
-      globeMaterial.emissive = new Color(globeConfig.emissive);
-      globeMaterial.emissiveIntensity = globeConfig.emissiveIntensity || 0.1;
-      globeMaterial.shininess = globeConfig.shininess || 0.9;
-    };
-
     const _buildData = () => {
       const arcs = data;
       const points = [];
@@ -143,6 +128,21 @@ export function Globe({ globeConfig, data }: WorldProps) {
       setGlobeData(filteredPoints);
     };
 
+    const _buildMaterial = () => {
+      if (!globeRef.current) return;
+
+      const globeMaterial = globeRef.current.globeMaterial() as unknown as {
+        color: Color;
+        emissive: Color;
+        emissiveIntensity: number;
+        shininess: number;
+      };
+      globeMaterial.color = new Color(globeConfig.globeColor);
+      globeMaterial.emissive = new Color(globeConfig.emissive);
+      globeMaterial.emissiveIntensity = globeConfig.emissiveIntensity || 0.1;
+      globeMaterial.shininess = globeConfig.shininess || 0.9;
+    };
+
     if (globeRef.current) {
       _buildData();
       _buildMaterial();
@@ -166,17 +166,20 @@ export function Globe({ globeConfig, data }: WorldProps) {
         .arcStartLng((d) => (d as { startLng: number }).startLng * 1)
         .arcEndLat((d) => (d as { endLat: number }).endLat * 1)
         .arcEndLng((d) => (d as { endLng: number }).endLng * 1)
-        .arcColor((e: unknown) => (e as { color: string }).color)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .arcColor((e: any) => (e as { color: string }).color)
         .arcAltitude((e) => {
           return (e as { arcAlt: number }).arcAlt * 1;
         })
-        .arcStroke(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .arcStroke((e) => {
           return [0.32, 0.28, 0.3][Math.round(Math.random() * 2)];
         })
         .arcDashLength(defaultProps.arcLength)
         .arcDashInitialGap((e) => (e as { order: number }).order * 1)
         .arcDashGap(15)
-        .arcDashAnimateTime(() => defaultProps.arcTime);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .arcDashAnimateTime((e) => defaultProps.arcTime);
 
       globeRef.current
         .pointsData(data)
@@ -204,7 +207,8 @@ export function Globe({ globeConfig, data }: WorldProps) {
         .showAtmosphere(defaultProps.showAtmosphere)
         .atmosphereColor(defaultProps.atmosphereColor)
         .atmosphereAltitude(defaultProps.atmosphereAltitude)
-        .hexPolygonColor(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .hexPolygonColor((e) => {
           return defaultProps.polygonColor;
         });
       startAnimation();
