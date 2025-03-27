@@ -4,9 +4,7 @@ import RecentProjets from "@/app/components/recent-projets";
 import { getProjects } from "@/app/data_access/get-projects";
 
 const Projects = async () => {
-  const projects = await getProjects({
-    limit: 4,
-  });
+  const projects = await getProjects({});
 
   return (
     <>
