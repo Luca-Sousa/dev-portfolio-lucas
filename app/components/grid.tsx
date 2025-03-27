@@ -5,10 +5,10 @@ const Grid = () => {
   return (
     <section id="about">
       <BentoGrid className="w-full py-20">
-        {gridItems.map((item, i) => (
+        {gridItems.map((item) => (
           <BentoGridItem
             id={item.id}
-            key={i}
+            key={item.id}
             title={item.title}
             description={item.description}
             className={item.className}

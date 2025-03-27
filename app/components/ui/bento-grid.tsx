@@ -1,15 +1,9 @@
-"use client";
-
-import { useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
-
-import Lottie from "react-lottie";
-
 import { cn } from "@/app/lib/utils";
-import animationData from "@/app/data/confetti.json";
 import { BackgroundGradientAnimation } from "./background-gradient-animation";
 import { GridGlobe } from "../grid-globe";
 import MagicButton from "../magic-button";
+import Link from "next/link";
 
 export const BentoGrid = ({
   className,
@@ -51,22 +45,22 @@ export const BentoGridItem = ({
 }) => {
   const leftLists = ["ReactJS", "NextJS", "TailwindCSS"];
   const rightLists = ["Typescript", "ShacnUI", "PrismaORM"];
-  const [copied, setCopied] = useState(false);
+  // const [copied, setCopied] = useState(false);
 
-  const defaultOptions = {
-    loop: copied,
-    autoplay: copied,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+  // const defaultOptions = {
+  //   loop: copied,
+  //   autoplay: copied,
+  //   animationData: animationData,
+  //   rendererSettings: {
+  //     preserveAspectRatio: "xMidYMid slice",
+  //   },
+  // };
 
-  const handleCopy = () => {
-    const text = "luke.sousa.dev@gmail.com";
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-  };
+  // const handleCopy = () => {
+  //   const text = "luke.sousa.dev@gmail.com";
+  //   navigator.clipboard.writeText(text);
+  //   setCopied(true);
+  // };
 
   return (
     <div
@@ -158,21 +152,22 @@ export const BentoGridItem = ({
 
           {id === 6 && (
             <div className="relative mt-5">
-              <div
+              {/* <div
                 className={`absolute -bottom-5 right-0 ${
                   copied ? "block" : "block"
                 }`}
               >
                 <Lottie options={defaultOptions} height={200} width={400} />
-              </div>
+              </div> */}
 
-              <MagicButton
-                title={copied ? "E-mail Copiado!" : "Copiar E-mail"}
-                icon={<IoCopyOutline />}
-                position="left"
-                handleClick={handleCopy}
-                otherClasses="!bg-[#161A31]"
-              />
+              <Link href="/#contact">
+                <MagicButton
+                  title="Entre em contato!"
+                  icon={<IoCopyOutline />}
+                  position="left"
+                  otherClasses="!bg-[#161A31]"
+                />
+              </Link>
             </div>
           )}
         </div>
