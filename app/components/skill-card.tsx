@@ -6,23 +6,12 @@ interface SkillCardProps {
   imageURL: string;
   label: string;
   description: string;
-  classes?: string;
 }
 
-const SkillCard = ({
-  imageURL,
-  label,
-  classes,
-  description,
-}: SkillCardProps) => {
+const SkillCard = ({ imageURL, label, description }: SkillCardProps) => {
   return (
-    <div
-      className={
-        `group z-50 flex items-center gap-3 rounded-2xl bg-black-100 p-3 ring-2 ring-inset ring-purple/30 transition-colors hover:z-50 hover:bg-purple/10` +
-        classes
-      }
-    >
-      <figure className="size-12 overflow-hidden rounded-lg bg-purple/20 p-2 transition-colors group-hover:bg-purple/40">
+    <div className="group flex items-center gap-3 rounded-2xl bg-black-100 p-3 ring-2 ring-inset ring-purple/30 transition-colors hover:z-50 hover:bg-purple/10">
+      <figure className="size-12 overflow-hidden rounded-lg bg-purple/20 p-2 transition-colors group-hover:bg-purple/30">
         <Image src={imageURL} width={32} height={32} alt={label} />
       </figure>
 

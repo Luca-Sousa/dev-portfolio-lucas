@@ -40,7 +40,7 @@ const CarouselImagesProject = ({ project }: CarouselImagesProjectProps) => {
   );
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
+    <div className="relative mx-auto w-full max-w-3xl">
       <Carousel
         plugins={[plugin.current]}
         className="w-full max-w-3xl"

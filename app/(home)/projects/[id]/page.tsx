@@ -41,7 +41,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
                 <div>
                   Data de Início:{" "}
                   <span className="text-purple underline">
-                    {project.createdAt.toLocaleDateString("pt-BR", {
+                    {project.startDate.toLocaleDateString("pt-BR", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
