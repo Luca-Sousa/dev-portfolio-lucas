@@ -5,7 +5,7 @@ import Image from "next/image";
 interface SkillCardProps {
   imageURL: string;
   label: string;
-  description?: string;
+  description: string;
   classes?: string;
 }
 

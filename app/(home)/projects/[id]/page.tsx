@@ -80,6 +80,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
                     key={tech.id}
                     imageURL={tech.iconURL}
                     label={tech.name}
+                    description={tech.description}
                   />
                 ))}
               </div>

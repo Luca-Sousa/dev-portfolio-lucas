@@ -33,6 +33,7 @@ import { createTechnology } from "../../actions/technology/create-technology";
 import { toast } from "sonner";
 import { Input } from "@/app/components/ui/input";
 import { handleFileUpload } from "@/app/utils/create-file";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
 
 const CreateNewTechnology = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
@@ -42,6 +43,7 @@ const CreateNewTechnology = () => {
     resolver: zodResolver(createTechnologySchema),
     defaultValues: {
       name: "",
+      description: "",
       iconURL: undefined,
     },
   });
@@ -80,7 +82,7 @@ const CreateNewTechnology = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="flex h-full max-h-[70%] max-w-2xl flex-col">
         <DialogHeader>
           <DialogTitle className="text-center">
             Criar nova Tecnologia
@@ -91,47 +93,69 @@ const CreateNewTechnology = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleCreateTechnology)}
-            className="space-y-6"
+            className="flex h-full flex-col space-y-6 overflow-hidden"
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nome da tecnologia..." {...field} />
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <ScrollArea className="h-full">
+              <div className="mb-6 mr-3 flex gap-5 pl-1">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="basis-1/2">
+                      <FormLabel>Nome</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Nome da tecnologia..." {...field} />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="iconURL"
-              render={() => (
-                <FormItem>
-                  <FormLabel>Ícone da Tecnologia</FormLabel>
-                  <FormControl>
-                    <div className="h-fit rounded-lg border-2 border-dashed border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
-                      <FileUpload
-                        onChange={(files) => {
-                          if (files.length > 0) {
-                            const file = files[0];
-                            setIconFile(file);
-                            form.setValue("iconURL", file);
-                          }
-                        }}
-                        singleFile
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="basis-1/2">
+                      <FormLabel>Descrição</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Descrição da tecnologia..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="iconURL"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Ícone da Tecnologia</FormLabel>
+                    <FormControl>
+                      <div className="mr-3 h-fit rounded-lg border-2 border-dashed border-neutral-200 bg-white pl-1 dark:border-neutral-800 dark:bg-black">
+                        <FileUpload
+                          onChange={(files) => {
+                            if (files.length > 0) {
+                              const file = files[0];
+                              setIconFile(file);
+                              form.setValue("iconURL", file);
+                            }
+                          }}
+                          singleFile
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </ScrollArea>
 
             <DialogFooter>
               <DialogClose asChild>

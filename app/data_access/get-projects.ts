@@ -28,6 +28,7 @@ export const getProjects = async ({ status }: GetProjectsProps) => {
     technologies: project.technologies.map((tech) => ({
       id: tech.technologyId,
       name: tech.technology.name,
+      description: tech.technology.description,
       iconURL: tech.technology.iconURL,
     })),
   }));

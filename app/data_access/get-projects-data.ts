@@ -32,6 +32,7 @@ export const getProjectsData = async (
       technologies: project.technologies.map(({ technology }) => ({
         id: technology.id,
         name: technology.name,
+        description: technology.description,
         iconURL: technology.iconURL,
       })),
     }));

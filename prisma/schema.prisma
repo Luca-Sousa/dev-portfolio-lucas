@@ -82,10 +82,11 @@ model Project {
 }
 
 model Technology {
-  id       String              @id @default(uuid())
-  name     String
-  iconURL  String
-  projects ProjectTechnology[] @relation("TechnologyToProject")
+  id          String              @id @default(uuid())
+  name        String
+  description String
+  iconURL     String
+  projects    ProjectTechnology[] @relation("TechnologyToProject")
 }
 
 model ProjectTechnology {
