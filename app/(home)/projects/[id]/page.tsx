@@ -1,3 +1,4 @@
+import BadgeStatus from "@/app/components/badge-status";
 import { ButtonLinks } from "@/app/components/button-links";
 import CarouselImagesProject from "@/app/components/carousel-images";
 import Footer from "@/app/components/footer";
@@ -35,9 +36,13 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
         <div className="relative pt-2 antialiased">
           <div className="space-y-20">
             <div className="space-y-1.5">
-              <h2 className="w-fit rounded-full">
-                <TypewriterEffectSmooth words={words} />
-              </h2>
+              <div className="flex w-full flex-col gap-2.5 md:flex-row md:items-center">
+                <h2 className="w-fit flex-1 rounded-full">
+                  <TypewriterEffectSmooth words={words} />
+                </h2>
+
+                <BadgeStatus status={project.status} />
+              </div>
 
               <div className="flex flex-col justify-between text-xs/6 font-medium text-neutral-300 sm:flex-row sm:items-center md:text-sm/6">
                 <div>

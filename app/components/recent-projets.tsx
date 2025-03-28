@@ -6,6 +6,7 @@ import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Project } from "@prisma/client";
+import BadgeStatus from "./badge-status";
 
 interface ProjectWithTechs extends Project {
   technologies: {
@@ -38,11 +39,12 @@ const RecentProjets = ({ isPage, projects }: RecentProjetsPros) => {
             key={project.id}
           >
             <CardBody className="group/card relative h-fit w-fit rounded-xl border border-white/[0.2] p-6 hover:shadow-2xl hover:shadow-emerald-500/[0.1] lg:p-8">
-              <CardItem
-                translateZ="50"
-                className="line-clamp-1 text-base font-bold md:text-xl lg:text-2xl"
-              >
-                {project.title}
+              <CardItem translateZ="50" className="flex w-full gap-3">
+                <h2 className="line-clamp-1 flex-1 text-base font-bold md:text-xl lg:text-2xl">
+                  {project.title}
+                </h2>
+
+                <BadgeStatus status={project.status} />
               </CardItem>
 
               <CardItem
