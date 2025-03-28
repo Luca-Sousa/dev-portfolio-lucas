@@ -32,7 +32,7 @@ const RecentProjets = ({ isPage, projects }: RecentProjetsPros) => {
         <span className="text-purple">Projetos {!isPage && "Recentes"}</span>
       </h1>
 
-      <div className="mx-auto grid w-full max-w-xs items-center justify-center gap-x-10 gap-y-20 py-20 sm:max-w-sm md:max-w-md lg:max-w-full lg:grid-cols-2 lg:flex-row lg:flex-wrap">
+      <div className="mx-auto grid w-full max-w-xs items-center justify-center gap-10 py-20 sm:max-w-sm md:max-w-md lg:max-w-full lg:grid-cols-2 lg:flex-row lg:flex-wrap">
         {projects.map((project) => (
           <CardContainer
             className="inter-var !z-[9999] w-full"

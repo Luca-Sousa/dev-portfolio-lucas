@@ -29,114 +29,126 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
   ];
 
   return (
-    <div className="w-full pt-16">
+    <div className="w-full lg:pt-10">
       <Hero isPages />
 
-      <TracingBeam className="!z-50 pb-96 pl-8 xl:pl-0">
+      <TracingBeam className="!z-50 pb-24 pl-8 xl:pb-32 xl:pl-0">
         <div className="relative pt-2 antialiased">
-          <div className="space-y-20">
-            <div className="space-y-1.5">
-              <div className="flex w-full flex-col gap-2.5 md:flex-row md:items-center">
-                <h2 className="w-fit flex-1 rounded-full">
-                  <TypewriterEffectSmooth words={words} />
-                </h2>
+          <div className="space-y-3 lg:space-y-1.5">
+            <div className="flex w-full flex-col gap-2.5 md:flex-row md:items-center">
+              <h2 className="w-fit flex-1 rounded-full">
+                <TypewriterEffectSmooth words={words} />
+              </h2>
 
-                <BadgeStatus status={project.status} />
-              </div>
-
-              <div className="flex flex-col justify-between text-xs/6 font-medium text-neutral-300 sm:flex-row sm:items-center md:text-sm/6">
-                <div>
-                  Data de Início:{" "}
-                  <span className="text-purple underline">
-                    {project.startDate.toLocaleDateString("pt-BR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </span>
-                </div>
-
-                <div>
-                  Última Atualização:{" "}
-                  <span className="text-purple underline">
-                    {project.updatedAt.toLocaleDateString("pt-BR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </span>
-                </div>
-              </div>
+              <BadgeStatus status={project.status} />
             </div>
 
-            <TextGenerateEffect
-              words={project.description}
-              className="text-sm font-medium sm:text-base"
-            />
+            <div className="flex flex-col justify-between text-xs/6 font-medium text-neutral-300 sm:flex-row sm:items-center md:text-sm/6">
+              <div>
+                Data de Início:{" "}
+                <span className="text-purple underline">
+                  {project.startDate.toLocaleDateString("pt-BR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
 
-            <CarouselImagesProject project={project.imagesUrl} />
-
-            <div className="space-y-10">
-              <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
-                Tecnologias
-              </p>
-
-              <div className="grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] gap-3">
-                {project.technologies.map((tech) => (
-                  <SkillCard
-                    key={tech.id}
-                    imageURL={tech.iconURL}
-                    label={tech.name}
-                    description={tech.description}
-                  />
-                ))}
+              <div>
+                Última Atualização:{" "}
+                <span className="text-purple underline">
+                  {project.updatedAt.toLocaleDateString("pt-BR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
               </div>
             </div>
-
-            <div className="space-y-10">
-              <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
-                Links
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 md:gap-10">
-                <ButtonLinks
-                  icon={<IconBrandGithub className="size-8" />}
-                  link={project.repositoryUrl}
-                  title="Github"
-                />
-
-                <ButtonLinks
-                  icon={<IconBrandVercelFilled className="size-8" />}
-                  link={project.deployUrl}
-                  title="Vercel"
-                />
-              </div>
-            </div>
-
-            {project.certificateUrl && (
-              <div className="w-full overflow-hidden">
-                <MacbookScroll
-                  title={
-                    <p className="flex max-w-lg flex-col gap-1.5 sm:max-w-xl lg:max-w-2xl">
-                      <span className="text-5xl uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
-                        Certificação
-                      </span>
-                      <span className="text-xl md:text-lg/5 lg:text-xl/7">
-                        {project.certificateDesc}
-                      </span>
-                    </p>
-                  }
-                  badge={
-                    <Link href="/projects">
-                      <Badge className="size-10 -rotate-12 transform" />
-                    </Link>
-                  }
-                  src={project.certificateUrl}
-                  showGradient={false}
-                />
-              </div>
-            )}
           </div>
+
+          <TextGenerateEffect
+            words={project.description}
+            className="py-6 text-sm font-medium sm:text-base"
+          />
+
+          <CarouselImagesProject project={project.imagesUrl} />
+
+          <div className="space-y-10 pt-14 xl:pt-16">
+            <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+              Tecnologias
+            </p>
+
+            <div className="grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] gap-3">
+              {project.technologies.map((tech) => (
+                <SkillCard
+                  key={tech.id}
+                  imageURL={tech.iconURL}
+                  label={tech.name}
+                  description={tech.description}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-10 pt-14 xl:pt-16">
+            <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+              Links
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 md:gap-10">
+              <ButtonLinks
+                icon={<IconBrandGithub className="size-8" />}
+                link={project.repositoryUrl}
+                title="Github"
+              />
+
+              <ButtonLinks
+                icon={<IconBrandVercelFilled className="size-8" />}
+                link={project.deployUrl}
+                title="Vercel"
+              />
+            </div>
+          </div>
+
+          {project.certificateUrl && (
+            <div className="w-full overflow-hidden">
+              <MacbookScroll
+                title={
+                  <p className="flex max-w-lg flex-col gap-1.5 sm:max-w-xl lg:max-w-2xl">
+                    <span className="text-5xl uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+                      Certificação
+                    </span>
+                    <span className="text-xl md:text-lg/5 lg:text-xl/7">
+                      {project.certificateDesc}
+                    </span>
+                  </p>
+                }
+                badge={
+                  <Link href="/projects">
+                    <Badge className="size-10 -rotate-12 transform" />
+                  </Link>
+                }
+                src={project.certificateUrl}
+                showGradient={false}
+              />
+            </div>
+          )}
+
+          {/* {project.figmaUrl && (
+            <div className="hidden space-y-10 pt-14 lg:block xl:pt-16">
+              <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
+                Prototipação - Figma
+              </p>
+
+              <iframe
+                className="min-h-[70vh] w-full max-w-full rounded-lg border border-gray-300 bg-black shadow-lg"
+                src={project.figmaUrl}
+                allowFullScreen
+              />
+            </div>
+          )} */}
         </div>
       </TracingBeam>
 
