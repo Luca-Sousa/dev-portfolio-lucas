@@ -80,7 +80,7 @@ const Contact = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="!z-[9999] w-full max-w-2xl space-y-5"
+          className="!z-50 w-full max-w-2xl space-y-5"
         >
           <FormField
             control={form.control}

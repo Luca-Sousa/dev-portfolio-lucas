@@ -14,7 +14,9 @@ export const InfiniteMovingCards = ({
 }: {
   items: {
     title: string;
-    subTitle: string;
+    type: string;
+    institution: string;
+    date_duration: string;
     description: string;
     img: string;
     link: string;
@@ -118,22 +120,37 @@ export const InfiniteMovingCards = ({
                       alt="profile"
                       width={64}
                       height={64}
-                      className="rounded-full"
+                      className="rounded-full transition-all hover:scale-110"
                     />
                   </Link>
                 </div>
 
-                <div>
-                  <h1 className="relative z-20 text-sm font-bold leading-[1.6] text-white md:text-lg xl:text-xl">
-                    {item.title}
-                  </h1>
-                  <span className="relative z-20 text-xs font-normal leading-[1.6] text-white-200 md:text-sm">
-                    {item.subTitle}
-                  </span>
+                <div className="w-full">
+                  <div className="flex items-center justify-between">
+                    <h1 className="relative z-20 text-sm font-bold leading-[1.6] text-white md:text-lg xl:text-xl">
+                      {item.title}
+                    </h1>
+
+                    <Link href={item.link} target="_blank">
+                      <p className="relative z-20 font-semibold text-purple hover:underline">
+                        {item.institution}
+                      </p>
+                    </Link>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="relative z-20 text-xs font-normal leading-[1.6] text-white-200 md:text-sm">
+                      {item.type}
+                    </span>
+
+                    <span className="relative z-20 text-xs font-normal leading-[1.6] text-white-200 md:text-lg">
+                      {item.date_duration}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="relative z-20 mt-6 flex flex-row items-center">
+              <div className="relative z-20 mt-6 flex w-full flex-row items-center">
                 <span className="flex flex-col gap-1">
                   <span className="text-sm font-normal leading-[1.6] text-white md:text-base lg:text-xl">
                     {item.description}
