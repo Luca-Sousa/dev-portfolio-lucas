@@ -13,7 +13,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const ProjectPage = async ({ params }: { params: { id: string } }) => {
-  const projects = await getProjects({});
+  const projects = await getProjects({
+    data: {},
+  });
   const project = projects.find((p) => p.id === params.id);
 
   if (!project) return notFound();

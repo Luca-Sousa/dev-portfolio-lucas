@@ -24,7 +24,10 @@ import { getProjects } from "@/app/data_access/get-projects";
 const Projects = async () => {
   const session = await getServerSession(authOptions);
   if (!session?.user) redirect("/login");
-  const projects = await getProjects({});
+  const projects = await getProjects({
+    data: {},
+  });
+
   const projectsData = projects.map((project) => ({
     ...project,
     certificateUrl: project.certificateUrl as string,

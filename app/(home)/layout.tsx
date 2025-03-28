@@ -20,6 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const projects = await getProjects({
+    data: {},
     limit: 4,
   });
 

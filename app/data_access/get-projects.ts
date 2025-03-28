@@ -1,40 +1,40 @@
 "use server";
 
+import { Prisma } from "@prisma/client";
 import { db } from "../lib/prisma";
 
 interface GetProjectsProps {
+  data: Prisma.ProjectWhereInput;
   limit?: number;
 }
 
-export const getProjects = async ({ limit }: GetProjectsProps) => {
+export const getProjects = async ({ data, limit }: GetProjectsProps) => {
   const projects = await db.project.findMany({
-    include: {
-      technologies: {
+    where: { ...data },
+    orderBy: { createdAt: "desc" },
+    take: limit ?? undefined,
+  });
+
+  const projectsWithTechs = await Promise.all(
+    projects.map(async (project) => {
+      const technologies = await db.projectTechnology.findMany({
+        where: { projectId: project.id },
         include: {
           technology: true,
         },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      });
 
-  const sortedProjects = projects.sort(
-    (a, b) => b.technologies.length - a.technologies.length,
+      return {
+        ...project,
+        technologies: technologies.map(({ technology }) => ({
+          id: technology.id,
+          name: technology.name,
+          description: technology.description,
+          iconURL: technology.iconURL,
+        })),
+      };
+    }),
   );
 
-  const limitedProjects = limit
-    ? sortedProjects.slice(0, limit)
-    : sortedProjects;
-
-  return limitedProjects.map((project) => ({
-    ...project,
-    technologies: project.technologies.map((tech) => ({
-      id: tech.technologyId,
-      name: tech.technology.name,
-      description: tech.technology.description,
-      iconURL: tech.technology.iconURL,
-    })),
-  }));
+  return projectsWithTechs;
 };

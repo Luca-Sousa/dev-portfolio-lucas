@@ -7,6 +7,7 @@ import { getProjects } from "../data_access/get-projects";
 
 const Home = async () => {
   const projects = await getProjects({
+    data: {},
     limit: 4,
   });
 
