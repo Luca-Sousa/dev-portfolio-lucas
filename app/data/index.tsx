@@ -195,6 +195,12 @@ export const socialMedia = [
     title: "Linkedin",
     link: "https://www.linkedin.com/in/lucas-sousa-0b79a72a7/",
   },
+  {
+    id: 3,
+    img: "/wha.svg",
+    title: "WhatsApp",
+    link: "https://api.whatsapp.com/send?phone=5588994545892",
+  },
 ];
 
 export const data = {
