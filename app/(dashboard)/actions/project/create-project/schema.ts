@@ -18,14 +18,13 @@ export const createProjectSchema = z.object({
     }),
   certificateUrl: fileOrUrl,
   certificateDesc: z.string().optional(),
-  imagesUrl: z.array(fileOrUrl).min(1, {
-    message: "Adicione pelo menos uma imagem válida",
-  }),
+  imagesUrl: z.array(fileOrUrl).optional(),
   thumbnailUrl: fileOrUrl.refine((val) => val !== undefined, {
     message: "A thumbnail é obrigatória",
   }),
   repositoryUrl: z.string().url({ message: "URL do repositório inválida" }),
-  deployUrl: z.string().url({ message: "URL de deploy inválida" }),
+  deployUrl: z.string().optional(),
+  figmaUrl: z.string().optional(),
   status: z.enum(["IN_PROGRESS", "IN_UPDATE", "IN_PRODUCTION"], {
     message: "Selecione um status válido",
   }),

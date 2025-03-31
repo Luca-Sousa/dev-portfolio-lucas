@@ -23,7 +23,9 @@ export const createProject = async (data: CreateProjectSchema) => {
       typeof data.certificateUrl === "string" ? data.certificateUrl : null,
     thumbnailUrl:
       typeof data.thumbnailUrl === "string" ? data.thumbnailUrl : "",
-    imagesUrl: data.imagesUrl.filter((url) => typeof url === "string"),
+    imagesUrl: data.imagesUrl
+      ? data.imagesUrl.filter((url) => typeof url === "string")
+      : [],
     technologies: {
       create: data.technologies.map((techId) => ({
         technology: {
@@ -40,5 +42,6 @@ export const createProject = async (data: CreateProjectSchema) => {
 
   // Revalidação dos caminhos
   revalidatePath("/dashboard/projects");
+  revalidatePath("/");
   revalidatePath("/projects");
 };

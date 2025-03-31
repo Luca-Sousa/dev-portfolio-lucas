@@ -104,11 +104,13 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
                 title="Github"
               />
 
-              <ButtonLinks
-                icon={<IconBrandVercelFilled className="size-8" />}
-                link={project.deployUrl}
-                title="Vercel"
-              />
+              {project.deployUrl && (
+                <ButtonLinks
+                  icon={<IconBrandVercelFilled className="size-8" />}
+                  link={project.deployUrl}
+                  title="Vercel"
+                />
+              )}
             </div>
           </div>
 
@@ -136,7 +138,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
             </div>
           )}
 
-          {/* {project.figmaUrl && (
+          {project.figmaUrl && (
             <div className="hidden space-y-10 pt-14 lg:block xl:pt-16">
               <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
                 Prototipação - Figma
@@ -148,7 +150,7 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
                 allowFullScreen
               />
             </div>
-          )} */}
+          )}
         </div>
       </TracingBeam>
 

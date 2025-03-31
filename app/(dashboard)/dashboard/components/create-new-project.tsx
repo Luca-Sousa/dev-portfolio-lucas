@@ -70,6 +70,7 @@ const CreateNewProject = () => {
       thumbnailUrl: undefined,
       repositoryUrl: "",
       deployUrl: "",
+      figmaUrl: "",
       status: "" as ProjectStatus,
       technologies: [],
     },
@@ -89,21 +90,34 @@ const CreateNewProject = () => {
 
   const handleSubmitProject = async (data: CreateProjectSchema) => {
     try {
+      // Upload da thumbnail, se houver
       const uploadedThumbnail =
         thumbnailFile &&
         (await handleFileUpload(thumbnailFile, "thumbnailUrl"));
+
+      // Upload do certificado, se houver
       const uploadedCertificate =
         certificateFile &&
         (await handleFileUpload(certificateFile, "certificateUrl"));
-      const uploadedImages = await Promise.all(
-        imagesFiles.map((file) => handleFileUpload(file, "imagesUrl")),
-      );
+
+      // Upload das imagens, garantindo que `imagesFiles` seja um array válido
+      const uploadedImages = imagesFiles?.length
+        ? await Promise.all(
+            imagesFiles.map(async (file) => {
+              try {
+                return await handleFileUpload(file, "imagesUrl");
+              } catch {
+                return null; // Retorna null para evitar quebra no upload de outros arquivos
+              }
+            }),
+          )
+        : [];
 
       const projectData = {
         ...data,
         thumbnailUrl: uploadedThumbnail || data.thumbnailUrl,
         certificateUrl: uploadedCertificate || data.certificateUrl,
-        imagesUrl: uploadedImages.filter((url): url is string => url !== null),
+        imagesUrl: uploadedImages.filter((url): url is string => !!url),
       };
 
       await createProject(projectData);
@@ -179,7 +193,12 @@ const CreateNewProject = () => {
                       name="imagesUrl"
                       render={() => (
                         <FormItem className="px-4">
-                          <FormLabel>Imagens do Projeto</FormLabel>
+                          <FormLabel>
+                            Imagens do Projeto{" "}
+                            <span className="text-xs text-muted-foreground">
+                              (opcional)
+                            </span>
+                          </FormLabel>
                           <FormControl>
                             <div className="h-fit rounded-lg border-2 border-dashed border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
                               <FileUpload
@@ -365,99 +384,118 @@ const CreateNewProject = () => {
                         )}
                       />
 
-                      <div className="flex flex-1 flex-col justify-between">
-                        <FormField
-                          control={form.control}
-                          name="technologies"
-                          render={() => (
-                            <FormItem>
-                              <FormLabel>Tecnologias</FormLabel>
-                              <div className="flex flex-wrap gap-4">
-                                {technologies.map((tech) => (
-                                  <FormField
-                                    key={tech.id}
-                                    control={form.control}
-                                    name="technologies"
-                                    render={({ field }) => (
-                                      <FormItem key={tech.id}>
-                                        <div className="flex items-center gap-3">
-                                          <FormControl>
-                                            <Checkbox
-                                              className="data-[state=checked]:text-black"
-                                              checked={field.value?.includes(
-                                                tech.id,
-                                              )}
-                                              onCheckedChange={(checked) =>
-                                                checked
-                                                  ? field.onChange([
-                                                      ...(field.value || []),
-                                                      tech.id,
-                                                    ])
-                                                  : field.onChange(
-                                                      (
-                                                        field.value || []
-                                                      ).filter(
-                                                        (value) =>
-                                                          value !== tech.id,
-                                                      ),
-                                                    )
-                                              }
-                                            />
-                                          </FormControl>
-                                          <FormLabel className="flex items-center gap-1 text-xs">
-                                            <Image
-                                              alt={tech.name}
-                                              src={tech.iconURL}
-                                              width={16}
-                                              height={16}
-                                            />
-                                            {tech.name}
-                                          </FormLabel>
-                                        </div>
-                                      </FormItem>
-                                    )}
-                                  />
-                                ))}
-                              </div>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="deployUrl"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Deploy</FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Link de Deploy"
-                                  {...field}
+                      <FormField
+                        control={form.control}
+                        name="technologies"
+                        render={() => (
+                          <FormItem className="flex-1">
+                            <FormLabel>Tecnologias</FormLabel>
+                            <div className="grid grid-cols-3 gap-4">
+                              {technologies.map((tech) => (
+                                <FormField
+                                  key={tech.id}
+                                  control={form.control}
+                                  name="technologies"
+                                  render={({ field }) => (
+                                    <FormItem key={tech.id}>
+                                      <div className="flex items-center gap-3">
+                                        <FormControl>
+                                          <Checkbox
+                                            className="size-5 rounded-full border-2 data-[state=checked]:text-black"
+                                            checked={field.value?.includes(
+                                              tech.id,
+                                            )}
+                                            onCheckedChange={(checked) =>
+                                              checked
+                                                ? field.onChange([
+                                                    ...(field.value || []),
+                                                    tech.id,
+                                                  ])
+                                                : field.onChange(
+                                                    (field.value || []).filter(
+                                                      (value) =>
+                                                        value !== tech.id,
+                                                    ),
+                                                  )
+                                            }
+                                          />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center gap-1.5 text-sm font-medium">
+                                          <Image
+                                            alt={tech.name}
+                                            src={tech.iconURL}
+                                            width={20}
+                                            height={20}
+                                          />
+                                          {tech.name}
+                                        </FormLabel>
+                                      </div>
+                                    </FormItem>
+                                  )}
                                 />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                              ))}
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                        <FormField
-                          control={form.control}
-                          name="repositoryUrl"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Repositório</FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Link do Repositório"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
+                    <div className="space-y-3">
+                      <FormField
+                        control={form.control}
+                        name="repositoryUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Repositório</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Link do Repositório"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="deployUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Deploy{" "}
+                              <span className="text-xs text-muted-foreground">
+                                (opcional)
+                              </span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input placeholder="Link de Deploy" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="figmaUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Figma{" "}
+                              <span className="text-xs text-muted-foreground">
+                                (opcional)
+                              </span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input placeholder="Link do Figma" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                   </div>
                 </ScrollArea>

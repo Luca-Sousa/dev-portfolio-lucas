@@ -74,7 +74,8 @@ model Project {
   thumbnailUrl    String
   imagesUrl       String[]
   repositoryUrl   String
-  deployUrl       String
+  deployUrl       String?
+  figmaUrl        String?
   status          ProjectStatus
   technologies    ProjectTechnology[] @relation("ProjectToTechnology")
   createdAt       DateTime            @default(now())

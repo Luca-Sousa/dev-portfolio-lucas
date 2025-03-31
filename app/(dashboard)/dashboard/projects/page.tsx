@@ -32,6 +32,8 @@ const Projects = async () => {
     ...project,
     certificateUrl: project.certificateUrl as string,
     certificateDesc: project.certificateDesc as string,
+    deployUrl: project.deployUrl as string,
+    figmaUrl: project.figmaUrl as string,
     thumbnailUrl: project.thumbnailUrl as string,
   }));
 
