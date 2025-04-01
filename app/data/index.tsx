@@ -3,6 +3,7 @@ import { GoProjectSymlink } from "react-icons/go";
 import { HiMiniAcademicCap } from "react-icons/hi2";
 import { MdContacts } from "react-icons/md";
 import { FolderKanbanIcon, LayoutDashboardIcon } from "lucide-react";
+import { GrTechnology } from "react-icons/gr";
 
 export const navItemsHome = [
   { name: "Sobre", link: "/#about", icon: <IoHome size={16} /> },
@@ -215,6 +216,11 @@ export const data = {
       title: "Projetos",
       url: "/dashboard/projects",
       icon: FolderKanbanIcon,
+    },
+    {
+      title: "Technologias",
+      url: "/dashboard/technologies",
+      icon: GrTechnology,
     },
   ],
 };

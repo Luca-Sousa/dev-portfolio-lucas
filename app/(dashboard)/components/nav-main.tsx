@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { IconType } from "react-icons/lib";
 
 export function NavMain({
   items,
@@ -20,7 +21,7 @@ export function NavMain({
   items: {
     title: string;
     url: string;
-    icon?: LucideIcon;
+    icon?: IconType;
     isActive?: boolean;
   }[];
 }) {

@@ -7,7 +7,8 @@ const fileOrUrl = z
   ])
   .optional();
 
-export const createTechnologySchema = z.object({
+export const upsertTechnologySchema = z.object({
+  id: z.string().uuid().optional(),
   name: z.string().trim().min(1, {
     message: "O nome é obrigatório.",
   }),
@@ -19,4 +20,4 @@ export const createTechnologySchema = z.object({
   }),
 });
 
-export type CreateTechnologySchema = z.infer<typeof createTechnologySchema>;
+export type UpsertTechnologySchema = z.infer<typeof upsertTechnologySchema>;
