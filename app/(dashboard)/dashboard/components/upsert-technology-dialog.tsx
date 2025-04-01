@@ -33,10 +33,10 @@ import { upsertTechnology } from "../../actions/technology/upsert-technology";
 import { toast } from "sonner";
 import { Input } from "@/app/components/ui/input";
 import { handleFileUpload } from "@/app/utils/create-file";
-import { ScrollArea } from "@/app/components/ui/scroll-area";
 import Image from "next/image";
 import { IconReplaceFilled } from "@tabler/icons-react";
 import { deleteFileFromBucket } from "@/app/utils/delete-file";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
 
 interface UpsertTechnologyDialogProps {
   isOpen: boolean;
@@ -134,7 +134,7 @@ const UpsertTechnologyDialog = ({
       <DialogTrigger asChild></DialogTrigger>
 
       <DialogContent
-        className={`${isupdate && !isUpdatingIcon ? "max-w-lg" : "max-w-2xl"} flex max-h-[70%] flex-col`}
+        className={`${isupdate && !isUpdatingIcon ? "max-w-lg" : "max-w-2xl"} flex h-full flex-col lg:max-h-[70%] 2xl:h-fit 2xl:max-h-full`}
       >
         <DialogHeader>
           <DialogTitle className="text-center">
