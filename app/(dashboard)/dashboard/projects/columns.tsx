@@ -235,10 +235,12 @@ export const projectsTableColumns: ColumnDef<Project>[] = [
                   </DropdownMenuItem>
 
                   <DialogTrigger asChild>
-                    <DropdownMenuItem className="cursor-pointer gap-1.5">
-                      <EditIcon size={14} />
-                      Editar
-                    </DropdownMenuItem>
+                    <Link href={`/dashboard/projects/${project.id}`}>
+                      <DropdownMenuItem className="cursor-pointer gap-1.5">
+                        <EditIcon size={14} />
+                        Editar
+                      </DropdownMenuItem>
+                    </Link>
                   </DialogTrigger>
                 </div>
 
