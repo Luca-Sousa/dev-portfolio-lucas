@@ -5,6 +5,7 @@ import EditProjectTitle from "./edit-project-title";
 import EditProjectDescription from "./edit-project-description";
 import EditProjectStatus from "./edit-project-status";
 import EditProjectStartDate from "./edit-project-startDate";
+import EditProjectRepository from "./edit-project-repository";
 
 interface EditProjectContentProps {
   project: Project;
@@ -21,6 +22,10 @@ const EditProjectContent = ({ project }: EditProjectContentProps) => {
         />
         <EditProjectStatus id={project.id} status={project.status} />
         <EditProjectStartDate id={project.id} startDate={project.startDate} />
+        <EditProjectRepository
+          id={project.id}
+          repositoryUrl={project.repositoryUrl}
+        />
       </div>
     </>
   );
