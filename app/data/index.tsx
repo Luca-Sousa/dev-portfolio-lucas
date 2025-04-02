@@ -4,6 +4,7 @@ import { HiMiniAcademicCap } from "react-icons/hi2";
 import { MdContacts } from "react-icons/md";
 import { FolderKanbanIcon, LayoutDashboardIcon } from "lucide-react";
 import { GrTechnology } from "react-icons/gr";
+import { ProjectStatus } from "@prisma/client";
 
 export const navItemsHome = [
   { name: "Sobre", link: "/#about", icon: <IoHome size={16} /> },
@@ -224,3 +225,24 @@ export const data = {
     },
   ],
 };
+
+export const PROJECT_STATUS_LABELS = {
+  IN_UPDATE: "Atualização",
+  IN_PRODUCTION: "Finalizado",
+  IN_PROGRESS: "Desenvolvimento",
+};
+
+export const PROJECT_STATUS_OPTIONS = [
+  {
+    value: ProjectStatus.IN_UPDATE,
+    label: PROJECT_STATUS_LABELS[ProjectStatus.IN_UPDATE],
+  },
+  {
+    value: ProjectStatus.IN_PRODUCTION,
+    label: PROJECT_STATUS_LABELS[ProjectStatus.IN_PRODUCTION],
+  },
+  {
+    value: ProjectStatus.IN_PROGRESS,
+    label: PROJECT_STATUS_LABELS[ProjectStatus.IN_PROGRESS],
+  },
+];

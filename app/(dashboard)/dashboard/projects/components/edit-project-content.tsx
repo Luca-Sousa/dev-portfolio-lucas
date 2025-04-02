@@ -3,6 +3,7 @@
 import { Project } from "@prisma/client";
 import EditProjectTitle from "./edit-project-title";
 import EditProjectDescription from "./edit-project-description";
+import EditProjectStatus from "./edit-project-status";
 
 interface EditProjectContentProps {
   project: Project;
@@ -17,6 +18,7 @@ const EditProjectContent = ({ project }: EditProjectContentProps) => {
           id={project.id}
           description={project.description}
         />
+        <EditProjectStatus id={project.id} status={project.status} />
       </div>
     </>
   );
