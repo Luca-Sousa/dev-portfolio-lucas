@@ -56,14 +56,13 @@ const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
         <Card className="flex w-full flex-col">
           <CardHeader className="flex-row items-center justify-between py-2">
             <div className="space-y-1">
-              <CardTitle className="text-2xl">Projetos</CardTitle>
+              <CardTitle className="text-2xl">Dados do Projeto</CardTitle>
               <div className="h-1 w-10 rounded-3xl bg-primary"></div>
             </div>
           </CardHeader>
 
           <CardContent className="flex h-full flex-col overflow-hidden pb-0">
             <EditProjectContent project={project} />
-            {/* <Input defaultValue={project.title} /> */}
           </CardContent>
         </Card>
       </div>
