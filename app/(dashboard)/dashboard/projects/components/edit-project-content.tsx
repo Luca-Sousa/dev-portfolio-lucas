@@ -4,6 +4,7 @@ import { Project } from "@prisma/client";
 import EditProjectTitle from "./edit-project-title";
 import EditProjectDescription from "./edit-project-description";
 import EditProjectStatus from "./edit-project-status";
+import EditProjectStartDate from "./edit-project-startDate";
 
 interface EditProjectContentProps {
   project: Project;
@@ -19,6 +20,7 @@ const EditProjectContent = ({ project }: EditProjectContentProps) => {
           description={project.description}
         />
         <EditProjectStatus id={project.id} status={project.status} />
+        <EditProjectStartDate id={project.id} startDate={project.startDate} />
       </div>
     </>
   );
