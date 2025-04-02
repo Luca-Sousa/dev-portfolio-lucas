@@ -7,6 +7,7 @@ import EditProjectStatus from "./edit-project-status";
 import EditProjectStartDate from "./edit-project-startDate";
 import EditProjectRepository from "./edit-project-repository";
 import EditProjectDeploy from "./edit-project-deploy";
+import EditProjectFigma from "./edit-project-figma";
 
 interface EditProjectContentProps {
   project: Project;
@@ -28,6 +29,7 @@ const EditProjectContent = ({ project }: EditProjectContentProps) => {
           repositoryUrl={project.repositoryUrl}
         />
         <EditProjectDeploy id={project.id} deployUrl={project.deployUrl} />
+        <EditProjectFigma id={project.id} figmaUrl={project.figmaUrl} />
       </div>
     </>
   );
