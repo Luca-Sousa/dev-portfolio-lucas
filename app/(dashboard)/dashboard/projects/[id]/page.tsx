@@ -14,14 +14,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
-import { db } from "@/app/lib/prisma";
 import EditProjectContent from "../components/edit-project-content";
+import { getProjectId } from "@/app/data_access/get-project-id";
 
 const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
-  const project = await db.project.findUnique({
-    where: {
-      id: params.id,
-    },
+  const project = await getProjectId({
+    projectId: params.id,
   });
 
   if (!project) throw new Error("Projeto Não Encontrado!");

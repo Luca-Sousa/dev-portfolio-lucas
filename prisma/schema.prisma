@@ -91,6 +91,7 @@ model Technology {
 }
 
 model ProjectTechnology {
+  order        Int        @default(0)
   project      Project    @relation("ProjectToTechnology", fields: [projectId], references: [id], onDelete: Cascade)
   projectId    String
   technology   Technology @relation("TechnologyToProject", fields: [technologyId], references: [id], onDelete: Cascade)

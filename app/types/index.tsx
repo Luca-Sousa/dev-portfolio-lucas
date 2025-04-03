@@ -5,12 +5,13 @@ export interface Project {
   title: string;
   description: string;
   startDate: Date;
-  certificateUrl: string;
-  certificateDesc: string;
+  certificateUrl: string | null;
+  certificateDesc: string | null;
   thumbnailUrl: string;
   imagesUrl: string[];
   repositoryUrl: string;
-  deployUrl: string;
+  deployUrl: string | null;
+  figmaUrl: string | null;
   status: ProjectStatus;
   technologies: Technology[];
 }
