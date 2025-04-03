@@ -56,7 +56,7 @@ const EditProjectRepository = ({
           </h2>
 
           <div className="space-x-1.5">
-            <Button size="icon" variant="ghost" className="size-8" asChild>
+            <Button size="icon" variant="ghost" asChild>
               <Link target="_blank" href={repositoryUrl}>
                 <IconExternalLink className="size-5" />
               </Link>
@@ -67,7 +67,6 @@ const EditProjectRepository = ({
                 size="icon"
                 variant="ghost"
                 onClick={() => setIsEditingRepositoryUrl(true)}
-                className="size-8"
               >
                 <PenBoxIcon />
               </Button>
@@ -115,7 +114,10 @@ const EditProjectRepository = ({
             </div>
           </div>
         ) : (
-          <span onClick={() => setIsEditingRepositoryUrl(true)}>
+          <span
+            onClick={() => setIsEditingRepositoryUrl(true)}
+            className="truncate"
+          >
             {projectRepositoryUrl}
           </span>
         )}

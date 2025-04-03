@@ -53,7 +53,6 @@ const EditProjectDescription = ({
               size="icon"
               variant="ghost"
               onClick={() => setIsEditingDescription(true)}
-              className="size-8"
             >
               <PenBoxIcon />
             </Button>

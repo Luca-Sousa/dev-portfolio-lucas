@@ -47,7 +47,6 @@ const EditProjectTitle = ({ id, title }: EditProjectTitleProps) => {
               size="icon"
               variant="ghost"
               onClick={() => setIsEditingTitle(true)}
-              className="size-8"
             >
               <PenBoxIcon />
             </Button>

@@ -77,14 +77,13 @@ const EditProjectDeploy = ({ id, deployUrl }: EditProjectDeployProps) => {
               <Button
                 size="icon"
                 variant="ghost"
-                className="size-8"
                 onClick={handleDeleteDeployUrl}
                 disabled={loading}
               >
                 <IconTrash className="size-5" />
               </Button>
 
-              <Button size="icon" variant="ghost" className="size-8" asChild>
+              <Button size="icon" variant="ghost" asChild>
                 <Link target="_blank" href={deployUrl}>
                   <IconExternalLink className="size-5" />
                 </Link>
@@ -95,7 +94,6 @@ const EditProjectDeploy = ({ id, deployUrl }: EditProjectDeployProps) => {
                   size="icon"
                   variant="ghost"
                   onClick={() => setIsEditingDeployUrl(true)}
-                  className="size-8"
                 >
                   <PenBoxIcon />
                 </Button>
@@ -153,7 +151,10 @@ const EditProjectDeploy = ({ id, deployUrl }: EditProjectDeployProps) => {
               </div>
             </div>
           ) : (
-            <span onClick={() => setIsEditingDeployUrl(true)}>
+            <span
+              onClick={() => setIsEditingDeployUrl(true)}
+              className="truncate"
+            >
               {projectDeployUrl}
             </span>
           )}

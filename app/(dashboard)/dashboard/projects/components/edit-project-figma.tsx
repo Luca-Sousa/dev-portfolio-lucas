@@ -74,14 +74,13 @@ const EditProjectFigma = ({ id, figmaUrl }: EditProjectFigmaProps) => {
               <Button
                 size="icon"
                 variant="ghost"
-                className="size-8"
                 onClick={handleDeleteFigmaUrl}
                 disabled={loading}
               >
                 <IconTrash className="size-5" />
               </Button>
 
-              <Button size="icon" variant="ghost" className="size-8" asChild>
+              <Button size="icon" variant="ghost" asChild>
                 <Link target="_blank" href={figmaUrl}>
                   <IconExternalLink className="size-5" />
                 </Link>
@@ -92,7 +91,6 @@ const EditProjectFigma = ({ id, figmaUrl }: EditProjectFigmaProps) => {
                   size="icon"
                   variant="ghost"
                   onClick={() => setIsEditingFigmaUrl(true)}
-                  className="size-8"
                 >
                   <PenBoxIcon />
                 </Button>
@@ -150,7 +148,10 @@ const EditProjectFigma = ({ id, figmaUrl }: EditProjectFigmaProps) => {
               </div>
             </div>
           ) : (
-            <span onClick={() => setIsEditingFigmaUrl(true)}>
+            <span
+              onClick={() => setIsEditingFigmaUrl(true)}
+              className="truncate"
+            >
               {projectFigmaUrl}
             </span>
           )}

@@ -15,15 +15,24 @@ interface EditProjectContentProps {
 
 const EditProjectContent = ({ project }: EditProjectContentProps) => {
   return (
-    <>
-      <div className="max-w-2xl space-y-5 py-3">
+    <div className="grid w-full grid-cols-3 gap-4 py-3">
+      {/* Primeira Coluna */}
+      <div className="flex flex-col gap-4">
         <EditProjectTitle id={project.id} title={project.title} />
         <EditProjectDescription
           id={project.id}
           description={project.description}
         />
+      </div>
+
+      {/* Segunda Coluna */}
+      <div className="flex flex-col gap-4">
         <EditProjectStatus id={project.id} status={project.status} />
         <EditProjectStartDate id={project.id} startDate={project.startDate} />
+      </div>
+
+      {/* Terceira Coluna */}
+      <div className="flex flex-col gap-4">
         <EditProjectRepository
           id={project.id}
           repositoryUrl={project.repositoryUrl}
@@ -31,7 +40,7 @@ const EditProjectContent = ({ project }: EditProjectContentProps) => {
         <EditProjectDeploy id={project.id} deployUrl={project.deployUrl} />
         <EditProjectFigma id={project.id} figmaUrl={project.figmaUrl} />
       </div>
-    </>
+    </div>
   );
 };
 
