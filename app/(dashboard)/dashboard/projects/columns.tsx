@@ -174,6 +174,8 @@ export const projectsTableColumns: ColumnDef<Project>[] = [
     accessorKey: "deployUrl",
     header: "Deploy",
     cell: ({ row: { original: project } }) => {
+      if (!project.deployUrl) return;
+
       return (
         <Button variant={"ghost"} asChild>
           <Link target="_blank" href={project.deployUrl}>
