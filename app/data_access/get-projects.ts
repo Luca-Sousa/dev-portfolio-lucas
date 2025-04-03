@@ -22,6 +22,9 @@ export const getProjects = async ({ data, limit }: GetProjectsProps) => {
         include: {
           technology: true,
         },
+        orderBy: {
+          order: "asc",
+        },
       });
 
       return {
