@@ -10,6 +10,7 @@ import EditProjectFigma from "./edit-project-figma";
 import EditProjectTechnologies from "./edit-project-technologies";
 import { Project } from "@/app/types";
 import { Technology } from "@prisma/client";
+import EditProjectImageThumbnail from "./edit-project-Image-Thumbnail";
 
 interface EditProjectContentProps {
   project: Project;
@@ -28,6 +29,10 @@ const EditProjectContent = ({
         <EditProjectDescription
           id={project.id}
           description={project.description}
+        />
+        <EditProjectImageThumbnail
+          id={project.id}
+          thumbnailUrl={project.thumbnailUrl}
         />
       </div>
 
