@@ -11,6 +11,7 @@ import EditProjectTechnologies from "./edit-project-technologies";
 import { Project } from "@/app/types";
 import { Technology } from "@prisma/client";
 import EditProjectImageThumbnail from "./edit-project-Image-Thumbnail";
+import EditProjectImageCertificate from "./edit-project-Image-Certificate";
 
 interface EditProjectContentProps {
   project: Project;
@@ -55,6 +56,10 @@ const EditProjectContent = ({
         />
         <EditProjectDeploy id={project.id} deployUrl={project.deployUrl} />
         <EditProjectFigma id={project.id} figmaUrl={project.figmaUrl} />
+        <EditProjectImageCertificate
+          id={project.id}
+          certificateUrl={project.certificateUrl}
+        />
       </div>
     </div>
   );
