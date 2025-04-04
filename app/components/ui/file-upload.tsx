@@ -128,7 +128,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         layout
-                        className="max-w-64 truncate text-base text-neutral-700 dark:text-neutral-300"
+                        className="max-w-44 truncate text-sm text-neutral-700 dark:text-neutral-300"
                       >
                         {file.name}
                       </motion.p>
@@ -136,7 +136,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         layout
-                        className="w-fit shrink-0 rounded-lg px-2 py-1 text-sm text-neutral-600 shadow-input dark:bg-neutral-800 dark:text-white"
+                        className="w-fit shrink-0 rounded-lg px-1.5 py-1 text-sm text-neutral-600 shadow-input dark:bg-neutral-800 dark:text-white"
                       >
                         {(file.size / (1024 * 1024)).toFixed(2)} MB
                       </motion.p>
@@ -147,7 +147,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         layout
-                        className="rounded-md bg-gray-100 px-1 py-0.5 dark:bg-neutral-800"
+                        className="rounded-md bg-gray-100 px-1 py-0.5 text-sm dark:bg-neutral-800"
                       >
                         {file.type}
                       </motion.p>
@@ -156,8 +156,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         layout
+                        className="flex flex-col text-xs"
                       >
-                        modificado{" "}
+                        <span>modificado</span>
                         {new Date(file.lastModified).toLocaleDateString()}
                       </motion.p>
                     </div>
@@ -172,10 +173,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                       handleDeleteFile(fileKey, () => {
                         setFiles((prevFiles) =>
                           prevFiles.filter((_, i) => i !== idx),
-                        ); // Remove o arquivo da lista
+                        );
                         setPreviewUrls((prevUrls) =>
                           prevUrls.filter((_, i) => i !== idx),
-                        ); // Limpa a URL de pré-visualização
+                        );
                       });
                     }}
                   >
