@@ -5,24 +5,26 @@ import { db } from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 
-interface UpdateProjectCertificateProps {
+interface updateProjectCertDescripProps {
   projectId: string;
-  certificateUrl: string | null;
+  certDescrip: string | null;
 }
 
-export const updateProjectCertificate = async ({
+export const updateProjectCertDescrip = async ({
   projectId,
-  certificateUrl,
-}: UpdateProjectCertificateProps) => {
+  certDescrip,
+}: updateProjectCertDescripProps) => {
   const user = await getServerSession(authOptions);
-  if (!user) throw new Error("Usuário não autenticado");
+
+  if (!user) {
+    throw new Error("Usuário não autenticado");
+  }
 
   await db.project.update({
     where: { id: projectId },
-    data: { certificateUrl: certificateUrl },
+    data: { certificateDesc: certDescrip },
   });
 
-  revalidatePath("/projects");
   revalidatePath("/dashboard/projects");
-  revalidatePath(`/dashboard/projects/${projectId}`);
+  revalidatePath("/projects");
 };

@@ -59,6 +59,7 @@ const EditProjectContent = ({
         <EditProjectImageCertificate
           id={project.id}
           certificateUrl={project.certificateUrl}
+          certDescrip={project.certificateDesc}
         />
       </div>
     </div>

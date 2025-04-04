@@ -1,11 +1,12 @@
 "use client";
 
 import { Button } from "@/app/components/ui/button";
-import { CaptionsIcon, PenBoxIcon } from "lucide-react";
+import { AlignLeftIcon, PenBoxIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
   IconCancel,
+  IconCertificate,
   IconCopyPlusFilled,
   IconDeviceFloppy,
   IconLoaderQuarter,
@@ -27,21 +28,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/app/components/ui/alert-dialog";
+import { Textarea } from "@/app/components/ui/textarea";
+import { updateProjectCertDescrip } from "@/app/(dashboard)/actions/project/update-project-cert-description";
 
 interface EditProjectImageCertificateProps {
   id: string;
   certificateUrl: string | null;
+  certDescrip: string | null;
 }
 
 const EditProjectImageCertificate = ({
   id,
   certificateUrl,
+  certDescrip,
 }: EditProjectImageCertificateProps) => {
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [projectCertificate, setProjectCertificate] = useState<string | null>(
     certificateUrl,
   );
+  const [projectCertDescrip, setProjectCertifDescrip] = useState(certDescrip);
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingCertDescrip, setIsEditingCertDescrip] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleEditCertificate = async () => {
@@ -98,7 +105,13 @@ const EditProjectImageCertificate = ({
         certificateUrl: null,
       });
 
+      await updateProjectCertDescrip({
+        projectId: id,
+        certDescrip: null,
+      });
+
       setProjectCertificate(null);
+      setProjectCertifDescrip(null);
       toast.success("Certificado removido com sucesso!");
     } catch (error) {
       toast.error(`Erro ao remover certificado: ${error}`);
@@ -107,10 +120,35 @@ const EditProjectImageCertificate = ({
     }
   };
 
+  const handleCertDescripProject = async (newCertDescrip: string) => {
+    if (
+      !newCertDescrip.trim() ||
+      newCertDescrip === certDescrip ||
+      !projectCertificate
+    )
+      return;
+
+    setLoading(true);
+    try {
+      await updateProjectCertDescrip({
+        projectId: id,
+        certDescrip: newCertDescrip,
+      });
+
+      setProjectCertifDescrip(newCertDescrip);
+      toast.success("Descrição do Projeto atualizada com sucesso!");
+      setIsEditingCertDescrip(false);
+    } catch (error) {
+      toast.error(`Ocorreu um erro ao atualizar a descrição: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-2 rounded-lg p-4 ring-1 ring-ring">
       <div className="grid grid-cols-[2.5rem,1fr] items-center">
-        <CaptionsIcon size={20} />
+        <IconCertificate size={20} />
 
         <div className="flex w-full items-center justify-between">
           <h2 className="text-lg font-bold text-muted-foreground">
@@ -226,6 +264,94 @@ const EditProjectImageCertificate = ({
               )}
             </div>
           </Button>
+        </div>
+      )}
+
+      {(projectCertificate || projectCertDescrip) && (
+        <div className="!mt-3 space-y-2">
+          <div className="grid grid-cols-[2.5rem,1fr] items-center">
+            <AlignLeftIcon size={20} />
+
+            <div className="flex w-full items-center justify-between">
+              <h2 className="text-lg font-bold text-muted-foreground">
+                Descrição
+              </h2>
+
+              <div className="space-x-1.5">
+                {!isEditingCertDescrip && !projectCertDescrip && (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setIsEditingCertDescrip(true)}
+                    disabled={loading}
+                  >
+                    <IconCopyPlusFilled />
+                  </Button>
+                )}
+
+                {!isEditingCertDescrip && projectCertDescrip && (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setIsEditingCertDescrip(true)}
+                  >
+                    <PenBoxIcon />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-[2.5rem,1fr] items-center">
+            <span className="hidden sm:block"></span>
+
+            {isEditingCertDescrip ? (
+              <div className="space-y-3">
+                <Textarea
+                  value={projectCertDescrip || ""}
+                  onChange={(e) => setProjectCertifDescrip(e.target.value)}
+                  onKeyDown={async (e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      if (projectCertDescrip !== null) {
+                        await handleCertDescripProject(projectCertDescrip);
+                      }
+                    }
+                  }}
+                  className="min-h-32 resize-none !text-base"
+                />
+
+                <div className="flex items-center justify-end space-x-3">
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setIsEditingCertDescrip(false);
+                      setProjectCertifDescrip(certDescrip);
+                    }}
+                    disabled={loading}
+                  >
+                    Cancelar
+                  </Button>
+
+                  <Button
+                    onClick={() =>
+                      handleCertDescripProject(projectCertDescrip || "")
+                    }
+                    disabled={
+                      loading ||
+                      (projectCertDescrip?.trim() || "") === certDescrip
+                    }
+                  >
+                    {loading ? "Salvando..." : "Salvar"}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <span onClick={() => setIsEditingCertDescrip(true)}>
+                {projectCertDescrip}
+              </span>
+            )}
+          </div>
         </div>
       )}
     </div>
