@@ -38,13 +38,13 @@ const SortableSkillCard = ({
         className="flex flex-1 cursor-grab items-center gap-1.5 active:cursor-grabbing"
       >
         <span className="min-w-5 font-bold text-gray-600">{index + 1}.</span>
-        <div className="flex-1">
-          <SkillCard
-            imageURL={tech.iconURL}
-            label={tech.name}
-            description={tech.description}
-          />
-        </div>
+
+        <SkillCard
+          imageURL={tech.iconURL}
+          label={tech.name}
+          description={tech.description}
+          className="flex-1"
+        />
       </div>
 
       <Button
