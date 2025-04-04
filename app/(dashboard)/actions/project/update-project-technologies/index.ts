@@ -24,17 +24,36 @@ export const updateProjectTechnologies = async ({
 
   await db.$transaction(async (prisma) => {
     for (const tech of technologies) {
-      await prisma.projectTechnology.update({
+      const existingRelation = await prisma.projectTechnology.findUnique({
         where: {
           projectId_technologyId: {
             projectId,
             technologyId: tech.id,
           },
         },
-        data: {
-          order: tech.order,
-        },
       });
+
+      if (existingRelation) {
+        await prisma.projectTechnology.update({
+          where: {
+            projectId_technologyId: {
+              projectId,
+              technologyId: tech.id,
+            },
+          },
+          data: {
+            order: tech.order,
+          },
+        });
+      } else {
+        await prisma.projectTechnology.create({
+          data: {
+            projectId,
+            technologyId: tech.id,
+            order: tech.order,
+          },
+        });
+      }
     }
 
     if (technologiesToRemove.length > 0) {

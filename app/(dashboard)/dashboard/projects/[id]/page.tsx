@@ -16,11 +16,14 @@ import {
 } from "@/app/components/ui/card";
 import EditProjectContent from "../components/edit-project-content";
 import { getProjectId } from "@/app/data_access/get-project-id";
+import { getTechnologies } from "@/app/data_access/get-technologies";
 
 const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
   const project = await getProjectId({
     projectId: params.id,
   });
+
+  const technologies = await getTechnologies();
 
   if (!project) throw new Error("Projeto Não Encontrado!");
 
@@ -60,7 +63,7 @@ const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
           </CardHeader>
 
           <CardContent className="flex h-full flex-col overflow-hidden pb-0">
-            <EditProjectContent project={project} />
+            <EditProjectContent project={project} technologies={technologies} />
           </CardContent>
         </Card>
       </div>

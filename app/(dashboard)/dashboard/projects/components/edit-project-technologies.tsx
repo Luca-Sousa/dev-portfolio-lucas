@@ -3,7 +3,7 @@
 import SkillCard from "@/app/components/skill-card";
 import { Button } from "@/app/components/ui/button";
 import { Technology } from "@prisma/client";
-import { CaptionsIcon, PenBoxIcon } from "lucide-react";
+import { CaptionsIcon, Check, PenBoxIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -17,21 +17,41 @@ import {
 import {
   arrayMove,
   SortableContext,
-  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { updateProjectTechnologies } from "@/app/(dashboard)/actions/project/update-project-technologies";
-import { IconTrash } from "@tabler/icons-react";
+import {
+  IconCancel,
+  IconCopyPlusFilled,
+  IconDeviceFloppy,
+} from "@tabler/icons-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/app/components/ui/command";
+import { cn } from "@/app/lib/utils";
+import SortableSkillCard from "./sortable-skill-card";
+import Image from "next/image";
 
 interface EditProjectTechnologiesProps {
   id: string;
   technologies: Technology[];
+  allTechnologies: Technology[];
 }
 
 const EditProjectTechnologies = ({
   id,
   technologies,
+  allTechnologies,
 }: EditProjectTechnologiesProps) => {
   const [selectedTechnologies, setSelectedTechnologies] = useState<
     (Technology & { order: number })[]
@@ -42,6 +62,8 @@ const EditProjectTechnologies = ({
     })),
   );
   const [removedTechnologies, setRemovedTechnologies] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -72,7 +94,6 @@ const EditProjectTechnologies = ({
   };
 
   const handleCancel = () => {
-    // Restaura todas as tecnologias originais
     setSelectedTechnologies(
       technologies.map((tech, index) => ({
         ...tech,
@@ -101,10 +122,25 @@ const EditProjectTechnologies = ({
       setIsEditing(false);
     } catch (error) {
       toast.error(`Erro ao atualizar tecnologias: ${error}`);
-      // Reverte as mudanças em caso de erro
       handleCancel();
     } finally {
       setLoading(false);
+    }
+  };
+
+  const availableTechnologies = allTechnologies.filter(
+    (tech) => !selectedTechnologies.some((selected) => selected.id === tech.id),
+  );
+
+  const handleAddTechnology = (techId: string) => {
+    const techToAdd = allTechnologies.find((tech) => tech.id === techId);
+    if (techToAdd) {
+      setSelectedTechnologies((prev) => [
+        ...prev,
+        { ...techToAdd, order: prev.length },
+      ]);
+      setIsEditing(true);
+      setValue("");
     }
   };
 
@@ -118,15 +154,64 @@ const EditProjectTechnologies = ({
             Tecnologias
           </h2>
 
-          {!isEditing && (
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => setIsEditing(true)}
-            >
-              <PenBoxIcon />
-            </Button>
-          )}
+          <div className="flex items-center space-x-1.5">
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  role="combobox"
+                  aria-expanded={open}
+                >
+                  <IconCopyPlusFilled />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0" align="end">
+                <Command>
+                  <CommandInput placeholder="Nome da Tecnologia..." />
+                  <CommandList>
+                    <CommandEmpty>Nenhuma tecnologia disponível.</CommandEmpty>
+                    <CommandGroup>
+                      {availableTechnologies.map((tech) => (
+                        <CommandItem
+                          key={tech.id}
+                          value={tech.id}
+                          onSelect={() => {
+                            handleAddTechnology(tech.id);
+                            setOpen(false);
+                          }}
+                        >
+                          <Image
+                            alt="Imagem da tecnologia"
+                            src={tech.iconURL}
+                            width={16}
+                            height={16}
+                          />
+                          {tech.name}
+                          <Check
+                            className={cn(
+                              "ml-auto",
+                              value === tech.id ? "opacity-100" : "opacity-0",
+                            )}
+                          />
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {!isEditing && (
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => setIsEditing(true)}
+              >
+                <PenBoxIcon />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -151,85 +236,40 @@ const EditProjectTechnologies = ({
               ))}
             </div>
           </SortableContext>
-
-          <div className="mt-4 flex items-center justify-end space-x-3">
-            <Button variant="ghost" onClick={handleCancel} disabled={loading}>
-              Cancelar
-            </Button>
-
-            <Button onClick={handleEditTechnology} disabled={loading}>
-              {loading ? "Salvando..." : "Salvar"}
-            </Button>
-          </div>
         </DndContext>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] gap-3">
-          {selectedTechnologies.map((tech) => (
-            <SkillCard
-              key={tech.id}
-              imageURL={tech.iconURL}
-              label={tech.name}
-              description={tech.description}
-            />
+        <div className="grid gap-3">
+          {selectedTechnologies.map((tech, index) => (
+            <div key={tech.id} className="flex items-center gap-1.5">
+              <span className="min-w-5 font-bold text-gray-600">
+                {index + 1}.
+              </span>
+
+              <div className="flex-1">
+                <SkillCard
+                  imageURL={tech.iconURL}
+                  label={tech.name}
+                  description={tech.description}
+                />
+              </div>
+            </div>
           ))}
         </div>
       )}
-    </div>
-  );
-};
 
-interface SortableSkillCardProps {
-  tech: Technology & { order: number };
-  index: number;
-  onRemove: () => void;
-}
+      {isEditing && (
+        <div className="flex items-center justify-end space-x-3">
+          <Button variant="ghost" onClick={handleCancel} disabled={loading}>
+            <IconCancel />
+            Cancelar
+          </Button>
 
-const SortableSkillCard = ({
-  tech,
-  index,
-  onRemove,
-}: SortableSkillCardProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: tech.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      className="flex w-full items-center gap-1"
-    >
-      <div
-        {...listeners}
-        className="flex flex-1 cursor-grab active:cursor-grabbing"
-      >
-        <span className="min-w-5 font-bold text-gray-600">{index + 1}.</span>
-        <div className="flex-1">
-          <SkillCard
-            imageURL={tech.iconURL}
-            label={tech.name}
-            description={tech.description}
-          />
+          <Button onClick={handleEditTechnology} disabled={loading}>
+            <IconDeviceFloppy />
+            {loading ? "Salvando..." : "Salvar"}
+          </Button>
         </div>
-      </div>
-
-      <Button
-        size="icon"
-        variant="ghost"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onRemove();
-        }}
-        className="ml-2"
-      >
-        <IconTrash size={18} />
-      </Button>
+      )}
     </div>
   );
 };

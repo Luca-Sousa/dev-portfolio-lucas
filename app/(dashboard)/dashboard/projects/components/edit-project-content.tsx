@@ -9,12 +9,17 @@ import EditProjectDeploy from "./edit-project-deploy";
 import EditProjectFigma from "./edit-project-figma";
 import EditProjectTechnologies from "./edit-project-technologies";
 import { Project } from "@/app/types";
+import { Technology } from "@prisma/client";
 
 interface EditProjectContentProps {
   project: Project;
+  technologies: Technology[];
 }
 
-const EditProjectContent = ({ project }: EditProjectContentProps) => {
+const EditProjectContent = ({
+  project,
+  technologies,
+}: EditProjectContentProps) => {
   return (
     <div className="grid w-full grid-cols-3 gap-4 py-3">
       {/* Primeira Coluna */}
@@ -33,6 +38,7 @@ const EditProjectContent = ({ project }: EditProjectContentProps) => {
         <EditProjectTechnologies
           id={project.id}
           technologies={project.technologies}
+          allTechnologies={technologies}
         />
       </div>
 
