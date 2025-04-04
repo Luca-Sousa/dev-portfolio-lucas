@@ -3,7 +3,7 @@
 import SkillCard from "@/app/components/skill-card";
 import { Button } from "@/app/components/ui/button";
 import { Technology } from "@prisma/client";
-import { CaptionsIcon, Check, PenBoxIcon } from "lucide-react";
+import { CaptionsIcon, PenBoxIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -34,11 +34,9 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/app/components/ui/command";
-import { cn } from "@/app/lib/utils";
 import SortableSkillCard from "./sortable-skill-card";
 import Image from "next/image";
 
@@ -63,7 +61,6 @@ const EditProjectTechnologies = ({
   );
   const [removedTechnologies, setRemovedTechnologies] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -140,7 +137,6 @@ const EditProjectTechnologies = ({
         { ...techToAdd, order: prev.length },
       ]);
       setIsEditing(true);
-      setValue("");
     }
   };
 
@@ -168,9 +164,8 @@ const EditProjectTechnologies = ({
               </PopoverTrigger>
               <PopoverContent className="w-[200px] p-0" align="end">
                 <Command>
-                  <CommandInput placeholder="Nome da Tecnologia..." />
                   <CommandList>
-                    <CommandEmpty>Nenhuma tecnologia disponível.</CommandEmpty>
+                    <CommandEmpty>Nenhuma tecnologia disponível</CommandEmpty>
                     <CommandGroup>
                       {availableTechnologies.map((tech) => (
                         <CommandItem
@@ -188,12 +183,6 @@ const EditProjectTechnologies = ({
                             height={16}
                           />
                           {tech.name}
-                          <Check
-                            className={cn(
-                              "ml-auto",
-                              value === tech.id ? "opacity-100" : "opacity-0",
-                            )}
-                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -245,13 +234,12 @@ const EditProjectTechnologies = ({
                 {index + 1}.
               </span>
 
-              <div className="flex-1">
-                <SkillCard
-                  imageURL={tech.iconURL}
-                  label={tech.name}
-                  description={tech.description}
-                />
-              </div>
+              <SkillCard
+                imageURL={tech.iconURL}
+                label={tech.name}
+                description={tech.description}
+                className="flex-1"
+              />
             </div>
           ))}
         </div>
