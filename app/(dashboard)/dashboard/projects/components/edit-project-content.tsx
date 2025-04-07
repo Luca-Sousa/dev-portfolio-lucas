@@ -12,6 +12,7 @@ import { Project } from "@/app/types";
 import { Technology } from "@prisma/client";
 import EditProjectImageThumbnail from "./edit-project-Image-Thumbnail";
 import EditProjectImageCertificate from "./edit-project-Image-Certificate";
+import EditProjectImages from "./edit-project-images";
 
 interface EditProjectContentProps {
   project: Project;
@@ -35,6 +36,7 @@ const EditProjectContent = ({
           id={project.id}
           thumbnailUrl={project.thumbnailUrl}
         />
+        <EditProjectImages id={project.id} images={project.imagesUrl} />
       </div>
 
       {/* Segunda Coluna */}
