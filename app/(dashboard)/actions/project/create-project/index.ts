@@ -35,13 +35,16 @@ export const createProject = async (data: CreateProjectSchema) => {
     },
   };
 
-  // Criação do projeto no banco de dados
-  await db.project.create({
+  const createdProject = await db.project.create({
     data: projectData,
   });
 
+  const projectId = createdProject.id;
+
   // Revalidação dos caminhos
-  revalidatePath("/dashboard/projects");
   revalidatePath("/");
   revalidatePath("/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
+  revalidatePath("/dashboard/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
 };

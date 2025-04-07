@@ -25,6 +25,9 @@ export const updateProjectFigma = async ({
     data: { figmaUrl },
   });
 
-  revalidatePath("/dashboard/projects");
+  revalidatePath("/");
   revalidatePath("/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
+  revalidatePath("/dashboard/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
 };

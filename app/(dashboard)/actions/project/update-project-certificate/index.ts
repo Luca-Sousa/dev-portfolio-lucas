@@ -22,7 +22,9 @@ export const updateProjectCertificate = async ({
     data: { certificateUrl: certificateUrl },
   });
 
+  revalidatePath("/");
   revalidatePath("/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
   revalidatePath("/dashboard/projects");
   revalidatePath(`/dashboard/projects/${projectId}`);
 };

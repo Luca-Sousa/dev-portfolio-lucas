@@ -25,6 +25,9 @@ export const updateProjectCertDescrip = async ({
     data: { certificateDesc: certDescrip },
   });
 
-  revalidatePath("/dashboard/projects");
+  revalidatePath("/");
   revalidatePath("/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
+  revalidatePath("/dashboard/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
 };

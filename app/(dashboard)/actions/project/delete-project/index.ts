@@ -11,6 +11,9 @@ export const deleteProject = async ({ id }: DeleteProjectSchema) => {
     where: { id },
   });
 
-  revalidatePath("/dashboard/projects");
+  revalidatePath("/");
   revalidatePath("/projects");
+  revalidatePath(`/dashboard/projects/${id}`);
+  revalidatePath("/dashboard/projects");
+  revalidatePath(`/dashboard/projects/${id}`);
 };

@@ -26,6 +26,8 @@ export const updateProjectStartDate = async ({
   });
 
   revalidatePath("/");
-  revalidatePath("/dashboard/projects");
   revalidatePath("/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
+  revalidatePath("/dashboard/projects");
+  revalidatePath(`/dashboard/projects/${projectId}`);
 };
