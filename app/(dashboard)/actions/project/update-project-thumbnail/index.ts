@@ -22,9 +22,6 @@ export const updateProjectThumbnail = async ({
     data: { thumbnailUrl },
   });
 
-  revalidatePath("/");
-  revalidatePath("/projects");
-  revalidatePath(`/dashboard/projects/${projectId}`);
   revalidatePath("/dashboard/projects");
   revalidatePath(`/dashboard/projects/${projectId}`);
 };

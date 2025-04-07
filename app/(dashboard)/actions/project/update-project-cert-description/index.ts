@@ -15,19 +15,13 @@ export const updateProjectCertDescrip = async ({
   certDescrip,
 }: updateProjectCertDescripProps) => {
   const user = await getServerSession(authOptions);
-
-  if (!user) {
-    throw new Error("Usuário não autenticado");
-  }
+  if (!user) throw new Error("Usuário não autenticado");
 
   await db.project.update({
     where: { id: projectId },
     data: { certificateDesc: certDescrip },
   });
 
-  revalidatePath("/");
-  revalidatePath("/projects");
-  revalidatePath(`/dashboard/projects/${projectId}`);
   revalidatePath("/dashboard/projects");
   revalidatePath(`/dashboard/projects/${projectId}`);
 };

@@ -7,16 +7,11 @@ import { db } from "@/app/lib/prisma";
 import { createProjectSchema, CreateProjectSchema } from "./schema";
 
 export const createProject = async (data: CreateProjectSchema) => {
-  // Validação dos dados
   createProjectSchema.parse(data);
 
   const user = await getServerSession(authOptions);
+  if (!user) throw new Error("Usuário não autenticado");
 
-  if (!user) {
-    throw new Error("Usuário não autenticado");
-  }
-
-  // Garantindo que certificateUrl e thumbnailUrl sejam strings ou null
   const projectData = {
     ...data,
     certificateUrl:
@@ -35,16 +30,9 @@ export const createProject = async (data: CreateProjectSchema) => {
     },
   };
 
-  const createdProject = await db.project.create({
+  await db.project.create({
     data: projectData,
   });
 
-  const projectId = createdProject.id;
-
-  // Revalidação dos caminhos
-  revalidatePath("/");
-  revalidatePath("/projects");
-  revalidatePath(`/dashboard/projects/${projectId}`);
   revalidatePath("/dashboard/projects");
-  revalidatePath(`/dashboard/projects/${projectId}`);
 };

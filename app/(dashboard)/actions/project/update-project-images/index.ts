@@ -14,8 +14,8 @@ export const updateProjectImages = async ({
   projectId,
   images,
 }: UpdateProjectImagesProps) => {
-  const session = await getServerSession(authOptions);
-  if (!session) throw new Error("Usuário não autenticado");
+  const user = await getServerSession(authOptions);
+  if (!user) throw new Error("Usuário não autenticado");
 
   const project = await db.project.findUnique({
     where: { id: projectId },
@@ -32,9 +32,6 @@ export const updateProjectImages = async ({
     },
   });
 
-  revalidatePath("/");
-  revalidatePath("/projects");
-  revalidatePath(`/dashboard/projects/${projectId}`);
   revalidatePath("/dashboard/projects");
   revalidatePath(`/dashboard/projects/${projectId}`);
 };
