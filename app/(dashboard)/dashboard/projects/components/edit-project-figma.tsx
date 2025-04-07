@@ -3,7 +3,11 @@
 import { updateProjectFigma } from "@/app/(dashboard)/actions/project/update-project-figma";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
-import { IconExternalLink, IconTrash } from "@tabler/icons-react";
+import {
+  IconCopyPlusFilled,
+  IconExternalLink,
+  IconTrash,
+} from "@tabler/icons-react";
 import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -98,11 +102,12 @@ const EditProjectFigma = ({ id, figmaUrl }: EditProjectFigmaProps) => {
             </div>
           ) : (
             <Button
-              variant="outline"
+              size="icon"
+              variant="ghost"
               onClick={() => setIsEditingFigmaUrl(true)}
               disabled={loading}
             >
-              {loading ? "Adicionando..." : "Adicionar Link"}
+              <IconCopyPlusFilled />
             </Button>
           )}
         </div>

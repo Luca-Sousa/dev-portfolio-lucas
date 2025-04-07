@@ -4,6 +4,7 @@ import { updateProjectDeploy } from "@/app/(dashboard)/actions/project/update-pr
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import {
+  IconCopyPlusFilled,
   IconExternalLink,
   IconFolderSymlink,
   IconTrash,
@@ -101,11 +102,12 @@ const EditProjectDeploy = ({ id, deployUrl }: EditProjectDeployProps) => {
             </div>
           ) : (
             <Button
-              variant="outline"
+              size="icon"
+              variant="ghost"
               onClick={() => setIsEditingDeployUrl(true)}
               disabled={loading}
             >
-              {loading ? "Adicionando..." : "Adicionar Link"}
+              <IconCopyPlusFilled />
             </Button>
           )}
         </div>
