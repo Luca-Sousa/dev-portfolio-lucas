@@ -111,6 +111,14 @@ const EditProjectDeploy = ({ id, deployUrl }: EditProjectDeployProps) => {
         </div>
       </div>
 
+      {!projectDeployUrl && !isEditingDeployUrl && (
+        <div className="flex items-center justify-center rounded-md border-2 border-dashed border-neutral-200 p-4 text-neutral-400 dark:border-neutral-800">
+          <span className="max-w-56 text-center text-sm">
+            O projeto não possui link de Deploy
+          </span>
+        </div>
+      )}
+
       {(deployUrl || isEditingDeployUrl) && (
         <div className="grid grid-cols-[2.5rem,1fr] items-center">
           <span className="hidden sm:block"></span>
