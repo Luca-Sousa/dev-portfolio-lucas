@@ -73,7 +73,9 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
             className="py-6 text-sm font-medium sm:text-base"
           />
 
-          <CarouselImagesProject project={project.imagesUrl} />
+          {project.imagesUrl.length > 0 && (
+            <CarouselImagesProject project={project.imagesUrl} />
+          )}
 
           <div className="space-y-10 pt-14 xl:pt-16">
             <p className="max-w-full text-center text-3xl font-bold uppercase text-purple md:text-xl lg:text-2xl xl:text-3xl">
