@@ -233,6 +233,14 @@ const EditProjectImageCertificate = ({
         )
       )}
 
+      {!projectCertificate && !isEditing && (
+        <div className="flex items-center justify-center rounded-md border-2 border-dashed border-neutral-200 p-4 text-neutral-400 dark:border-neutral-800">
+          <span className="max-w-56 text-center text-sm">
+            O projeto não possui certificado cadastrado
+          </span>
+        </div>
+      )}
+
       {isEditing && (
         <div className="flex items-center justify-end space-x-3">
           <Button
