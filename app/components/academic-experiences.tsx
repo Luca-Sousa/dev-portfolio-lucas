@@ -4,12 +4,9 @@ import Link from "next/link";
 import { academic_experiences } from "../data";
 import Image from "next/image";
 import { CardSpotlight } from "./ui/card-spotlight";
-import { useIsMobile } from "../hooks/use-mobile";
 import SingleCardButton from "./ui/single-card-button";
 
 const AcademicExperiences = () => {
-  const isMobile = useIsMobile();
-
   return (
     <section id="academic-experiencies" className="space-y-20 py-20">
       <h1 className="heading">
@@ -29,40 +26,61 @@ const AcademicExperiences = () => {
                     <Image
                       src={item.img}
                       alt="profile"
-                      width={isMobile ? 64 : 84}
-                      height={isMobile ? 64 : 84}
+                      width={64}
+                      height={64}
                       className="rounded-full transition-all hover:scale-110"
                     />
                   </Link>
                 </div>
 
-                <div className="z-10 flex w-full flex-col gap-1">
-                  <h1 className="text-sm font-bold leading-[1.6] text-white md:text-lg xl:text-lg">
-                    {item.title}
-                  </h1>
+                <h1 className="z-10 text-sm font-bold leading-[1.6] text-white md:text-lg xl:text-lg">
+                  {item.title}
+                </h1>
+              </div>
 
+              <div className="flex flex-col justify-between gap-0.5 text-xs leading-[1.6] text-white-200 sm:flex-row sm:items-center md:text-sm xl:flex-col xl:items-start">
+                <div className="z-10">
                   <Link href={item.link} target="_blank">
                     <p className="text-sm font-semibold text-purple hover:underline md:text-base">
                       {item.institution}
                     </p>
                   </Link>
-                </div>
-              </div>
 
-              <div className="flex flex-col justify-between gap-0.5 text-xs font-normal leading-[1.6] text-white-200 sm:flex-row sm:items-center md:text-sm xl:flex-col xl:items-start">
-                <span className="z-10">{item.type}</span>
+                  <span>{item.type}</span>
+                </div>
 
                 <span className="z-10">{item.date_duration}</span>
               </div>
 
               <div className="flex w-full flex-1 flex-row items-center">
-                <span className="flex flex-col gap-1">
-                  <span className="z-10 text-sm font-normal leading-[1.6] text-white md:text-base lg:text-base">
+                <span className="flex flex-col gap-3">
+                  <span className="z-10 line-clamp-4 text-sm leading-[1.6] text-white md:text-base lg:text-base">
                     {item.description}
                   </span>
-                  {/* <span className=" text-sm leading-[1.6] text-white-200 font-normal">
-                    {item.title}
-                  </span> */}
+
+                  <div className="z-10 space-y-1">
+                    <h2 className="font-medium leading-[1.6] text-white-200">
+                      Principais Módulos/Disciplinas:
+                    </h2>
+
+                    <ul className="space-y-1.5 pl-5">
+                      {item.modules.map((module, index) => (
+                        <li
+                          key={index}
+                          className="flex items-center gap-3 text-sm leading-[1.6] text-white-200"
+                        >
+                          <Image
+                            alt="Imagem do Módulo do curso"
+                            src={module.icon}
+                            width={28}
+                            height={28}
+                          />
+
+                          {module.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </span>
               </div>
             </div>

@@ -97,6 +97,32 @@ export const academic_experiences = [
       "O curso visa a formação de profissionais em bases científica, técnica, ética e humanista, condizentes com a especificidade da área de Ciência da Computação, aliado à formação prática, através do desenvolvimento de projetos e do domínio de tecnologias computacionais.",
     img: "/logo-ciencia-computacao.jpeg",
     link: "https://ifce.edu.br/tiangua",
+    modules: [
+      {
+        title: "Estrutura de Dados",
+        icon: "/icon-structured-data.svg",
+      },
+      {
+        title: "Banco de Dados",
+        icon: "/icon-database.svg",
+      },
+      {
+        title: "Programação orientada a objetos",
+        icon: "/icon-poo.svg",
+      },
+      {
+        title: "Construção e Análise de Algoritmos",
+        icon: "/icon-algorithm.svg",
+      },
+      {
+        title: "Design Web",
+        icon: "/icon-web-design.svg",
+      },
+      {
+        title: "Engenharia de Software",
+        icon: "/icon-engineering-software.svg",
+      },
+    ],
   },
   {
     title: "Formação em Desenvolvimento Web",
@@ -104,9 +130,31 @@ export const academic_experiences = [
     institution: "Saper.edu",
     date_duration: "Abril de 2023 - Julho de 2023 (120 Horas)",
     description:
-      "O curso tem como objetivo a formação de profissionais em desenvolvimento WEB, utilizando Java e ReactJS.",
+      "O curso tem como objetivo a formação de profissionais em desenvolvimento WEB, utilizando a linguagem Java juntamente com o framework Spring Boot e ReactJS para interface do usuário.",
     img: "/logo-saper.jpeg",
     link: "https://www.linkedin.com/showcase/saper-dot-edu/about/",
+    modules: [
+      {
+        title: "Lógica de programação (JAVA)",
+        icon: "/icon-java.svg",
+      },
+      {
+        title: "Banco de Dados (Oracle)",
+        icon: "/icon-database-oracle.svg",
+      },
+      {
+        title: "Backend (Spring Boot)",
+        icon: "/icon-spring-boot.svg",
+      },
+      {
+        title: "Frontend (React, Typescript e Bootstrap)",
+        icon: "/icon-frontend.svg",
+      },
+      {
+        title: "Projeto Final",
+        icon: "/icon-project.svg",
+      },
+    ],
   },
   {
     title: "Full Stack Club",
@@ -117,6 +165,32 @@ export const academic_experiences = [
       "O Full Stack Club, criado por Felipe Rocha, é uma comunidade que oferece formação completa para desenvolvedores que desejam se tornar profissionais Full Stack. A formação inclui mais de 500 aulas gravadas, mentorias ao vivo, desenvolvimento de projetos reais e acesso a uma comunidade ativa no Discord. Além disso, o clube oferece um programa de indicação de vagas, auxiliando na inserção ou progressão no mercado de trabalho.",
     img: "/logo-full-stack-club.jpeg",
     link: "https://lp.fullstackclub.com.br/",
+    modules: [
+      {
+        title: "Formação em Next.js",
+        icon: "/icon-next.svg",
+      },
+      {
+        title: "Formação em React",
+        icon: "/icon-react.svg",
+      },
+      {
+        title: "Formação Full Stack",
+        icon: "/icon-full-stack-developer.svg",
+      },
+      {
+        title: "Formação em React Native",
+        icon: "/icon-react-native.svg",
+      },
+      {
+        title: "Formação em SOLID",
+        icon: "/icon-solid.svg",
+      },
+      {
+        title: "Formação em Cybersecurity",
+        icon: "/icon-cybersecurity.svg",
+      },
+    ],
   },
 ];
 
