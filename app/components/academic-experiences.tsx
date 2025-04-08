@@ -59,7 +59,7 @@ const AcademicExperiences = () => {
 
               <div className="flex w-full flex-1 flex-row items-center">
                 <span className="flex flex-col gap-3">
-                  <span className="z-10 line-clamp-4 text-sm leading-[1.6] text-white md:text-base lg:text-base">
+                  <span className="z-10 line-clamp-3 text-sm leading-[1.6] text-white md:text-base lg:text-base">
                     {item.description}
                   </span>
 
