@@ -101,26 +101,32 @@ export const academic_experiences = [
       {
         title: "Estrutura de Dados",
         icon: "/icon-structured-data.svg",
+        status: "completed",
       },
       {
         title: "Banco de Dados",
         icon: "/icon-database.svg",
+        status: "completed",
       },
       {
         title: "Programação orientada a objetos",
         icon: "/icon-poo.svg",
+        status: "completed",
       },
       {
         title: "Construção e Análise de Algoritmos",
         icon: "/icon-algorithm.svg",
+        status: "completed",
       },
       {
         title: "Design Web",
         icon: "/icon-web-design.svg",
+        status: "completed",
       },
       {
         title: "Engenharia de Software",
         icon: "/icon-engineering-software.svg",
+        status: "completed",
       },
     ],
   },
@@ -137,22 +143,27 @@ export const academic_experiences = [
       {
         title: "Lógica de programação (JAVA)",
         icon: "/icon-java.svg",
+        status: "completed",
       },
       {
         title: "Banco de Dados (Oracle)",
         icon: "/icon-database-oracle.svg",
+        status: "completed",
       },
       {
         title: "Backend (Spring Boot)",
         icon: "/icon-spring-boot.svg",
+        status: "completed",
       },
       {
         title: "Frontend (React, Typescript e Bootstrap)",
         icon: "/icon-frontend.svg",
+        status: "completed",
       },
       {
         title: "Projeto Final",
         icon: "/icon-project.svg",
+        status: "completed",
       },
     ],
   },
@@ -169,26 +180,32 @@ export const academic_experiences = [
       {
         title: "Formação em Next.js",
         icon: "/icon-next.svg",
+        status: "in-progress",
       },
       {
         title: "Formação em React",
         icon: "/icon-react.svg",
+        status: "in-progress",
       },
       {
         title: "Formação Full Stack",
         icon: "/icon-full-stack-developer.svg",
+        status: "in-progress",
       },
       {
         title: "Formação em React Native",
         icon: "/icon-react-native.svg",
+        status: "in-progress",
       },
       {
         title: "Formação em SOLID",
         icon: "/icon-solid.svg",
+        status: "not-started",
       },
       {
         title: "Formação em Cybersecurity",
         icon: "/icon-cybersecurity.svg",
+        status: "not-started",
       },
     ],
   },

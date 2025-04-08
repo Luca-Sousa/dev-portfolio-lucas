@@ -5,6 +5,11 @@ import { academic_experiences } from "../data";
 import Image from "next/image";
 import { CardSpotlight } from "./ui/card-spotlight";
 import SingleCardButton from "./ui/single-card-button";
+import {
+  IconCircleCheck,
+  IconProgressCheck,
+  IconProgressX,
+} from "@tabler/icons-react";
 
 const AcademicExperiences = () => {
   return (
@@ -67,16 +72,42 @@ const AcademicExperiences = () => {
                       {item.modules.map((module, index) => (
                         <li
                           key={index}
-                          className="flex items-center gap-3 text-sm leading-[1.6] text-white-200"
+                          className="flex items-center justify-between gap-3 text-sm leading-[1.6] text-white-200"
                         >
-                          <Image
-                            alt="Imagem do Módulo do curso"
-                            src={module.icon}
-                            width={28}
-                            height={28}
-                          />
+                          <div className="flex items-center gap-3">
+                            <Image
+                              alt="Imagem do Módulo do curso"
+                              src={module.icon}
+                              width={28}
+                              height={28}
+                            />
 
-                          {module.title}
+                            {module.title}
+                          </div>
+
+                          <span>
+                            {module.status === "completed" && (
+                              <IconCircleCheck
+                                title="Módulo Concluído"
+                                size={24}
+                                className="stroke-emerald-500"
+                              />
+                            )}
+                            {module.status === "in-progress" && (
+                              <IconProgressCheck
+                                title="Módulo Em Andamento"
+                                size={24}
+                                className="stroke-amber-500"
+                              />
+                            )}
+                            {module.status === "not-started" && (
+                              <IconProgressX
+                                title="Módulo Não Iniciado"
+                                size={24}
+                                className="stroke-orange-500"
+                              />
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>
