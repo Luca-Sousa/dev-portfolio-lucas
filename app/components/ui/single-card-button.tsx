@@ -5,6 +5,7 @@ import {
   IconCircleCheck,
   IconClick,
   IconEyeCheck,
+  IconPointFilled,
   IconProgressCheck,
   IconProgressX,
   IconX,
@@ -16,6 +17,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Meteors } from "./meteors";
 import { HoverBorderGradient } from "./hover-border-gradient";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./accordion";
 
 interface SingleCardButtonProps {
   experience: {
@@ -32,7 +39,11 @@ interface SingleCardButtonProps {
       title: string;
       icon: string;
       status: string;
-      program_content: string[];
+      program_content: {
+        title: string;
+        description: string;
+        certUrl?: string;
+      }[];
     }[];
   };
 }
@@ -87,7 +98,7 @@ export default function SingleCardButton({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               ref={containerRef}
-              className="relative z-[60] mx-auto my-10 w-[95vw] max-w-5xl rounded-3xl bg-black-200 p-6 xl:w-screen"
+              className="relative z-[60] mx-auto my-10 w-[95vw] max-w-7xl rounded-3xl bg-black-200 p-6 xl:w-screen"
             >
               <button
                 className="sticky right-0 top-4 z-50 ml-auto flex size-8 items-center justify-center rounded-full bg-white"
@@ -173,16 +184,71 @@ export default function SingleCardButton({
                               </h1>
                             </div>
 
-                            <ul className="relative z-50 mb-4 ml-7 flex-1 list-disc space-y-1.5 text-base font-normal text-slate-500">
+                            <Accordion
+                              type="single"
+                              collapsible
+                              className="relative z-50 mb-4 w-full flex-1"
+                            >
                               {module.program_content.map((content, index) => (
-                                <li
+                                <AccordionItem
                                   key={index}
-                                  className="text-sm leading-[1.6] text-white-200"
+                                  value={`item-${index}`}
                                 >
-                                  {content}
-                                </li>
+                                  <AccordionTrigger className="gap-2 px-1 text-left text-sm leading-[1.6] text-white-200">
+                                    <IconPointFilled size={14} />
+                                    <span className="flex-1">
+                                      {content.title}
+                                    </span>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="text-slate-400">
+                                    {content.description && (
+                                      <p className="mb-4">
+                                        {content.description}
+                                      </p>
+                                    )}
+
+                                    {content.certUrl && (
+                                      <div className="mt-4">
+                                        <div className="mb-2 flex items-center justify-between">
+                                          <span className="text-sm font-medium">
+                                            Certificado:
+                                          </span>
+
+                                          <Link
+                                            href={content.certUrl}
+                                            target="_blank"
+                                            className="mr-1 flex items-center gap-1 text-sm text-blue-400 hover:underline"
+                                          >
+                                            <IconEyeCheck size={14} />
+                                            Ver PDF
+                                          </Link>
+                                        </div>
+
+                                        <div className="w-full overflow-hidden rounded-md">
+                                          <iframe
+                                            src={`${content.certUrl}#view=FitH`}
+                                            title={`PDF - ${content.title}`}
+                                            width="100%"
+                                            height="100%"
+                                            loading="lazy"
+                                            className="aspect-video"
+                                          >
+                                            <p>
+                                              Seu navegador não suporta
+                                              visualização de PDF.
+                                              <a href={content.certUrl}>
+                                                Clique para baixar
+                                              </a>
+                                              .
+                                            </p>
+                                          </iframe>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </AccordionContent>
+                                </AccordionItem>
                               ))}
-                            </ul>
+                            </Accordion>
 
                             <div className="flex w-full items-center justify-between pl-3">
                               <div>
@@ -217,16 +283,6 @@ export default function SingleCardButton({
                                   </span>
                                 )}
                               </div>
-
-                              {/* <div className="flex justify-center text-center">
-                                <HoverBorderGradient
-                                  containerClassName="rounded-full"
-                                  as="button"
-                                  className="bg-gray-900 px-3 py-1.5"
-                                >
-                                  Ver
-                                </HoverBorderGradient>
-                              </div> */}
                             </div>
 
                             <Meteors number={20} />

@@ -105,11 +105,36 @@ export const academic_experiences = [
         icon: "/icon-structured-data.svg",
         status: "completed",
         program_content: [
-          "Conceitos básicos de estruturas de dados.",
-          "Listas, pilhas e filas.",
-          "Árvores e grafos.",
-          "Algoritmos de ordenação e busca.",
-          "Complexidade de algoritmos.",
+          {
+            title: "Conceitos básicos de estruturas de dados.",
+            description:
+              "Introdução às estruturas de dados e sua importância na organização eficiente de informações.",
+            certUrl: "",
+          },
+          {
+            title: "Listas, pilhas e filas.",
+            description:
+              "Implementação e aplicações de listas encadeadas, pilhas (LIFO) e filas (FIFO).",
+            certUrl: "",
+          },
+          {
+            title: "Árvores e grafos.",
+            description:
+              "Estruturas hierárquicas (árvores binárias, AVL) e redes complexas (grafos).",
+            certUrl: "",
+          },
+          {
+            title: "Algoritmos de ordenação e busca.",
+            description:
+              "Métodos como QuickSort, MergeSort, busca binária e suas complexidades.",
+            certUrl: "",
+          },
+          {
+            title: "Complexidade de algoritmos.",
+            description:
+              "Análise assintótica (Big-O) para avaliar eficiência de algoritmos.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -117,11 +142,35 @@ export const academic_experiences = [
         icon: "/icon-database.svg",
         status: "completed",
         program_content: [
-          "Modelagem de dados.",
-          "Linguagem SQL.",
-          "Sistemas de gerenciamento de banco de dados (SGBD).",
-          "Transações e controle de concorrência.",
-          "Otimização de consultas.",
+          {
+            title: "Modelagem de dados.",
+            description:
+              "Projeto de bancos de dados relacionais usando modelos ER e normalização.",
+            certUrl: "",
+          },
+          {
+            title: "Linguagem SQL.",
+            description:
+              "Comandos DDL, DML e consultas avançadas (JOINs, subconsultas).",
+            certUrl: "",
+          },
+          {
+            title: "Sistemas de gerenciamento de banco de dados (SGBD).",
+            description:
+              "Funcionamento de SGBDs como MySQL, PostgreSQL e Oracle.",
+            certUrl: "",
+          },
+          {
+            title: "Transações e controle de concorrência.",
+            description: "Propriedades ACID e mecanismos como locks e MVCC.",
+            certUrl: "",
+          },
+          {
+            title: "Otimização de consultas.",
+            description:
+              "Uso de índices, planejamento de execução e técnicas de tuning.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -129,11 +178,35 @@ export const academic_experiences = [
         icon: "/icon-poo.svg",
         status: "completed",
         program_content: [
-          "Conceitos de POO.",
-          "Classes e objetos.",
-          "Encapsulamento, herança e polimorfismo.",
-          "Interfaces e abstração.",
-          "Design patterns.",
+          {
+            title: "Conceitos de POO.",
+            description:
+              "Abstração, encapsulamento, herança e polimorfismo na prática.",
+            certUrl: "",
+          },
+          {
+            title: "Classes e objetos.",
+            description:
+              "Definição de classes, instanciação e métodos em linguagens como Java.",
+            certUrl: "",
+          },
+          {
+            title: "Encapsulamento, herança e polimorfismo.",
+            description:
+              "Aplicação dos pilares da POO para código modular e reutilizável.",
+            certUrl: "",
+          },
+          {
+            title: "Interfaces e abstração.",
+            description: "Contratos entre classes e redução de acoplamento.",
+            certUrl: "",
+          },
+          {
+            title: "Design patterns.",
+            description:
+              "Padrões como Singleton, Factory e Observer para soluções escaláveis.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -141,11 +214,33 @@ export const academic_experiences = [
         icon: "/icon-algorithm.svg",
         status: "completed",
         program_content: [
-          "Análise de algoritmos.",
-          "Estruturas de controle.",
-          "Recursão.",
-          "Algoritmos de busca e ordenação.",
-          "Complexidade computacional.",
+          {
+            title: "Análise de algoritmos.",
+            description: "Técnicas para medir eficiência temporal e espacial.",
+            certUrl: "",
+          },
+          {
+            title: "Estruturas de controle.",
+            description:
+              "Uso de condicionais e loops para construção de lógica.",
+            certUrl: "",
+          },
+          {
+            title: "Recursão.",
+            description: "Implementação e otimização de funções recursivas.",
+            certUrl: "",
+          },
+          {
+            title: "Algoritmos de busca e ordenação.",
+            description:
+              "Comparativo entre algoritmos como Bubble Sort e Binary Search.",
+            certUrl: "",
+          },
+          {
+            title: "Complexidade computacional.",
+            description: "Classes P, NP e problemas intratáveis.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -153,11 +248,32 @@ export const academic_experiences = [
         icon: "/icon-web-design.svg",
         status: "completed",
         program_content: [
-          "Princípios de design de interfaces.",
-          "Usabilidade e acessibilidade.",
-          "Ferramentas de prototipagem.",
-          "Desenvolvimento responsivo.",
-          "Testes de usabilidade.",
+          {
+            title: "Princípios de design de interfaces.",
+            description:
+              "Heurísticas de Nielsen e experiência do usuário (UX).",
+            certUrl: "",
+          },
+          {
+            title: "Usabilidade e acessibilidade.",
+            description: "WCAG e técnicas para inclusão digital.",
+            certUrl: "",
+          },
+          {
+            title: "Ferramentas de prototipagem.",
+            description: "Uso de Figma ou Adobe XD para criação de wireframes.",
+            certUrl: "",
+          },
+          {
+            title: "Desenvolvimento responsivo.",
+            description: "Design adaptativo para mobile, tablet e desktop.",
+            certUrl: "",
+          },
+          {
+            title: "Testes de usabilidade.",
+            description: "Métodos como A/B testing e card sorting.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -165,11 +281,35 @@ export const academic_experiences = [
         icon: "/icon-engineering-software.svg",
         status: "completed",
         program_content: [
-          "Metodologias ágeis.",
-          "Ciclo de vida do desenvolvimento de software.",
-          "Análise e levantamento de requisitos.",
-          "Testes de software.",
-          "Gerenciamento de projetos de software.",
+          {
+            title: "Metodologias ágeis.",
+            description:
+              "Scrum, Kanban e frameworks ágeis para gestão de projetos.",
+            certUrl: "",
+          },
+          {
+            title: "Ciclo de vida do desenvolvimento de software.",
+            description:
+              "Etapas do SDLC: requisitos, design, implementação e manutenção.",
+            certUrl: "",
+          },
+          {
+            title: "Análise e levantamento de requisitos.",
+            description:
+              "Técnicas como entrevistas e casos de uso para capturar necessidades.",
+            certUrl: "",
+          },
+          {
+            title: "Testes de software.",
+            description:
+              "Tipos de testes (unitários, integração) e ferramentas (JUnit, Selenium).",
+            certUrl: "",
+          },
+          {
+            title: "Gerenciamento de projetos de software.",
+            description: "Ferramentas como Jira e métricas de produtividade.",
+            certUrl: "",
+          },
         ],
       },
     ],
@@ -191,11 +331,33 @@ export const academic_experiences = [
         icon: "/icon-java.svg",
         status: "completed",
         program_content: [
-          "Conceitos básicos de lógica de programação.",
-          "Estruturas condicionais e de repetição.",
-          "Estruturas de dados (arrays, listas, etc.).",
-          "Funções e métodos.",
-          "Orientação a objetos.",
+          {
+            title: "Conceitos básicos de lógica de programação.",
+            description:
+              "Variáveis, operadores e estruturas de controle em Java.",
+            certUrl: "",
+          },
+          {
+            title: "Estruturas condicionais e de repetição.",
+            description:
+              "Uso de if/else, switch e loops (for, while) para fluxo de programa.",
+            certUrl: "",
+          },
+          {
+            title: "Estruturas de dados (arrays, listas, etc.).",
+            description: "Armazenamento e manipulação de coleções de dados.",
+            certUrl: "",
+          },
+          {
+            title: "Funções e métodos.",
+            description: "Modularização de código com funções e parâmetros.",
+            certUrl: "",
+          },
+          {
+            title: "Orientação a objetos.",
+            description: "Implementação de classes, objetos e herança em Java.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -203,11 +365,32 @@ export const academic_experiences = [
         icon: "/icon-database-oracle.svg",
         status: "completed",
         program_content: [
-          "Introdução ao SQL e PL/SQL.",
-          "Criação e manipulação de tabelas.",
-          "Consultas complexas com joins e subconsultas.",
-          "Procedures, functions e triggers.",
-          "Gerenciamento de transações e segurança.",
+          {
+            title: "Introdução ao SQL e PL/SQL.",
+            description:
+              "Comandos básicos e procedimentos armazenados no Oracle.",
+            certUrl: "",
+          },
+          {
+            title: "Criação e manipulação de tabelas.",
+            description: "DDL (CREATE, ALTER) e DML (INSERT, UPDATE, DELETE).",
+            certUrl: "",
+          },
+          {
+            title: "Consultas complexas com joins e subconsultas.",
+            description: "Combinação de tabelas e consultas aninhadas.",
+            certUrl: "",
+          },
+          {
+            title: "Procedures, functions e triggers.",
+            description: "Automação de tarefas com PL/SQL.",
+            certUrl: "",
+          },
+          {
+            title: "Gerenciamento de transações e segurança.",
+            description: "Controle de concorrência e roles/permissões.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -215,11 +398,31 @@ export const academic_experiences = [
         icon: "/icon-spring-boot.svg",
         status: "completed",
         program_content: [
-          "Introdução ao Spring Boot.",
-          "Criação de APIs RESTful.",
-          "Integração com banco de dados (JPA/Hibernate).",
-          "Segurança com Spring Security.",
-          "Testes unitários e de integração.",
+          {
+            title: "Introdução ao Spring Boot.",
+            description: "Configuração de projetos e injeção de dependências.",
+            certUrl: "",
+          },
+          {
+            title: "Criação de APIs RESTful.",
+            description: "Desenvolvimento de endpoints com Spring MVC.",
+            certUrl: "",
+          },
+          {
+            title: "Integração com banco de dados (JPA/Hibernate).",
+            description: "Mapeamento objeto-relacional (ORM) e repositórios.",
+            certUrl: "",
+          },
+          {
+            title: "Segurança com Spring Security.",
+            description: "Autenticação (JWT/OAuth2) e autorização.",
+            certUrl: "",
+          },
+          {
+            title: "Testes unitários e de integração.",
+            description: "Uso de JUnit e Mockito para validação.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -227,11 +430,32 @@ export const academic_experiences = [
         icon: "/icon-frontend.svg",
         status: "completed",
         program_content: [
-          "Introdução ao React e Typescript.",
-          "Componentes funcionais e de classe.",
-          "Gerenciamento de estado com Redux.",
-          "Estilização com Bootstrap.",
-          "Integração com APIs RESTful.",
+          {
+            title: "Introdução ao React e Typescript.",
+            description: "Componentes, props e tipagem estática.",
+            certUrl: "",
+          },
+          {
+            title: "Componentes funcionais e de classe.",
+            description: "Diferenças e uso de hooks (useState, useEffect).",
+            certUrl: "",
+          },
+          {
+            title: "Gerenciamento de estado com Redux.",
+            description: "Centralização de estado global em aplicações React.",
+            certUrl: "",
+          },
+          {
+            title: "Estilização com Bootstrap.",
+            description:
+              "Grid system, componentes pré-estilizados e responsividade.",
+            certUrl: "",
+          },
+          {
+            title: "Integração com APIs RESTful.",
+            description: "Consumo de APIs usando Axios ou Fetch API.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -239,10 +463,31 @@ export const academic_experiences = [
         icon: "/icon-project.svg",
         status: "completed",
         program_content: [
-          "Desenvolvimento de um sistema de gerenciamento de tarefas utilizando as tecnologias aprendidas durante o curso.",
-          "Implementação de funcionalidades como autenticação de usuários, criação e edição de tarefas, e visualização de tarefas concluídas.",
-          "Utilização do banco de dados Oracle para armazenamento das informações do sistema.",
-          "Desdobramento do projeto em etapas, com entregas parciais para avaliação e feedback.",
+          {
+            title:
+              "Desenvolvimento de um sistema de gerenciamento de tarefas utilizando as tecnologias aprendidas durante o curso.",
+            description:
+              "Aplicação full-stack com CRUD, autenticação e deploy.",
+            certUrl: "",
+          },
+          {
+            title:
+              "Implementação de funcionalidades como autenticação de usuários, criação e edição de tarefas, e visualização de tarefas concluídas.",
+            description: "Fluxo completo do usuário com validações e feedback.",
+            certUrl: "",
+          },
+          {
+            title:
+              "Utilização do banco de dados Oracle para armazenamento das informações do sistema.",
+            description: "Modelagem do banco e queries otimizadas.",
+            certUrl: "",
+          },
+          {
+            title:
+              "Desdobramento do projeto em etapas, com entregas parciais para avaliação e feedback.",
+            description: "Metodologia ágil com sprints e revisões.",
+            certUrl: "",
+          },
         ],
       },
     ],
@@ -264,15 +509,53 @@ export const academic_experiences = [
         icon: "/icon-next.svg",
         status: "in-progress",
         program_content: [
-          "Introdução ao Next.js",
-          "Configuração do Ambiente de Desenvolvimento",
-          "Estrutura de Pastas e Arquivos",
-          "Rotas e Navegação",
-          "Páginas Estáticas e Dinâmicas",
-          "API Routes",
-          "Estilização com CSS Modules",
-          "Autenticação com NextAuth.js",
-          "Deploy no Vercel",
+          {
+            title: "Introdução ao Next.js",
+            description:
+              "Visão geral do framework e diferenças para React puro.",
+            certUrl: "",
+          },
+          {
+            title: "Configuração do Ambiente de Desenvolvimento",
+            description: "Setup com Node.js, npm/yarn e estrutura de pastas.",
+            certUrl: "",
+          },
+          {
+            title: "Estrutura de Pastas e Arquivos",
+            description: "Organização de páginas, componentes e assets.",
+            certUrl: "",
+          },
+          {
+            title: "Rotas e Navegação",
+            description: "Sistema de roteamento dinâmico e links.",
+            certUrl: "",
+          },
+          {
+            title: "Páginas Estáticas e Dinâmicas",
+            description:
+              "Geração estática (SSG) vs. renderização no servidor (SSR).",
+            certUrl: "",
+          },
+          {
+            title: "API Routes",
+            description: "Criação de endpoints backend diretamente no Next.js.",
+            certUrl: "",
+          },
+          {
+            title: "Estilização com CSS Modules",
+            description: "Escopo de CSS por componente para evitar conflitos.",
+            certUrl: "",
+          },
+          {
+            title: "Autenticação com NextAuth.js",
+            description: "Integração com provedores como Google e GitHub.",
+            certUrl: "",
+          },
+          {
+            title: "Deploy no Vercel",
+            description: "Publicação automatizada com integração contínua.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -280,14 +563,46 @@ export const academic_experiences = [
         icon: "/icon-react.svg",
         status: "in-progress",
         program_content: [
-          "Introdução ao React",
-          "Componentes Funcionais e de Classe",
-          "Props e State",
-          "Ciclo de Vida dos Componentes",
-          "Hooks (useState, useEffect, etc.)",
-          "Gerenciamento de Estado (Redux, Context API)",
-          "Roteamento com React Router",
-          "Testes com Jest e React Testing Library",
+          {
+            title: "Fundamentos do Node.js",
+            description: "JavaScript no servidor com módulos e NPM.",
+            certUrl: "/certificado-fundamentos-do-node.js.pdf",
+          },
+          {
+            title: "Módulos no Node.js",
+            description: "Sistema CommonJS e ES Modules.",
+            certUrl: "/certificado-módulos-no-node.js.pdf",
+          },
+          {
+            title: "Node.js Assíncrono",
+            description: "Callbacks, Promises e async/await.",
+            certUrl: "/certificado-node.js-assíncrono.pdf",
+          },
+          {
+            title: "Fundamentos do React",
+            description: "JSX, componentes e virtual DOM.",
+            certUrl: "/certificado-fundamentos-do-react.pdf",
+          },
+          {
+            title: "Componentização & Estilização",
+            description: "Reutilização de componentes e CSS-in-JS.",
+            certUrl: "",
+          },
+          {
+            title: "Gerenciamento de Estado (Redux, Context API)",
+            description: "Padrões para estado global e compartilhado.",
+            certUrl: "",
+          },
+          {
+            title: "Roteamento com React Router",
+            description: "Navegação SPA (Single Page Application).",
+            certUrl: "",
+          },
+          {
+            title: "Testes com Jest e React Testing Library",
+            description: "Testes unitários e de integração.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -295,13 +610,41 @@ export const academic_experiences = [
         icon: "/icon-full-stack-developer.svg",
         status: "in-progress",
         program_content: [
-          "Introdução ao Desenvolvimento Full Stack",
-          "Configuração do Ambiente de Desenvolvimento",
-          "Desenvolvimento de APIs RESTful",
-          "Banco de Dados (SQL e NoSQL)",
-          "Autenticação e Autorização",
-          "Deploy de Aplicações Full Stack",
-          "Integração Contínua e Entrega Contínua (CI/CD)",
+          {
+            title: "Introdução ao Desenvolvimento Full Stack",
+            description: "Papéis do frontend, backend e DevOps.",
+            certUrl: "",
+          },
+          {
+            title: "Configuração do Ambiente de Desenvolvimento",
+            description: "Ferramentas como Docker e VSCode.",
+            certUrl: "",
+          },
+          {
+            title: "Desenvolvimento de APIs RESTful",
+            description: "Design de endpoints e boas práticas.",
+            certUrl: "",
+          },
+          {
+            title: "Banco de Dados (SQL e NoSQL)",
+            description: "Comparativo entre MySQL, MongoDB, etc.",
+            certUrl: "",
+          },
+          {
+            title: "Autenticação e Autorização",
+            description: "JWT, OAuth2 e controle de permissões.",
+            certUrl: "",
+          },
+          {
+            title: "Deploy de Aplicações Full Stack",
+            description: "Estratégias para cloud (AWS, Vercel, Heroku).",
+            certUrl: "",
+          },
+          {
+            title: "Integração Contínua e Entrega Contínua (CI/CD)",
+            description: "Automação com GitHub Actions ou GitLab CI.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -309,13 +652,42 @@ export const academic_experiences = [
         icon: "/icon-react-native.svg",
         status: "not-started",
         program_content: [
-          "Introdução ao React Native",
-          "Configuração do Ambiente de Desenvolvimento",
-          "Componentes Básicos e Avançados",
-          "Navegação entre Telas",
-          "Gerenciamento de Estado com Redux",
-          "Integração com APIs Externas",
-          "Publicação na App Store e Google Play",
+          {
+            title: "Introdução ao React Native",
+            description:
+              "Diferenças para React web e configuração do ambiente.",
+            certUrl: "",
+          },
+          {
+            title: "Configuração do Ambiente de Desenvolvimento",
+            description: "Android Studio, Xcode e emuladores.",
+            certUrl: "",
+          },
+          {
+            title: "Componentes Básicos e Avançados",
+            description: "View, Text, FlatList e componentes nativos.",
+            certUrl: "",
+          },
+          {
+            title: "Navegação entre Telas",
+            description: "Bibliotecas como React Navigation.",
+            certUrl: "",
+          },
+          {
+            title: "Gerenciamento de Estado com Redux",
+            description: "Padrões para apps móveis complexos.",
+            certUrl: "",
+          },
+          {
+            title: "Integração com APIs Externas",
+            description: "Chamadas HTTP e tratamento de erros.",
+            certUrl: "",
+          },
+          {
+            title: "Publicação na App Store e Google Play",
+            description: "Processo de submissão e guidelines.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -323,13 +695,42 @@ export const academic_experiences = [
         icon: "/icon-solid.svg",
         status: "not-started",
         program_content: [
-          "Introdução aos Princípios SOLID",
-          "Single Responsibility Principle (SRP)",
-          "Open/Closed Principle (OCP)",
-          "Liskov Substitution Principle (LSP)",
-          "Interface Segregation Principle (ISP)",
-          "Dependency Inversion Principle (DIP)",
-          "Aplicação dos Princípios em Projetos Reais",
+          {
+            title: "Introdução aos Princípios SOLID",
+            description: "Objetivos e benefícios para código limpo.",
+            certUrl: "",
+          },
+          {
+            title: "Single Responsibility Principle (SRP)",
+            description: "Uma classe, uma responsabilidade.",
+            certUrl: "",
+          },
+          {
+            title: "Open/Closed Principle (OCP)",
+            description: "Extensibilidade sem modificar código existente.",
+            certUrl: "",
+          },
+          {
+            title: "Liskov Substitution Principle (LSP)",
+            description:
+              "Subclasses devem substituir classes base sem quebrar o sistema.",
+            certUrl: "",
+          },
+          {
+            title: "Interface Segregation Principle (ISP)",
+            description: "Interfaces específicas vs. genéricas.",
+            certUrl: "",
+          },
+          {
+            title: "Dependency Inversion Principle (DIP)",
+            description: "Depender de abstrações, não de implementações.",
+            certUrl: "",
+          },
+          {
+            title: "Aplicação dos Princípios em Projetos Reais",
+            description: "Refatoração de código para atender ao SOLID.",
+            certUrl: "",
+          },
         ],
       },
       {
@@ -337,13 +738,36 @@ export const academic_experiences = [
         icon: "/icon-cybersecurity.svg",
         status: "not-started",
         program_content: [
-          "Introdução à Segurança da Informação",
-          "Princípios de Segurança em Aplicações Web",
-          "Autenticação e Controle de Acesso",
-          "Criptografia e Proteção de Dados",
-          "Segurança em Redes e Protocolos",
-          "Testes de Penetração e Avaliação de Vulnerabilidades",
-          "Compliance e Normas de Segurança",
+          {
+            title: "Princípios de Segurança em Aplicações Web",
+            description: "OWASP Top 10 e mitigação de riscos.",
+            certUrl: "",
+          },
+          {
+            title: "Autenticação e Controle de Acesso",
+            description: "MFA, RBAC e prevenção de ataques (brute force).",
+            certUrl: "",
+          },
+          {
+            title: "Criptografia e Proteção de Dados",
+            description: "Algoritmos (AES, RSA) e GDPR.",
+            certUrl: "",
+          },
+          {
+            title: "Segurança em Redes e Protocolos",
+            description: "HTTPS, TLS e prevenção de MITM.",
+            certUrl: "",
+          },
+          {
+            title: "Testes de Penetração e Avaliação de Vulnerabilidades",
+            description: "Ferramentas como Burp Suite e Nmap.",
+            certUrl: "",
+          },
+          {
+            title: "Compliance e Normas de Segurança",
+            description: "ISO 27001 e LGPD.",
+            certUrl: "",
+          },
         ],
       },
     ],
