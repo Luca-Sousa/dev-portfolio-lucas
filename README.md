@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Meu Portfólio de Projetos
 
-## Getting Started
+No primeiro trimestre de 2024, recebi a sugestão de criar um portfólio de projetos pessoais que reunisse informações relevantes sobre mim, meus estudos, trabalhos e projetos. Depois de muitos estudos e esboços, comecei a criar meu primeiro portfólio — inicialmente apenas com frontend e dados estáticos. Mas logo percebi que seria trabalhoso manter e atualizar tudo manualmente.
 
-First, run the development server:
+Foi então que conheci o **framework Next.js**, com o qual pude desenvolver um portfólio mais completo, moderno e automatizado. Após muita dedicação, estou com meu **portfólio de desenvolvimento web** — ainda em evolução, mas já bem estruturado e pronto para fornecer informações de forma eficiente e rápida!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Nele, compartilho as soluções que venho construindo, com foco em **performance**, **design** e **boas práticas de desenvolvimento**.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tecnologias e ferramentas utilizadas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+✅ **Next.js, React e TypeScript** — para uma base sólida, escalável e moderna  
+✅ **Tailwind CSS, Aceternity UI e shadcn/ui** — para uma interface elegante, responsiva e com design consistente  
+✅ **Prisma + Neon DB** — para o gerenciamento eficiente dos dados  
+✅ **Cloudflare** — para armazenamento e entrega otimizada das imagens  
+✅ **Framer Motion & Three.js** — para animações fluidas e experiências interativas  
+✅ **NextAuth** — para autenticação segura da dashboard administrativa
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔗 Links importantes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 📂 Repositório: [github.com/Luca-Sousa/dev-portfolio-lucas](https://github.com/Luca-Sousa/dev-portfolio-lucas)  
+- 🌐 Portfólio: [dev-portfolio-lucas.vercel.app](https://dev-portfolio-lucas.vercel.app/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 💼 Funcionalidades
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+O portfólio conta com uma **área administrativa**, onde posso gerenciar os projetos cadastrados, além de **filtros inteligentes** para facilitar a navegação pelos trabalhos, de acordo com as tecnologias utilizadas.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Como inspiração, utilizei o portfólio do canal **JavaScript Mastery**, mas personalizei e desenvolvi com minha própria abordagem e várias mudanças em relação ao esboço original.  
+📺 Vídeo de referência: [YouTube - JavaScript Mastery](https://www.youtube.com/watch?v=FTH6Dn3AyIQ)
