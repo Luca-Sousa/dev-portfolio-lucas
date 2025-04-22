@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FlipWords } from "./ui/flip-words";
 import { socialMedia } from "../data";
+import SocialMediaLink from "../(home)/components/social-media-link";
 
 interface HeroProps {
   isPages?: boolean;
@@ -53,19 +54,7 @@ const Hero = ({ isPages }: HeroProps) => {
 
             <div className="flex w-full flex-wrap items-center justify-center gap-6 md:gap-3">
               {socialMedia.map((info) => (
-                <div
-                  key={info.id}
-                  className="saturate-180 flex h-10 w-fit cursor-pointer items-center justify-center rounded-lg border border-black-200 bg-black-200 bg-opacity-75 px-3 backdrop-blur-lg backdrop-filter transition-colors hover:border-black-300 hover:bg-black-300"
-                >
-                  <Link
-                    href={info.link}
-                    target="_blank"
-                    className="flex items-center justify-center gap-2"
-                  >
-                    <Image src={info.img} alt="icons" width={20} height={20} />
-                    <span>{info.title}</span>
-                  </Link>
-                </div>
+                <SocialMediaLink key={info.id} socialMedia={info} />
               ))}
             </div>
 

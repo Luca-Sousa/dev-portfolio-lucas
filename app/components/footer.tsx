@@ -1,9 +1,8 @@
 "use client";
+import SocialMediaLink from "../(home)/components/social-media-link";
 /* eslint-disable @next/next/no-img-element */
 
 import { socialMedia } from "../data";
-import Link from "next/link";
-import Image from "next/image";
 import Contact from "./contact";
 
 interface FooterProps {
@@ -30,14 +29,7 @@ const Footer = ({ isPages }: FooterProps) => {
 
         <div className="mt-6 flex items-center gap-6 md:mt-0 md:gap-3">
           {socialMedia.map((info) => (
-            <div
-              key={info.id}
-              className="saturate-180 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-black-300 bg-black-200 bg-opacity-75 backdrop-blur-lg backdrop-filter"
-            >
-              <Link href={info.link} target="_blank">
-                <Image src={info.img} alt="icons" width={20} height={20} />
-              </Link>
-            </div>
+            <SocialMediaLink key={info.id} socialMedia={info} isIcon />
           ))}
         </div>
       </div>
