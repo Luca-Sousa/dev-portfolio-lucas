@@ -93,7 +93,12 @@ const SingleCardAcademicExperiences = ({
                     </div>
 
                     <StatusInfoAcademicExperiences
-                      status={module.status}
+                      status={
+                        module.status as
+                          | "completed"
+                          | "in-progress"
+                          | "not-started"
+                      }
                       size={24}
                       icon
                     />

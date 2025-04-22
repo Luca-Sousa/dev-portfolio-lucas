@@ -3,49 +3,59 @@ import {
   IconProgressCheck,
   IconProgressX,
 } from "@tabler/icons-react";
+import { tv } from "tailwind-variants";
+
+const statusVariant = tv({
+  base: "flex items-center gap-1 text-xs font-medium",
+  variants: {
+    status: {
+      completed: "text-emerald-500",
+      "in-progress": "text-amber-500",
+      "not-started": "text-orange-500",
+    },
+  },
+});
+
+const iconStrokeColor = {
+  completed: "stroke-emerald-500",
+  "in-progress": "stroke-amber-500",
+  "not-started": "stroke-orange-500",
+} as const;
+
+const iconMap = {
+  completed: IconCircleCheck,
+  "in-progress": IconProgressCheck,
+  "not-started": IconProgressX,
+};
+
+const statusLabel = {
+  completed: "Módulo Concluído",
+  "in-progress": "Módulo em Andamento",
+  "not-started": "Módulo não Iniciado",
+};
+
+type StatusType = keyof typeof iconMap;
 
 const StatusInfoAcademicExperiences = ({
   status,
   size,
   icon,
 }: {
-  status: string;
+  status: StatusType;
   size: number;
   icon?: boolean;
 }) => {
+  const IconComponent = iconMap[status];
+
   return (
-    <>
-      {status === "completed" && (
-        <span className="flex items-center gap-1 text-xs font-medium text-emerald-500">
-          <IconCircleCheck
-            title="Módulo Concluído"
-            size={size}
-            className="stroke-emerald-500"
-          />
-          {!icon && "Módulo Concluído"}
-        </span>
-      )}
-      {status === "in-progress" && (
-        <span className="flex items-center gap-1 text-xs font-medium text-amber-500">
-          <IconProgressCheck
-            title="Módulo em Andamento"
-            size={size}
-            className="stroke-amber-500"
-          />
-          {!icon && "Módulo em Andamento"}
-        </span>
-      )}
-      {status === "not-started" && (
-        <span className="flex items-center gap-1 text-xs font-medium text-orange-500">
-          <IconProgressX
-            title="Módulo Não Iniciado"
-            size={size}
-            className="stroke-orange-500"
-          />
-          {!icon && "Módulo não Iniciado"}
-        </span>
-      )}
-    </>
+    <span className={statusVariant({ status })}>
+      <IconComponent
+        title={statusLabel[status]}
+        size={size}
+        className={iconStrokeColor[status]}
+      />
+      {!icon && statusLabel[status]}
+    </span>
   );
 };
 

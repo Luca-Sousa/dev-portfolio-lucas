@@ -98,7 +98,12 @@ const SingleCardFormationsModules = ({
         </Accordion>
 
         <div className="pl-3">
-          <StatusInfoAcademicExperiences status={module.status} size={16} />
+          <StatusInfoAcademicExperiences
+            status={
+              module.status as "completed" | "in-progress" | "not-started"
+            }
+            size={16}
+          />
         </div>
 
         <Meteors number={20} />
