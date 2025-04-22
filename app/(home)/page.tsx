@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import AcademicExperiences from "../components/academic-experiences";
+import AcademicExperiences from "./components/academic-experiences";
 import Footer from "../components/footer";
 import Grid from "../components/grid";
 import Hero from "../components/hero";
