@@ -585,23 +585,19 @@ export const academic_experiences = [
           },
           {
             title: "Componentização & Estilização",
-            description: "Reutilização de componentes e CSS-in-JS.",
-            certUrl: "",
+            description: "Reutilização de componentes e formas de estilização.",
+            certUrl: "/certificado-componentizacao-e-estilizacao.pdf",
           },
           {
-            title: "Gerenciamento de Estado (Redux, Context API)",
-            description: "Padrões para estado global e compartilhado.",
-            certUrl: "",
+            title: "APIs & Protocolo HTTP/HTTPs",
+            description: "Uso de APIs com HTTP/HTTPS no ReactJS.",
+            certUrl: "/certificado-apis-&-protocolo-http-https.pdf",
           },
           {
-            title: "Roteamento com React Router",
-            description: "Navegação SPA (Single Page Application).",
-            certUrl: "",
-          },
-          {
-            title: "Testes com Jest e React Testing Library",
-            description: "Testes unitários e de integração.",
-            certUrl: "",
+            title: "React Hooks",
+            description:
+              "Gerenciamento de estados e efeitos em componentes funcionais.",
+            certUrl: "/certificado-react-hooks.pdf",
           },
         ],
       },
