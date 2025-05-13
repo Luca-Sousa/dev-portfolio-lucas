@@ -6,7 +6,7 @@ import React from "react";
 interface MagicButtonProps {
   title: string;
   icon: React.ReactNode;
-  position: string;
+  position: "left" | "right";
   handleClick?: () => void;
   otherClasses?: string;
 }

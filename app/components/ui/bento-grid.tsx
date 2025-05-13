@@ -2,8 +2,7 @@ import { IoCopyOutline } from "react-icons/io5";
 import { cn } from "@/app/lib/utils";
 import { BackgroundGradientAnimation } from "./background-gradient-animation";
 import { GridGlobe } from "../grid-globe";
-import MagicButton from "../magic-button";
-import Link from "next/link";
+import MagicLink from "../magic-link";
 
 export const BentoGrid = ({
   className,
@@ -160,14 +159,13 @@ export const BentoGridItem = ({
                 <Lottie options={defaultOptions} height={200} width={400} />
               </div> */}
 
-              <Link href="/#contact">
-                <MagicButton
-                  title="Entre em contato!"
-                  icon={<IoCopyOutline />}
-                  position="left"
-                  otherClasses="!bg-[#161A31]"
-                />
-              </Link>
+              <MagicLink
+                href="#contact"
+                title="Entre em contato!"
+                icon={<IoCopyOutline />}
+                position="left"
+                otherClasses="!bg-[#161A31]"
+              />
             </div>
           )}
         </div>

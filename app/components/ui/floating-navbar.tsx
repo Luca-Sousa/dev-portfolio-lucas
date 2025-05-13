@@ -10,13 +10,13 @@ import {
 } from "framer-motion";
 import { cn } from "@/app/lib/utils";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "./navbar-menu";
-import MagicButton from "../magic-button";
 import { LuCirclePlus } from "react-icons/lu";
 
 import Link from "next/link";
 import { IconHomeShare, IconStackPush } from "@tabler/icons-react";
 import { Project } from "@prisma/client";
 import { useIsMobile } from "@/app/hooks/use-mobile";
+import MagicLink from "../magic-link";
 
 interface ProjectWithTechs extends Project {
   technologies: { id: string; name: string; iconURL: string }[];
@@ -124,23 +124,23 @@ export const FloatingNav = ({
 
             <div className="flex w-full flex-col items-center justify-center gap-5 xl:flex-row xl:justify-end">
               {!isMobile && (
-                <Link href="/#projects" onClick={() => setActive(null)}>
-                  <MagicButton
-                    title="Ver Projetos Recentes"
-                    icon={<IconStackPush size={20} />}
-                    position="right"
-                    otherClasses="bg-gradient-to-t from-purple/20 to-purple/20 hover:from-purple/30 hover:to-purple/30 transition-colors"
-                  />
-                </Link>
+                <MagicLink
+                  href="/#projects"
+                  handleClick={() => setActive(null)}
+                  title="Ver Projetos Recentes"
+                  icon={<IconStackPush size={20} />}
+                  position="right"
+                  otherClasses="bg-gradient-to-t from-purple/20 to-purple/20 hover:from-purple/30 hover:to-purple/30 transition-colors"
+                />
               )}
 
-              <Link href="/projects" onClick={() => setActive(null)}>
-                <MagicButton
-                  title="Ver Mais Projetos"
-                  icon={<LuCirclePlus size={20} />}
-                  position="right"
-                />
-              </Link>
+              <MagicLink
+                href="/projects"
+                handleClick={() => setActive(null)}
+                title="Ver Mais Projetos"
+                icon={<LuCirclePlus size={20} />}
+                position="right"
+              />
             </div>
           </MenuItem>
 

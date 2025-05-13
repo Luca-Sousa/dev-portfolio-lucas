@@ -1,8 +1,8 @@
 import BadgeStatus from "@/app/components/badge-status";
-import { ButtonLinks } from "@/app/components/button-links";
 import CarouselImagesProject from "@/app/components/carousel-images";
 import Footer from "@/app/components/footer";
 import Hero from "@/app/components/hero";
+import MagicLink from "@/app/components/magic-link";
 import SkillCard from "@/app/components/skill-card";
 import { MacbookScroll } from "@/app/components/ui/macbook-scroll";
 import { TextGenerateEffect } from "@/app/components/ui/text-generate-effect";
@@ -100,17 +100,21 @@ const ProjectPage = async ({ params }: { params: { id: string } }) => {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 md:gap-10">
-              <ButtonLinks
+              <MagicLink
                 icon={<IconBrandGithub className="size-8" />}
-                link={project.repositoryUrl}
+                position="left"
                 title="Github"
+                href={project.repositoryUrl}
+                target="_blank"
               />
 
               {project.deployUrl && (
-                <ButtonLinks
+                <MagicLink
                   icon={<IconBrandVercelFilled className="size-8" />}
-                  link={project.deployUrl}
+                  position="left"
                   title="Vercel"
+                  href={project.deployUrl}
+                  target="_blank"
                 />
               )}
             </div>

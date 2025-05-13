@@ -18,11 +18,10 @@ import {
   contactMessageSchema,
 } from "@/app/actions/contact-message/create-message/schema";
 import { createContactMessage } from "@/app/actions/contact-message/create-message";
-import MagicButton from "./magic-button";
 import { FaLocationArrow } from "react-icons/fa6";
-import Link from "next/link";
 import { Input } from "./ui/input-aceternity";
 import { TextArea } from "./ui/textarea-aceternity";
+import MagicLink from "./magic-link";
 
 const Contact = () => {
   const form = useForm({
@@ -69,13 +68,12 @@ const Contact = () => {
         </p>
       </div>
 
-      <Link href="mailto:luke.sousa.dev@gmail.com">
-        <MagicButton
-          title="Enviar Email"
-          icon={<FaLocationArrow />}
-          position="right"
-        />
-      </Link>
+      <MagicLink
+        href="mailto:luke.sousa.dev@gmail.com"
+        title="Enviar Email"
+        icon={<FaLocationArrow />}
+        position="right"
+      />
 
       <Form {...form}>
         <form

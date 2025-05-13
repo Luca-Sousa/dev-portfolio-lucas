@@ -1,12 +1,11 @@
 import { TextGenerateEffect } from "./ui/text-generate-effect";
-import MagicButton from "./magic-button";
 import { FaArrowDown, FaDownload } from "react-icons/fa6";
 import { Spotlight } from "./ui/spotlight-new";
-import Link from "next/link";
 import Image from "next/image";
 import { FlipWords } from "./ui/flip-words";
 import { socialMedia } from "../data";
 import SocialMediaLink from "../(home)/components/social-media-link";
+import MagicLink from "./magic-link";
 
 interface HeroProps {
   isPages?: boolean;
@@ -59,22 +58,21 @@ const Hero = ({ isPages }: HeroProps) => {
             </div>
 
             <div className="mt-10 flex flex-col items-center justify-center gap-4 lg:flex-row">
-              <Link href="/curriculo-lucas-de-sousa-silva.pdf">
-                <MagicButton
-                  title="Download CV"
-                  icon={<FaDownload />}
-                  position="right"
-                  otherClasses="bg-gradient-to-t from-purple/20 to-purple/20 hover:from-purple/30 hover:to-purple/30 transition-colors"
-                />
-              </Link>
+              <MagicLink
+                href="/curriculo-lucas-de-sousa-silva.pdf"
+                title="Download CV"
+                icon={<FaDownload />}
+                target="_blank"
+                position="right"
+                otherClasses="bg-gradient-to-t from-purple/20 to-purple/20 hover:from-purple/30 hover:to-purple/30 transition-colors"
+              />
 
-              <Link href="#about">
-                <MagicButton
-                  title="Ver meu trabalho"
-                  icon={<FaArrowDown />}
-                  position="right"
-                />
-              </Link>
+              <MagicLink
+                href="#about"
+                title="Ver meu trabalho"
+                icon={<FaArrowDown />}
+                position="right"
+              />
             </div>
           </div>
 
