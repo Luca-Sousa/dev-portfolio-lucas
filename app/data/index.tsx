@@ -507,53 +507,54 @@ export const academic_experiences = [
       {
         title: "Formação em Next.js",
         icon: "/icon-next.svg",
-        status: "in-progress",
+        status: "completed",
         program_content: [
+          {
+            title: "CSR, SSR, SSG & ISR",
+            description:
+              "Módulo dedicado aos quatro principais métodos de renderização do Next.js, com foco em suas diferenças, características técnicas e casos de uso.",
+            certUrl: "/certificado-fn-csr-ssr-ssg-&-isr.pdf",
+          },
+          {
+            title: "Server Components, Client Components & Hydration",
+            description:
+              "Conteúdo voltado à separação entre componentes de servidor e cliente, funcionamento do processo de hidratação e implicações no desempenho da aplicação.",
+            certUrl: "/certificado-fn-server-&-client-components.pdf",
+          },
           {
             title: "Introdução ao Next.js",
             description:
-              "Visão geral do framework e diferenças para React puro.",
+              "Visão geral sobre o Next.js, cobrindo sua estrutura básica, convenções principais e integração com o React.",
             certUrl: "",
           },
           {
-            title: "Configuração do Ambiente de Desenvolvimento",
-            description: "Setup com Node.js, npm/yarn e estrutura de pastas.",
-            certUrl: "",
-          },
-          {
-            title: "Estrutura de Pastas e Arquivos",
-            description: "Organização de páginas, componentes e assets.",
-            certUrl: "",
-          },
-          {
-            title: "Rotas e Navegação",
-            description: "Sistema de roteamento dinâmico e links.",
-            certUrl: "",
-          },
-          {
-            title: "Páginas Estáticas e Dinâmicas",
+            title: "Data Fetching & Caching",
             description:
-              "Geração estática (SSG) vs. renderização no servidor (SSR).",
+              "Explicação sobre as abordagens de busca de dados no Next.js, com ênfase em estratégias de cache, revalidação e pré-renderização.",
+            certUrl: "/certificado-fn-data-fetching-&-caching.pdf",
+          },
+          {
+            title: "Server Actions & Formulários",
+            description:
+              "Cobertura do uso de Server Actions para manipulação de dados no backend e implementação de formulários com validação e controle de estados.",
+            certUrl: "/certificado-fn-server-actions-&-forms.pdf",
+          },
+          {
+            title: "Gráficos, Streaming & Suspense",
+            description:
+              "Exploração de recursos visuais com gráficos, técnicas de carregamento parcial via streaming e uso de suspense para controle de estados assíncronos.",
+            certUrl: "/certificado-fn-gráficos-streaming-&-suspense.pdf",
+          },
+          {
+            title: "Build & Deploy de Projetos Next.js",
+            description:
+              "Processos de build e publicação de aplicações Next.js, incluindo configuração de ambientes, otimizações e práticas recomendadas para deploy.",
             certUrl: "",
           },
           {
-            title: "API Routes",
-            description: "Criação de endpoints backend diretamente no Next.js.",
-            certUrl: "",
-          },
-          {
-            title: "Estilização com CSS Modules",
-            description: "Escopo de CSS por componente para evitar conflitos.",
-            certUrl: "",
-          },
-          {
-            title: "Autenticação com NextAuth.js",
-            description: "Integração com provedores como Google e GitHub.",
-            certUrl: "",
-          },
-          {
-            title: "Deploy no Vercel",
-            description: "Publicação automatizada com integração contínua.",
+            title: "Novidades do Next.js 15",
+            description:
+              "Resumo das principais novidades introduzidas na versão 15 do Next.js, com foco em melhorias, novos recursos e mudanças na API.",
             certUrl: "",
           },
         ],
