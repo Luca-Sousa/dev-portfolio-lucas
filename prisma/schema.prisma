@@ -78,6 +78,8 @@ model Project {
   figmaUrl        String?
   status          ProjectStatus
   technologies    ProjectTechnology[] @relation("ProjectToTechnology")
+  moduleId        String?
+  module          Module?             @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
 }
@@ -115,4 +117,46 @@ model ContactMessage {
   message   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model AcademicExperience {
+  id             String   @id @default(cuid())
+  title          String
+  type           String
+  dateDuration   String
+  institution    String
+  description    String
+  imageUrl       String
+  institutionUrl String
+  certificateUrl String?
+  declarationUrl String?
+  modules        Module[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Module {
+  id                   String             @id @default(cuid())
+  title                String
+  iconUrl              String
+  status               ModuleStatus
+  programContent       ProgramContent[]
+  projects             Project[]
+  academicExperienceId String
+  academicExperience   AcademicExperience @relation(fields: [academicExperienceId], references: [id], onDelete: Cascade)
+}
+
+model ProgramContent {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  certUrl     String?
+  moduleId    String
+  module      Module  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+enum ModuleStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
