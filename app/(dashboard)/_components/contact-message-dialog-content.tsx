@@ -1,4 +1,4 @@
-import { deleteMessage } from "@/app/actions/contact-message/delete-message";
+import { deleteMessage } from "@/app/_actions/contact-message/delete-message";
 import { Button } from "@/app/components/ui/button";
 import {
   Card,

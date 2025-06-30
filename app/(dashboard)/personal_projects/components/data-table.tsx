@@ -21,12 +21,13 @@ import {
   TableRow,
 } from "@/app/components/ui/table";
 import React from "react";
-import { DataTableViewOptions } from "@/app/(dashboard)/dashboard/projects/components/data-table-view-options";
+
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
-import CreateNewTechnology from "../../components/create-new-technology";
-import CreateNewProject from "../../components/create-new-project";
+import CreateNewTechnology from "../../dashboard/components/create-new-technology";
+import CreateNewProject from "../../dashboard/components/create-new-project";
+import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -16,8 +16,8 @@ import { toast } from "sonner";
 import {
   ContactMessageSchema,
   contactMessageSchema,
-} from "@/app/actions/contact-message/create-message/schema";
-import { createContactMessage } from "@/app/actions/contact-message/create-message";
+} from "@/app/_actions/contact-message/create-message/schema";
+import { createContactMessage } from "@/app/_actions/contact-message/create-message";
 import { FaLocationArrow } from "react-icons/fa6";
 import { Input } from "./ui/input-aceternity";
 import { TextArea } from "./ui/textarea-aceternity";

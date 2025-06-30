@@ -867,17 +867,17 @@ export const data = {
     },
     {
       title: "Projetos",
-      url: "/dashboard/projects",
+      url: "/personal_projects",
       icon: FolderKanbanIcon,
     },
     {
       title: "Technologias",
-      url: "/dashboard/technologies",
+      url: "/technologies",
       icon: GrTechnology,
     },
     {
       title: "Formações",
-      url: "/dashboard/academic-experiences",
+      url: "/academic-experiences",
       icon: GiStarFormation,
     },
   ],

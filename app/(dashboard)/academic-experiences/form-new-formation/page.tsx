@@ -1,4 +1,3 @@
-import MagicLink from "@/app/components/magic-link";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,9 +14,9 @@ import {
 } from "@/app/components/ui/card";
 import { Separator } from "@/app/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/components/ui/sidebar";
-import { PlusCircleIcon } from "lucide-react";
+import FormNewFormationContent from "./components/FormNewFormationContent";
 
-const AcademicExperienciePage = async () => {
+const FormNewFormation = async () => {
   return (
     <SidebarInset>
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -30,39 +29,34 @@ const AcademicExperienciePage = async () => {
                 <BreadcrumbLink href="/">Portfólio</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/academic-experiences">
+                  Formações
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Experiências Acadêmicas</BreadcrumbPage>
+                <BreadcrumbPage>Nova Formação</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
 
-      <div className="flex flex-1 p-4 pt-0">
-        <Card className="flex w-full flex-col">
-          <CardHeader className="flex-row items-center justify-between">
-            <div className="space-y-1">
-              <CardTitle className="text-2xl">
-                Experiências Acadêmicas
-              </CardTitle>
-              <div className="h-1 w-10 rounded-3xl bg-primary"></div>
-            </div>
+      <Card className="m-4 mt-0 space-y-4">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl">
+            Formulário de Nova Formação
+          </CardTitle>
+          <div className="h-1 w-10 rounded-3xl bg-primary"></div>
+        </CardHeader>
 
-            <MagicLink
-              icon={<PlusCircleIcon />}
-              href="/dashboard/academic-experiences/form-new-formation"
-              position="left"
-              title="Nova Formação"
-            />
-          </CardHeader>
-
-          <CardContent className="flex h-full flex-col overflow-hidden pb-0 pt-4">
-            {/* <DataTable columns={academicTableColumns} data={projectsData} /> */}
-          </CardContent>
-        </Card>
-      </div>
+        <CardContent className="flex w-full items-center justify-center">
+          <FormNewFormationContent />
+        </CardContent>
+      </Card>
     </SidebarInset>
   );
 };
 
-export default AcademicExperienciePage;
+export default FormNewFormation;

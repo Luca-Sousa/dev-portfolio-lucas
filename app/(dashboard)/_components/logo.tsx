@@ -24,7 +24,7 @@ export function Logo() {
           tooltip={"Página Inicial"}
         >
           <Link href="/">
-            <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg bg-primary ring-2 ring-primary">
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-sidebar-primary-foreground ring-2 ring-primary">
               <Image src="/logo.png" alt="Logo" width={30} height={30} />
             </div>
 

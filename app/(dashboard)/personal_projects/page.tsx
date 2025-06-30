@@ -1,3 +1,5 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
 import { SidebarInset, SidebarTrigger } from "@/app/components/ui/sidebar";
 import { Separator } from "@/app/components/ui/separator";
 import {
@@ -8,24 +10,32 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/app/components/ui/breadcrumb";
+import { redirect } from "next/navigation";
+import { projectsTableColumns } from "./columns";
+import { DataTable } from "./components/data-table";
+import { getProjects } from "@/app/data_access/get-projects";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
-import EditProjectContent from "../components/edit-project-content";
-import { getProjectId } from "@/app/data_access/get-project-id";
-import { getTechnologies } from "@/app/data_access/get-technologies";
 
-const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
-  const project = await getProjectId({
-    projectId: params.id,
+const Projects = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect("/login");
+  const projects = await getProjects({
+    data: {},
   });
 
-  const technologies = await getTechnologies();
-
-  if (!project) throw new Error("Projeto Não Encontrado!");
+  const projectsData = projects.map((project) => ({
+    ...project,
+    certificateUrl: project.certificateUrl as string,
+    certificateDesc: project.certificateDesc as string,
+    deployUrl: project.deployUrl as string,
+    figmaUrl: project.figmaUrl as string,
+    thumbnailUrl: project.thumbnailUrl as string,
+  }));
 
   return (
     <SidebarInset>
@@ -39,14 +49,8 @@ const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
                 <BreadcrumbLink href="/">Portfólio</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard/projects">
-                  Projetos
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>{project.title}</BreadcrumbPage>
+                <BreadcrumbPage>Projetos</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -55,15 +59,15 @@ const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
 
       <div className="flex flex-1 p-4 pt-0">
         <Card className="flex w-full flex-col">
-          <CardHeader className="flex-row items-center justify-between py-2">
+          <CardHeader className="flex-row items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="text-2xl">Dados do Projeto</CardTitle>
+              <CardTitle className="text-2xl">Projetos</CardTitle>
               <div className="h-1 w-10 rounded-3xl bg-primary"></div>
             </div>
           </CardHeader>
 
           <CardContent className="flex h-full flex-col overflow-hidden pb-0">
-            <EditProjectContent project={project} technologies={technologies} />
+            <DataTable columns={projectsTableColumns} data={projectsData} />
           </CardContent>
         </Card>
       </div>
@@ -71,4 +75,4 @@ const ProjectDashboardPage = async ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default ProjectDashboardPage;
+export default Projects;
