@@ -59,7 +59,7 @@ const Projects = async () => {
 
       <div className="flex flex-1 p-4 pt-0">
         <Card className="flex w-full flex-col">
-          <CardHeader className="flex-row items-center justify-between py-2">
+          <CardHeader className="flex-row items-center justify-between">
             <div className="space-y-1">
               <CardTitle className="text-2xl">Projetos</CardTitle>
               <div className="h-1 w-10 rounded-3xl bg-primary"></div>

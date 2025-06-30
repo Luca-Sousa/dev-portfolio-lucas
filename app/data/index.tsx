@@ -4,6 +4,7 @@ import { HiMiniAcademicCap } from "react-icons/hi2";
 import { MdContacts } from "react-icons/md";
 import { FolderKanbanIcon, LayoutDashboardIcon } from "lucide-react";
 import { GrTechnology } from "react-icons/gr";
+import { GiStarFormation } from "react-icons/gi";
 import { ProjectStatus } from "@prisma/client";
 
 export const navItemsHome = [
@@ -873,6 +874,11 @@ export const data = {
       title: "Technologias",
       url: "/dashboard/technologies",
       icon: GrTechnology,
+    },
+    {
+      title: "Formações",
+      url: "/dashboard/academic-experiences",
+      icon: GiStarFormation,
     },
   ],
 };
