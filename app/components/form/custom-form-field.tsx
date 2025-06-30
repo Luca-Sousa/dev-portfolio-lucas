@@ -26,9 +26,11 @@ import {
   SelectValue,
 } from "../ui/select";
 import { cn } from "@/app/lib/utils";
+import { Textarea } from "../ui/textarea";
 
 export enum FormFieldType {
   INPUT = "input",
+  TEXTAREA = "textarea",
   PHONE_INPUT = "phoneInput",
   DATE_PICKER = "datePicker",
   SELECT = "select",
@@ -40,6 +42,8 @@ export enum FormFieldType {
 interface CustomFormFieldPros {
   control: Control<any>;
   fieldType: FormFieldType;
+  formItemsClassName?: string;
+  optional?: boolean;
   name: string;
   label: string;
   typeInput?: HTMLInputTypeAttribute | undefined;
@@ -108,6 +112,18 @@ const RenderField = ({
         </div>
       );
 
+    case FormFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            placeholder={placeholder}
+            className="min-h-32 resize-none"
+            disabled={props.disabled}
+            {...field}
+          />
+        </FormControl>
+      );
+
     case FormFieldType.SELECT:
       return (
         <Select
@@ -133,7 +149,7 @@ const RenderField = ({
           <PopoverTrigger asChild className="cursor-pointer">
             <FormControl>
               <Button
-                variant={"outline"}
+                variant="outline"
                 disabled={disabled}
                 className={cn(
                   "h-11 w-full justify-start text-left font-normal focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0",
@@ -170,17 +186,17 @@ const RenderField = ({
 };
 
 const CustomFormField = (props: CustomFormFieldPros) => {
-  const { control, name, label, renderSkeleton } = props;
+  const { control, name, label, formItemsClassName, optional } = props;
 
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex-1">
-          <FormLabel className={`${renderSkeleton && "flex"}`}>
-            {label}{" "}
-            {renderSkeleton && (
+        <FormItem className={cn("flex-1", formItemsClassName)}>
+          <FormLabel className={`${optional && "flex gap-1"}`}>
+            {label}
+            {optional && (
               <span className="text-xs text-muted-foreground">(opcional)</span>
             )}
           </FormLabel>

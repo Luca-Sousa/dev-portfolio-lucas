@@ -20,16 +20,7 @@ import {
   FormMessage,
   Form,
 } from "@/app/components/ui/form";
-import { Input } from "@/app/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/select";
+import { SelectItem } from "@/app/components/ui/select";
 import { Textarea } from "@/app/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProjectStatus, Technology } from "@prisma/client";
@@ -38,9 +29,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
-import { Calendar } from "@/app/components/ui/calendar";
 import { toast } from "sonner";
-import { ptBR } from "date-fns/locale";
 import { FileUpload } from "@/app/components/ui/file-upload";
 import {
   CreateProjectSchema,
@@ -49,6 +38,9 @@ import {
 import { getTechnologies } from "@/app/data_access/get-technologies";
 import { createProject } from "../../actions/project/create-project";
 import { handleFileUpload } from "@/app/utils/create-file";
+import CustomFormField, {
+  FormFieldType,
+} from "@/app/components/form/custom-form-field";
 
 const CreateNewProject = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
@@ -275,115 +267,57 @@ const CreateNewProject = () => {
               <div className="flex basis-3/5 flex-col">
                 <ScrollArea>
                   <div className="flex w-full flex-1 flex-col gap-3 pb-2 pl-1 pr-4">
-                    <div className="flex gap-3">
-                      <FormField
+                    <div className="flex justify-between gap-3">
+                      <CustomFormField
                         control={form.control}
+                        fieldType={FormFieldType.INPUT}
                         name="title"
-                        render={({ field }) => (
-                          <FormItem className="h-fit flex-1">
-                            <FormLabel>Título</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Título do Projeto"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        label="Título"
+                        placeholder="Título do Projeto"
                       />
 
-                      <FormField
-                        control={form.control}
-                        name="status"
-                        render={({ field }) => (
-                          <FormItem className="w-full max-w-40">
-                            <FormLabel>Status</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Status" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent align="end">
-                                <SelectGroup>
-                                  <SelectLabel>Status</SelectLabel>
-                                  {status.map((statusItem) => (
-                                    <SelectItem
-                                      key={statusItem}
-                                      value={statusItem}
-                                    >
-                                      {statusItem === ProjectStatus.IN_UPDATE &&
-                                        "Atualização"}
-                                      {statusItem ===
-                                        ProjectStatus.IN_PRODUCTION &&
-                                        "Finalizado"}
-                                      {statusItem ===
-                                        ProjectStatus.IN_PROGRESS &&
-                                        "Desenvolvimento"}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      <div className="flex basis-2/5 gap-3">
+                        <CustomFormField
+                          control={form.control}
+                          fieldType={FormFieldType.POPOVERCALENDER}
+                          name="startDate"
+                          label="Data de Início"
+                          disabledCalendar={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                        />
+
+                        <CustomFormField
+                          control={form.control}
+                          fieldType={FormFieldType.SELECT}
+                          name="status"
+                          label="Status"
+                          placeholder="Status"
+                          formItemsClassName="w-full max-w-40"
+                        >
+                          {status.map((statusItem) => (
+                            <SelectItem key={statusItem} value={statusItem}>
+                              {statusItem === ProjectStatus.IN_UPDATE &&
+                                "Atualização"}
+                              {statusItem === ProjectStatus.IN_PRODUCTION &&
+                                "Finalizado"}
+                              {statusItem === ProjectStatus.IN_PROGRESS &&
+                                "Desenvolvimento"}
+                            </SelectItem>
+                          ))}
+                        </CustomFormField>
+                      </div>
                     </div>
 
-                    <FormField
+                    <CustomFormField
                       control={form.control}
+                      fieldType={FormFieldType.TEXTAREA}
                       name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Descrição - Projeto</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              {...field}
-                              placeholder="Descrição do Projeto..."
-                              className="min-h-32 resize-none"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                      label="Descrição"
+                      placeholder="Descrição do Projeto..."
                     />
 
                     <div className="flex gap-4">
-                      <FormField
-                        control={form.control}
-                        name="startDate"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Data de Início</FormLabel>
-                            <FormControl>
-                              <Calendar
-                                className="rounded-lg border border-input"
-                                classNames={{
-                                  day_selected:
-                                    "bg-primary font-semibold hover:font-semibold focus:font-semibold text-muted hover:bg-primary hover:text-muted focus:bg-primary focus:text-muted",
-                                }}
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={(date) =>
-                                  date > new Date() ||
-                                  date < new Date("1900-01-01")
-                                }
-                                initialFocus
-                                defaultMonth={field.value}
-                                locale={ptBR}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
                       <FormField
                         control={form.control}
                         name="technologies"
@@ -442,59 +376,30 @@ const CreateNewProject = () => {
                     </div>
 
                     <div className="space-y-3">
-                      <FormField
+                      <CustomFormField
                         control={form.control}
+                        fieldType={FormFieldType.INPUT}
                         name="repositoryUrl"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Repositório</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Link do Repositório"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        label="Repositório"
+                        placeholder="Link do Repositório"
                       />
 
-                      <FormField
+                      <CustomFormField
                         control={form.control}
+                        fieldType={FormFieldType.INPUT}
                         name="deployUrl"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              Deploy{" "}
-                              <span className="text-xs text-muted-foreground">
-                                (opcional)
-                              </span>
-                            </FormLabel>
-                            <FormControl>
-                              <Input placeholder="Link de Deploy" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        label="Deploy"
+                        placeholder="Link do Deploy"
+                        optional
                       />
 
-                      <FormField
+                      <CustomFormField
                         control={form.control}
+                        fieldType={FormFieldType.INPUT}
                         name="figmaUrl"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              Figma{" "}
-                              <span className="text-xs text-muted-foreground">
-                                (opcional)
-                              </span>
-                            </FormLabel>
-                            <FormControl>
-                              <Input placeholder="Link do Figma" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        label="Figma"
+                        placeholder="Link do Figma"
+                        optional
                       />
                     </div>
                   </div>
