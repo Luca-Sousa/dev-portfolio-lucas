@@ -51,6 +51,7 @@ interface CustomFormFieldPros {
   icon?: LucideIcon;
   children?: React.ReactNode;
   disabled?: boolean;
+  textareaClassName?: string;
   disabledCalendar?: Matcher | Matcher[] | undefined;
   renderSkeleton?: (field: any) => React.ReactNode;
 }
@@ -69,6 +70,7 @@ const RenderField = ({
     fieldType,
     children,
     disabled,
+    textareaClassName,
     disabledCalendar,
     renderSkeleton,
   } = props;
@@ -117,7 +119,7 @@ const RenderField = ({
         <FormControl>
           <Textarea
             placeholder={placeholder}
-            className="min-h-32 resize-none"
+            className={textareaClassName}
             disabled={props.disabled}
             {...field}
           />

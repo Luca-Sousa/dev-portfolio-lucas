@@ -1,13 +1,6 @@
 import { z } from "zod";
 
-const fileOrUrl = z
-  .union([
-    z.instanceof(Blob, { message: "Input not instance of File" }),
-    z.string().url({ message: "Invalid URL" }),
-  ])
-  .optional();
-
-export const createProjectSchema = z.object({
+export const upsertProjectSchema = z.object({
   id: z.string().uuid().optional(),
   title: z.string().min(1, "O título é obrigatório"),
   description: z.string().min(1, "A descrição é obrigatória"),
@@ -16,11 +9,22 @@ export const createProjectSchema = z.object({
     .refine((date) => date <= new Date(), {
       message: "A data não pode ser no futuro",
     }),
-  certificateUrl: fileOrUrl,
+  certificateUrl: z
+    .string()
+    .url({
+      message: "URL do certificado inválida.",
+    })
+    .optional(),
   certificateDesc: z.string().optional(),
-  imagesUrl: z.array(fileOrUrl).optional(),
-  thumbnailUrl: fileOrUrl.refine((val) => val !== undefined, {
-    message: "A thumbnail é obrigatória",
+  imagesUrl: z
+    .string()
+    .url({
+      message: "URL do ícone inválida.",
+    })
+    .array()
+    .optional(),
+  thumbnailUrl: z.string().url({
+    message: "URL da thumbnail inválida.",
   }),
   repositoryUrl: z.string().url({ message: "URL do repositório inválida" }),
   deployUrl: z.string().optional(),
@@ -33,4 +37,4 @@ export const createProjectSchema = z.object({
     .min(1, { message: "Selecione pelo menos uma tecnologia" }),
 });
 
-export type CreateProjectSchema = z.infer<typeof createProjectSchema>;
+export type UpsertProjectSchema = z.infer<typeof upsertProjectSchema>;

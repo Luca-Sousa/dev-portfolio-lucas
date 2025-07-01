@@ -10,9 +10,9 @@ import EditProjectFigma from "./edit-project-figma";
 import EditProjectTechnologies from "./edit-project-technologies";
 import { Project } from "@/app/types";
 import { Technology } from "@prisma/client";
-import EditProjectImageThumbnail from "./edit-project-Image-Thumbnail";
-import EditProjectImageCertificate from "./edit-project-Image-Certificate";
-import EditProjectImages from "./edit-project-images";
+// import EditProjectImageThumbnail from "./edit-project-Image-Thumbnail";
+// import EditProjectImageCertificate from "./edit-project-Image-Certificate";
+// import EditProjectImages from "./edit-project-images";
 
 interface EditProjectContentProps {
   project: Project;
@@ -32,11 +32,11 @@ const EditProjectContent = ({
           id={project.id}
           description={project.description}
         />
-        <EditProjectImageThumbnail
+        {/* <EditProjectImageThumbnail
           id={project.id}
           thumbnailUrl={project.thumbnailUrl}
         />
-        <EditProjectImages id={project.id} images={project.imagesUrl} />
+        <EditProjectImages id={project.id} images={project.imagesUrl} /> */}
       </div>
 
       {/* Segunda Coluna */}
@@ -58,11 +58,11 @@ const EditProjectContent = ({
         />
         <EditProjectDeploy id={project.id} deployUrl={project.deployUrl} />
         <EditProjectFigma id={project.id} figmaUrl={project.figmaUrl} />
-        <EditProjectImageCertificate
+        {/* <EditProjectImageCertificate
           id={project.id}
           certificateUrl={project.certificateUrl}
           certDescrip={project.certificateDesc}
-        />
+        /> */}
       </div>
     </div>
   );

@@ -3,7 +3,6 @@
 import { Loader2Icon, SaveIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -15,33 +14,39 @@ import {
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 import { Button } from "@/app/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/app/components/ui/form";
-import {
-  UpsertTechnologySchema,
-  upsertTechnologySchema,
-} from "../../actions/technology/upsert-technology/schema";
+import { Form, FormControl } from "@/app/components/ui/form";
 import { FileUpload } from "@/app/components/ui/file-upload";
-import { upsertTechnology } from "../../actions/technology/upsert-technology";
 import { toast } from "sonner";
-import { Input } from "@/app/components/ui/input";
-import { handleFileUpload } from "@/app/utils/create-file";
-import Image from "next/image";
-import { IconReplaceFilled } from "@tabler/icons-react";
-import { deleteFileFromBucket } from "@/app/utils/delete-file";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
+import CustomFormField, {
+  FormFieldType,
+} from "@/app/components/form/custom-form-field";
+import { useAction } from "next-safe-action/hooks";
+import { upsertTechnology } from "@/app/_actions/technology/technology.actions";
+import { z } from "zod";
+import { fileOrUrl } from "@/app/lib/utils";
+import { useEffect } from "react";
+import { Technology } from "@prisma/client";
+
+const upsertTechnologySchema = z.object({
+  id: z.string().uuid().optional(),
+  name: z.string().trim().min(1, {
+    message: "O nome é obrigatório.",
+  }),
+  description: z.string().trim().min(1, {
+    message: "A descrição é obrigatória.",
+  }),
+  iconURL: fileOrUrl.refine((val) => val !== undefined, {
+    message: "A Imagem é obrigatória.",
+  }),
+});
+
+type UpsertTechnologySchema = z.infer<typeof upsertTechnologySchema>;
 
 interface UpsertTechnologyDialogProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  defaultValues?: UpsertTechnologySchema;
+  defaultValues?: Technology;
 }
 
 const UpsertTechnologyDialog = ({
@@ -49,65 +54,46 @@ const UpsertTechnologyDialog = ({
   setIsOpen,
   defaultValues,
 }: UpsertTechnologyDialogProps) => {
-  const [IconFile, setIconFile] = useState<File | null>(null);
   const isupdate = Boolean(defaultValues?.id);
-  const [isUpdatingIcon, setIsUpdatingIcon] = useState(false);
-  const [technologyName, setTechnologyName] = useState<string>(
-    defaultValues?.name ?? "",
-  );
-  const [technologyDescription, setTechnologyDescription] = useState<string>(
-    defaultValues?.description ?? "",
-  );
-  const [technologyIconurl, setTechnologyIconurl] = useState<string>(
-    typeof defaultValues?.iconURL === "string" ? defaultValues.iconURL : "",
-  );
-
-  useEffect(() => {
-    if (defaultValues) {
-      setTechnologyName(defaultValues.name);
-      setTechnologyDescription(defaultValues.description);
-      setTechnologyIconurl(
-        typeof defaultValues.iconURL === "string" ? defaultValues.iconURL : "",
-      );
-    }
-  }, [defaultValues]);
 
   const form = useForm({
     resolver: zodResolver(upsertTechnologySchema),
-    defaultValues: defaultValues ?? {
-      name: "",
-      description: "",
-      iconURL: undefined,
+    defaultValues: {
+      name: defaultValues?.name || "",
+      description: defaultValues?.description || "",
+      // Inicializa o iconURL como array com a string da URL existente, se disponível
+      iconURL: defaultValues?.iconURL
+        ? Array.isArray(defaultValues.iconURL)
+          ? defaultValues.iconURL
+          : [defaultValues.iconURL]
+        : undefined,
     },
   });
 
-  const handleUpsertTechnology = async (data: UpsertTechnologySchema) => {
-    try {
-      if (isUpdatingIcon && typeof defaultValues?.iconURL === "string") {
-        const fileKey = defaultValues.iconURL.split("/").pop();
-        if (fileKey) {
-          await deleteFileFromBucket(fileKey);
-        }
-      }
+  // Importante: Sempre que o diálogo abrir/fechar, redefina os valores
+  useEffect(() => {
+    if (isOpen && defaultValues) {
+      form.reset({
+        name: defaultValues.name || "",
+        description: defaultValues.description || "",
+        // Converta para array aqui também
+        iconURL: defaultValues?.iconURL
+          ? Array.isArray(defaultValues.iconURL)
+            ? defaultValues.iconURL
+            : [defaultValues.iconURL]
+          : undefined,
+      });
+    } else if (!isOpen) {
+      form.reset({
+        name: "",
+        description: "",
+        iconURL: undefined,
+      });
+    }
+  }, [isOpen, defaultValues, form]);
 
-      const uploadedIconUrl = IconFile
-        ? await handleFileUpload(IconFile, "iconURL")
-        : data.iconURL;
-
-      const technologyData: UpsertTechnologySchema = {
-        ...data,
-        iconURL: uploadedIconUrl ?? "",
-      };
-
-      await upsertTechnology(technologyData);
-
-      setTechnologyName(technologyData.name);
-      setTechnologyDescription(technologyData.description);
-      setTechnologyIconurl(
-        typeof technologyData.iconURL === "string"
-          ? technologyData.iconURL
-          : "",
-      );
+  const upsertTechnologyAction = useAction(upsertTechnology, {
+    onSuccess: () => {
       form.reset();
       setIsOpen(false);
       toast.success(
@@ -115,9 +101,52 @@ const UpsertTechnologyDialog = ({
           ? "Tecnologia atualizada com sucesso!"
           : "Tecnologia criada com sucesso!",
       );
-    } catch (error) {
+      // onSuccess?.();
+    },
+    onError: ({ error }) => {
+      console.error("Erro ao criar a tecnologia:", error);
       toast.error("Erro ao salvar a tecnologia! " + error);
+    },
+  });
+
+  const uploadToR2 = async (file: File) => {
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fileName: file.name,
+        fileContent: file.type,
+      }),
+    });
+    if (!res.ok) throw new Error("Falha ao obter URL pré-assinada");
+    const { signedUrl, fileKey } = await res.json();
+
+    await fetch(signedUrl, {
+      method: "PUT",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+
+    return `https://pub-cc396dbf1dd44f8dad20a09f8a694ebd.r2.dev/${fileKey}`;
+  };
+
+  const handleUpsertTechnology = async (values: UpsertTechnologySchema) => {
+    let iconUrlString = "";
+
+    if (values.iconURL && values.iconURL.length > 0) {
+      const fileOrUrl = values.iconURL[0];
+      if (typeof fileOrUrl === "string") {
+        iconUrlString = fileOrUrl;
+      } else if (fileOrUrl instanceof File) {
+        iconUrlString = await uploadToR2(fileOrUrl);
+      }
     }
+
+    upsertTechnologyAction.execute({
+      ...values,
+      id: defaultValues?.id,
+      iconURL: iconUrlString || "",
+    });
   };
 
   return (
@@ -126,7 +155,6 @@ const UpsertTechnologyDialog = ({
       onOpenChange={(open) => {
         setIsOpen(open);
         if (!open) {
-          if (isUpdatingIcon) setIsUpdatingIcon(false);
           form.reset();
         }
       }}
@@ -134,7 +162,7 @@ const UpsertTechnologyDialog = ({
       <DialogTrigger asChild></DialogTrigger>
 
       <DialogContent
-        className={`${isupdate && !isUpdatingIcon ? "max-w-lg" : "max-w-2xl"} flex h-full flex-col lg:max-h-[70%] 2xl:h-fit 2xl:max-h-full`}
+        className={`${isupdate ? "max-w-lg" : "max-w-2xl"} flex h-full flex-col lg:max-h-[70%] 2xl:h-fit 2xl:max-h-full`}
       >
         <DialogHeader>
           <DialogTitle className="text-center">
@@ -150,100 +178,40 @@ const UpsertTechnologyDialog = ({
           >
             <ScrollArea className="h-full">
               <div
-                className={`${isupdate && !isUpdatingIcon ? "w-full flex-col px-1" : "flex-row"} mb-6 mr-3 flex gap-5 pl-1`}
+                className={`${isupdate ? "w-full flex-col px-1" : "flex-row"} mb-6 mr-3 flex gap-5 pl-1`}
               >
-                <FormField
+                <CustomFormField
                   control={form.control}
+                  fieldType={FormFieldType.INPUT}
                   name="name"
-                  render={({ field }) => (
-                    <FormItem className="basis-1/2">
-                      <FormLabel>Nome</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Nome da tecnologia..."
-                          value={technologyName}
-                          onChange={(e) => {
-                            setTechnologyName(e.target.value);
-                            field.onChange(e);
-                          }}
-                        />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Nome"
+                  placeholder="Nome da tecnologia..."
                 />
 
-                <FormField
+                <CustomFormField
                   control={form.control}
+                  fieldType={FormFieldType.INPUT}
                   name="description"
-                  render={({ field }) => (
-                    <FormItem className="basis-1/2">
-                      <FormLabel>Descrição</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Descrição da tecnologia..."
-                          value={technologyDescription}
-                          onChange={(e) => {
-                            setTechnologyDescription(e.target.value);
-                            field.onChange(e);
-                          }}
-                        />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Descrição"
+                  placeholder="Nome da Descrição..."
                 />
               </div>
 
-              <FormField
+              <CustomFormField
+                fieldType={FormFieldType.SKELETON}
                 control={form.control}
                 name="iconURL"
-                render={({ field }) => (
-                  <FormItem className="px-1">
-                    <FormLabel>Ícone da Tecnologia</FormLabel>
-                    <FormControl>
-                      <div
-                        className={`${
-                          !isupdate &&
-                          "mr-3 h-fit w-full rounded-lg border-2 border-dashed border-neutral-200 bg-white pl-1 dark:border-neutral-800 dark:bg-black"
-                        }`}
-                      >
-                        {isupdate && !isUpdatingIcon ? (
-                          <div className="flex w-full items-center justify-between">
-                            <Image
-                              src={technologyIconurl || (field.value as string)}
-                              alt="Imagem da Tecnologia"
-                              width={64}
-                              height={64}
-                            />
-
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => setIsUpdatingIcon(true)}
-                            >
-                              <IconReplaceFilled />
-                              Trocar Ícone
-                            </Button>
-                          </div>
-                        ) : (
-                          <FileUpload
-                            onChange={(files) => {
-                              if (files.length > 0) {
-                                const file = files[0];
-                                setIconFile(file);
-                                form.setValue("iconURL", file);
-                              }
-                            }}
-                            singleFile
-                          />
-                        )}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                label="Ícone da Tecnologia"
+                optional
+                formItemsClassName="px-1"
+                renderSkeleton={(field) => (
+                  <FormControl>
+                    <FileUpload
+                      files={field.value}
+                      onChange={field.onChange}
+                      singleFile
+                    />
+                  </FormControl>
                 )}
               />
             </ScrollArea>

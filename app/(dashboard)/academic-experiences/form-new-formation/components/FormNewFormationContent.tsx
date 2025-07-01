@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
-import FileUpload from "@/app/components/ui/file-upload";
 import {
   Form,
   FormControl,
@@ -104,7 +103,7 @@ const FormNewFormationContent = () => {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="imageUrl"
                 render={({ field }) => (
@@ -116,7 +115,7 @@ const FormNewFormationContent = () => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}

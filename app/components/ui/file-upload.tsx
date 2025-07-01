@@ -1,5 +1,5 @@
 import { cn } from "@/app/lib/utils";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { IconLoader, IconTrash, IconUpload } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
@@ -27,24 +27,56 @@ const secondaryVariant = {
   },
 };
 
+type FileOrUrl = File | string;
+
 interface FileUploadProps {
-  onChange: (files: File[]) => void;
+  files: FileOrUrl[] | null;
+  onChange: (files: FileOrUrl[]) => void;
   singleFile?: boolean;
 }
 
 export const FileUpload: React.FC<FileUploadProps> = ({
+  files: propFiles,
   onChange,
   singleFile,
 }) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<FileOrUrl[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
+  // Atualiza previews e estado interno ao receber novas props
+  useEffect(() => {
+    // Certifica que propFiles é array e converte se necessário
+    const initialFiles = Array.isArray(propFiles)
+      ? propFiles
+      : propFiles
+        ? [propFiles]
+        : [];
+    setFiles(initialFiles);
+
+    // Gera URLs de preview para cada arquivo
+    const urls = initialFiles.map((file) =>
+      typeof file === "string" ? file : URL.createObjectURL(file),
+    );
+    setPreviewUrls(urls);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [propFiles]);
+
   const handleFileChange = (newFiles: File[]) => {
     const newUrls = newFiles.map((file) => URL.createObjectURL(file));
-    setFiles(singleFile ? [newFiles[0]] : [...files, ...newFiles]);
-    setPreviewUrls(singleFile ? [newUrls[0]] : [...previewUrls, ...newUrls]);
-    onChange(singleFile ? [newFiles[0]] : [...files, ...newFiles]);
+    const updatedFiles = singleFile
+      ? [newFiles[0]]
+      : [...files.filter((file) => typeof file === "string"), ...newFiles];
+    const updatedUrls = singleFile
+      ? [newUrls[0]]
+      : [
+          ...previewUrls.filter((_, i) => typeof files[i] === "string"),
+          ...newUrls,
+        ];
+
+    setFiles(updatedFiles);
+    setPreviewUrls(updatedUrls);
+    onChange(updatedFiles);
   };
 
   const handleClick = () => {
@@ -60,9 +92,18 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     },
   });
 
-  const handleDeleteFile = (fileKey: string, callback: () => void) => {
-    URL.revokeObjectURL(fileKey);
-    callback();
+  const handleDeleteFile = (idx: number) => {
+    // Revoke URL object if it's a File
+    if (files[idx] instanceof File) {
+      URL.revokeObjectURL(previewUrls[idx]);
+    }
+
+    // Update state
+    const updatedFiles = files.filter((_, i) => i !== idx);
+    const updatedUrls = previewUrls.filter((_, i) => i !== idx);
+    setFiles(updatedFiles);
+    setPreviewUrls(updatedUrls);
+    onChange(updatedFiles);
   };
 
   return (
@@ -98,8 +139,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             {files.length > 0 &&
               files.map((file, idx) => (
                 <motion.div
-                  key={"file" + idx}
-                  layoutId={idx === 0 ? "file-upload" : "file-upload-" + idx}
+                  key={`file-${idx}`}
+                  layoutId={idx === 0 ? "file-upload" : `file-upload-${idx}`}
                   className={cn(
                     "relative z-40 mx-auto mt-4 flex w-full items-center gap-3 overflow-hidden rounded-md bg-white p-4 dark:bg-neutral-900 md:h-24",
                     "shadow-sm",
@@ -130,7 +171,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         layout
                         className="max-w-44 truncate text-sm text-neutral-700 dark:text-neutral-300"
                       >
-                        {file.name}
+                        {typeof file === "string"
+                          ? file.split("/").pop()
+                          : file.name}
                       </motion.p>
                       <motion.p
                         initial={{ opacity: 0 }}
@@ -138,7 +181,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         layout
                         className="w-fit shrink-0 rounded-lg px-1.5 py-1 text-sm text-neutral-600 shadow-input dark:bg-neutral-800 dark:text-white"
                       >
-                        {(file.size / (1024 * 1024)).toFixed(2)} MB
+                        {typeof file === "string"
+                          ? "Arquivo existente"
+                          : `${(file.size / (1024 * 1024)).toFixed(2)} MB`}
                       </motion.p>
                     </div>
 
@@ -149,7 +194,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         layout
                         className="rounded-md bg-gray-100 px-1 py-0.5 text-sm dark:bg-neutral-800"
                       >
-                        {file.type}
+                        {typeof file === "string" ? "URL" : file.type}
                       </motion.p>
 
                       <motion.p
@@ -159,32 +204,28 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         className="flex flex-col text-xs"
                       >
                         <span>modificado</span>
-                        {new Date(file.lastModified).toLocaleDateString()}
+                        {typeof file === "string"
+                          ? "-"
+                          : new Date(file.lastModified).toLocaleDateString()}
                       </motion.p>
                     </div>
                   </div>
 
-                  <motion.button
-                    type="button"
-                    className="h-full w-10 rounded-md transition-colors hover:bg-neutral-700"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      const fileKey = previewUrls[idx]?.split("/").pop() || "";
-                      handleDeleteFile(fileKey, () => {
-                        setFiles((prevFiles) =>
-                          prevFiles.filter((_, i) => i !== idx),
-                        );
-                        setPreviewUrls((prevUrls) =>
-                          prevUrls.filter((_, i) => i !== idx),
-                        );
-                      });
-                    }}
-                  >
-                    <IconTrash className="mx-auto size-5 text-neutral-600 dark:text-neutral-400" />
-                  </motion.button>
+                  {typeof file !== "string" && (
+                    <motion.button
+                      type="button"
+                      className="h-full w-10 rounded-md transition-colors hover:bg-neutral-700"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleDeleteFile(idx);
+                      }}
+                    >
+                      <IconTrash className="mx-auto size-5 text-neutral-600 dark:text-neutral-400" />
+                    </motion.button>
+                  )}
                 </motion.div>
               ))}
-            {!files.length && (
+            {files.length === 0 && (
               <motion.div
                 layoutId="file-upload"
                 variants={mainVariant}
@@ -213,7 +254,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
               </motion.div>
             )}
 
-            {!files.length && (
+            {files.length === 0 && (
               <motion.div
                 variants={secondaryVariant}
                 className="absolute inset-0 z-30 mx-auto mt-4 flex h-32 w-full max-w-[8rem] items-center justify-center rounded-md border border-dashed border-sky-400 bg-transparent opacity-0"

@@ -3,31 +3,10 @@
 import { Button } from "@/app/components/ui/button";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  ClipboardCopyIcon,
-  EditIcon,
-  MoreHorizontalIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/app/components/ui/badge";
 import Link from "next/link";
 import Image from "next/image";
-import { toast } from "sonner";
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-} from "@/app/components/ui/alert-dialog";
-import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu";
-import { useState } from "react";
 import { Project } from "@/app/types/index";
 import {
   FaArrowRotateRight,
@@ -36,7 +15,7 @@ import {
   FaRocket,
   FaStar,
 } from "react-icons/fa6";
-import DeleteProjectDialogContent from "./components/delete-dialog-content";
+import EditProjectButton from "../dashboard/components/edit-project-button";
 
 export const projectsTableColumns: ColumnDef<Project>[] = [
   {
@@ -203,67 +182,64 @@ export const projectsTableColumns: ColumnDef<Project>[] = [
     id: "actions",
     header: "Ações",
     cell: ({ row: { original: project } }) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
-
-      const copyID = () => {
-        navigator.clipboard.writeText(project.id);
-        toast.success("ID do projeto, copiado com sucesso!");
-      };
-
       return (
-        <AlertDialog>
-          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <MoreHorizontalIcon size={16} />
-                </Button>
-              </DropdownMenuTrigger>
+        <EditProjectButton project={project} />
+        // <AlertDialog>
+        //   <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        //     <DropdownMenu>
+        //       <DropdownMenuTrigger asChild>
+        //         <Button variant="ghost" className="h-8 w-8 p-0">
+        //           <MoreHorizontalIcon size={16} />
+        //         </Button>
+        //       </DropdownMenuTrigger>
 
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="text-center">
-                  Actions
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
+        //       <DropdownMenuContent align="end">
+        //         <DropdownMenuLabel className="text-center">
+        //           Actions
+        //         </DropdownMenuLabel>
+        //         <DropdownMenuSeparator />
 
-                <div className="space-y-1">
-                  <DropdownMenuItem
-                    onClick={copyID}
-                    className="cursor-pointer gap-1.5"
-                  >
-                    <ClipboardCopyIcon size={14} />
-                    Copiar ID
-                  </DropdownMenuItem>
+        //         <div className="space-y-1">
+        //           <DropdownMenuItem
+        //             onClick={copyID}
+        //             className="cursor-pointer gap-1.5"
+        //           >
+        //             <ClipboardCopyIcon size={14} />
+        //             Copiar ID
+        //           </DropdownMenuItem>
 
-                  <DialogTrigger asChild>
-                    <Link href={`/dashboard/projects/${project.id}`}>
-                      <DropdownMenuItem className="cursor-pointer gap-1.5">
-                        <EditIcon size={14} />
-                        Editar
-                      </DropdownMenuItem>
-                    </Link>
-                  </DialogTrigger>
-                </div>
+        //           <DialogTrigger asChild>
+        //             <DropdownMenuItem className="cursor-pointer gap-1.5">
+        //               <EditIcon size={14} />
+        //               Editar
+        //             </DropdownMenuItem>
+        //           </DialogTrigger>
 
-                <DropdownMenuSeparator />
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem className="cursor-pointer gap-1.5 bg-destructive/60 focus:bg-destructive/45">
-                    <Trash2Icon size={14} />
-                    Deletar
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        //           <UpsertProjectForm
+        //             isOpen={editDialogOpen}
+        //             onSuccess={() => setEditDialogOpen(false)}
+        //             project={project}
+        //           />
+        //         </div>
 
-            <DeleteProjectDialogContent
-              productId={project.id}
-              //   thumbnailUrl={project.thumbnailUrl}
-              //   imagesUrl={project.imagesUrl}
-              //   certificateUrl={project.certificateUrl}
-            />
-          </Dialog>
-        </AlertDialog>
+        //         <DropdownMenuSeparator />
+        //         <AlertDialogTrigger asChild>
+        //           <DropdownMenuItem className="cursor-pointer gap-1.5 bg-destructive/60 focus:bg-destructive/45">
+        //             <Trash2Icon size={14} />
+        //             Deletar
+        //           </DropdownMenuItem>
+        //         </AlertDialogTrigger>
+        //       </DropdownMenuContent>
+        //     </DropdownMenu>
+
+        //     <DeleteProjectDialogContent
+        //       productId={project.id}
+        //       //   thumbnailUrl={project.thumbnailUrl}
+        //       //   imagesUrl={project.imagesUrl}
+        //       //   certificateUrl={project.certificateUrl}
+        //     />
+        //   </Dialog>
+        // </AlertDialog>
       );
     },
   },
