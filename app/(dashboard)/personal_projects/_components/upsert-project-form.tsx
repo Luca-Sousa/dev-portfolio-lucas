@@ -34,6 +34,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/app/components/ui/dialog";
+import { handleFileUpload } from "@/app/utils/create-file";
 
 const upsertProjectSchema = z.object({
   id: z.string().uuid().optional(),
@@ -113,7 +114,7 @@ const UpsertProjectForm = ({
 
   const form = useForm<UpsertProjectSchema>({
     resolver: zodResolver(upsertProjectSchema),
-    mode: "onChange", // Para validar em tempo real
+    mode: "onChange",
     defaultValues: {
       title: "",
       description: "",
@@ -237,29 +238,6 @@ const UpsertProjectForm = ({
     },
   });
 
-  const isLoading = upsertProjectAction.isPending;
-
-  const uploadToR2 = async (file: File) => {
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fileName: file.name,
-        fileContent: file.type,
-      }),
-    });
-    if (!res.ok) throw new Error("Falha ao obter URL pré-assinada");
-    const { signedUrl, fileKey } = await res.json();
-
-    await fetch(signedUrl, {
-      method: "PUT",
-      headers: { "Content-Type": file.type },
-      body: file,
-    });
-
-    return `https://pub-cc396dbf1dd44f8dad20a09f8a694ebd.r2.dev/${fileKey}`;
-  };
-
   const handleSubmitProject = async (values: UpsertProjectSchema) => {
     try {
       // Thumbnail
@@ -277,7 +255,7 @@ const UpsertProjectForm = ({
           "name" in thumb &&
           "size" in thumb
         ) {
-          thumbnailUrl = await uploadToR2(thumb);
+          thumbnailUrl = await handleFileUpload(thumb);
         }
       }
 
@@ -296,7 +274,7 @@ const UpsertProjectForm = ({
           "name" in cert &&
           "size" in cert
         ) {
-          certificateUrl = await uploadToR2(cert);
+          certificateUrl = await handleFileUpload(cert);
         }
       }
 
@@ -308,7 +286,7 @@ const UpsertProjectForm = ({
             typeof img === "string"
               ? img
               : img && typeof img === "object" && "name" in img && "size" in img
-                ? await uploadToR2(img)
+                ? await handleFileUpload(img)
                 : "",
           ),
         );
@@ -633,12 +611,12 @@ const UpsertProjectForm = ({
           <div className="border-t border-border p-6">
             <div className="flex justify-end">
               <Button
-                disabled={isLoading}
+                disabled={form.formState.isSubmitting}
                 onClick={form.handleSubmit(handleSubmitProject)}
                 size="lg"
                 className="min-w-full gap-2 font-semibold"
               >
-                {isLoading ? (
+                {form.formState.isSubmitting ? (
                   <>
                     <Loader2Icon className="animate-spin" size={16} />
                     Salvando...

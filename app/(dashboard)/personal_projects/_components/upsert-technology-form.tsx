@@ -25,6 +25,7 @@ import { upsertTechnology } from "@/app/_actions/technology/technology.actions";
 import { z } from "zod";
 import { useEffect } from "react";
 import { Technology } from "@prisma/client";
+import { handleFileUpload } from "@/app/utils/create-file";
 
 const upsertTechnologySchema = z.object({
   id: z.string().uuid().optional(),
@@ -108,27 +109,6 @@ const UpsertTechnologyForm = ({
     },
   });
 
-  const uploadToR2 = async (file: File) => {
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fileName: file.name,
-        fileContent: file.type,
-      }),
-    });
-    if (!res.ok) throw new Error("Falha ao obter URL pré-assinada");
-    const { signedUrl, fileKey } = await res.json();
-
-    await fetch(signedUrl, {
-      method: "PUT",
-      headers: { "Content-Type": file.type },
-      body: file,
-    });
-
-    return `https://pub-cc396dbf1dd44f8dad20a09f8a694ebd.r2.dev/${fileKey}`;
-  };
-
   const handleUpsertTechnology = async (values: UpsertTechnologySchema) => {
     let iconUrlString = "";
 
@@ -137,7 +117,7 @@ const UpsertTechnologyForm = ({
       if (typeof fileOrUrl === "string") {
         iconUrlString = fileOrUrl;
       } else if (fileOrUrl instanceof File) {
-        iconUrlString = await uploadToR2(fileOrUrl);
+        iconUrlString = await handleFileUpload(fileOrUrl);
       }
     }
 
