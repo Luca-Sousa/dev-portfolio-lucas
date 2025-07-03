@@ -3,8 +3,8 @@
 import { Button } from "@/app/components/ui/button";
 import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
-import UpsertTechnologyDialog from "./upsert-technology-dialog";
 import { Technology } from "@prisma/client";
+import UpsertTechnologyForm from "./upsert-technology-form";
 
 interface EditTechnologyButtonProps {
   technology: Technology;
@@ -24,7 +24,7 @@ const EditTechnologyButton = ({ technology }: EditTechnologyButtonProps) => {
         <IconEdit size={32} />
       </Button>
 
-      <UpsertTechnologyDialog
+      <UpsertTechnologyForm
         isOpen={dialogIsOpen}
         setIsOpen={setDialogIsOpen}
         defaultValues={technology}

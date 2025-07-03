@@ -15,7 +15,7 @@ import {
   FaRocket,
   FaStar,
 } from "react-icons/fa6";
-import EditProjectButton from "../dashboard/components/edit-project-button";
+import EditProjectButton from "./_components/edit-project-button";
 
 export const projectsTableColumns: ColumnDef<Project>[] = [
   {

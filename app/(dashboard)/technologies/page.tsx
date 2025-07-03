@@ -16,7 +16,7 @@ import {
 import { Separator } from "@/app/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/components/ui/sidebar";
 import { db } from "@/app/lib/prisma";
-import CreateNewTechnology from "../dashboard/components/create-new-technology";
+import CreateNewTechnology from "../personal_projects/_components/create-new-technology";
 
 const TechnologiesPage = async () => {
   const technologies = await db.technology.findMany();

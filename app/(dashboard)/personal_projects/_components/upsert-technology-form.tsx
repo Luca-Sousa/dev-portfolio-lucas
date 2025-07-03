@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -15,7 +14,7 @@ import {
 } from "@/app/components/ui/dialog";
 import { Button } from "@/app/components/ui/button";
 import { Form, FormControl } from "@/app/components/ui/form";
-import { FileUpload } from "@/app/components/ui/file-upload";
+import { FileUpload } from "@/app/(dashboard)/_components/file-upload";
 import { toast } from "sonner";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
 import CustomFormField, {
@@ -24,7 +23,6 @@ import CustomFormField, {
 import { useAction } from "next-safe-action/hooks";
 import { upsertTechnology } from "@/app/_actions/technology/technology.actions";
 import { z } from "zod";
-import { fileOrUrl } from "@/app/lib/utils";
 import { useEffect } from "react";
 import { Technology } from "@prisma/client";
 
@@ -36,24 +34,28 @@ const upsertTechnologySchema = z.object({
   description: z.string().trim().min(1, {
     message: "A descrição é obrigatória.",
   }),
-  iconURL: fileOrUrl.refine((val) => val !== undefined, {
-    message: "A Imagem é obrigatória.",
-  }),
+  iconURL: z.array(
+    z.union([
+      z.instanceof(File, { message: "Entrada não instância de arquivo" }),
+      z.string().url({ message: "URL inválido" }),
+    ]),
+    { message: "O ícone é obrigatório." },
+  ),
 });
 
 type UpsertTechnologySchema = z.infer<typeof upsertTechnologySchema>;
 
-interface UpsertTechnologyDialogProps {
+interface UpsertTechnologyFormProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   defaultValues?: Technology;
 }
 
-const UpsertTechnologyDialog = ({
+const UpsertTechnologyForm = ({
   isOpen,
   setIsOpen,
   defaultValues,
-}: UpsertTechnologyDialogProps) => {
+}: UpsertTechnologyFormProps) => {
   const isupdate = Boolean(defaultValues?.id);
 
   const form = useForm({
@@ -61,7 +63,6 @@ const UpsertTechnologyDialog = ({
     defaultValues: {
       name: defaultValues?.name || "",
       description: defaultValues?.description || "",
-      // Inicializa o iconURL como array com a string da URL existente, se disponível
       iconURL: defaultValues?.iconURL
         ? Array.isArray(defaultValues.iconURL)
           ? defaultValues.iconURL
@@ -70,13 +71,11 @@ const UpsertTechnologyDialog = ({
     },
   });
 
-  // Importante: Sempre que o diálogo abrir/fechar, redefina os valores
   useEffect(() => {
     if (isOpen && defaultValues) {
       form.reset({
         name: defaultValues.name || "",
         description: defaultValues.description || "",
-        // Converta para array aqui também
         iconURL: defaultValues?.iconURL
           ? Array.isArray(defaultValues.iconURL)
             ? defaultValues.iconURL
@@ -161,9 +160,7 @@ const UpsertTechnologyDialog = ({
     >
       <DialogTrigger asChild></DialogTrigger>
 
-      <DialogContent
-        className={`${isupdate ? "max-w-lg" : "max-w-2xl"} flex h-full flex-col lg:max-h-[70%] 2xl:h-fit 2xl:max-h-full`}
-      >
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">
             {isupdate ? "Editar" : "Criar nova"} Tecnologia
@@ -216,21 +213,10 @@ const UpsertTechnologyDialog = ({
               />
             </ScrollArea>
 
-            <DialogFooter className="p-1 pt-0">
-              <DialogClose asChild>
-                <Button
-                  type="reset"
-                  variant="secondary"
-                  className="gap-1.5"
-                  disabled={form.formState.isSubmitting}
-                >
-                  Cancelar
-                </Button>
-              </DialogClose>
-
+            <DialogFooter>
               <Button
                 type="submit"
-                className="flex items-center gap-2"
+                className="flex w-full items-center gap-2"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
@@ -248,4 +234,4 @@ const UpsertTechnologyDialog = ({
   );
 };
 
-export default UpsertTechnologyDialog;
+export default UpsertTechnologyForm;

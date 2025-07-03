@@ -4,7 +4,7 @@ import { CirclePlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { useIsMobile } from "@/app/hooks/use-mobile";
-import UpsertTechnologyDialog from "./upsert-technology-dialog";
+import UpsertTechnologyDialog from "./upsert-technology-form";
 
 const CreateNewTechnology = () => {
   const isMobile = useIsMobile();

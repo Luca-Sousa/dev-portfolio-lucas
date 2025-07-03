@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
 import { Project } from "@/app/types";
 import { EditIcon } from "lucide-react";
 import { useState } from "react";
-import UpsertProjectForm from "./create-new-project";
+import UpsertProjectForm from "./upsert-project-form";
 import { Button } from "@/app/components/ui/button";
 
 const EditProjectButton = ({ project }: { project: Project }) => {

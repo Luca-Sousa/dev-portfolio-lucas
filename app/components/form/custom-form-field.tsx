@@ -27,6 +27,7 @@ import {
 } from "../ui/select";
 import { cn } from "@/app/lib/utils";
 import { Textarea } from "../ui/textarea";
+import { SortableTechSelector } from "../../(dashboard)/personal_projects/_components/sortable-tech-selector";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -37,6 +38,7 @@ export enum FormFieldType {
   NUMERICFORMAT = "NumericFormat",
   POPOVERCALENDER = "popover",
   SKELETON = "skeleton",
+  SORTABLE_TECH_SELECTOR = "sortableTechSelector",
 }
 
 interface CustomFormFieldPros {
@@ -54,6 +56,12 @@ interface CustomFormFieldPros {
   textareaClassName?: string;
   disabledCalendar?: Matcher | Matcher[] | undefined;
   renderSkeleton?: (field: any) => React.ReactNode;
+  allTechnologies?: Array<{
+    id: string;
+    name: string;
+    iconURL: string;
+    description?: string;
+  }>;
 }
 
 const RenderField = ({
@@ -179,6 +187,18 @@ const RenderField = ({
           </PopoverContent>
         </Popover>
       );
+
+    case FormFieldType.SORTABLE_TECH_SELECTOR:
+      return (
+        <FormControl>
+          <SortableTechSelector
+            selectedTechnologies={field.value || []}
+            allTechnologies={props.allTechnologies || []}
+            onChange={field.onChange}
+          />
+        </FormControl>
+      );
+
     case FormFieldType.SKELETON:
       return renderSkeleton ? renderSkeleton(field) : null;
 

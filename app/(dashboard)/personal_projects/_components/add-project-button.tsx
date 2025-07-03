@@ -3,7 +3,7 @@
 import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
 import { FilePlus2 } from "lucide-react";
-import UpsertProjectForm from "./create-new-project";
+import UpsertProjectForm from "./upsert-project-form";
 import { useState } from "react";
 
 const AddProjectButton = () => {
