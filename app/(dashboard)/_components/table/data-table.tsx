@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-8">
       {/* Header sofisticado com gradiente sutil */}
-      <div className="relative overflow-hidden rounded-xl border bg-gradient-to-br from-background via-background to-muted/20 p-6">
+      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-background via-background to-muted/20">
         <div className="absolute inset-0 bg-grid-small-black/[0.02] dark:bg-grid-small-white/[0.02]" />
         <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
@@ -94,7 +94,7 @@ export function DataTable<TData, TValue>({
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-blue-500" />
                 <span className="text-xs font-medium text-muted-foreground">
-                  Total
+                  Total de Projetos
                 </span>
                 <Badge variant="secondary" className="text-xs font-semibold">
                   {data.length}
@@ -120,7 +120,7 @@ export function DataTable<TData, TValue>({
 
       {/* Controles de filtro e ações */}
       <Card className="border-0 bg-gradient-to-br from-card to-card/80 shadow-lg">
-        <CardHeader className="border-b bg-muted/30 px-0 pb-4">
+        <CardHeader className="bg-muted/30 px-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="group relative">
               {/* Ícone de busca animado */}
@@ -169,7 +169,7 @@ export function DataTable<TData, TValue>({
         </CardHeader>
 
         {/* Tabela */}
-        <CardContent className="p-0">
+        <CardContent className="px-4">
           <div className="rounded-b-lg border-t bg-background">
             <Table>
               <TableHeader>

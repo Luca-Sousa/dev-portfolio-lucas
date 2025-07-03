@@ -13,7 +13,6 @@ import {
 import { redirect } from "next/navigation";
 import { projectsTableColumns } from "../_components/table/columns-projects";
 import { getProjects } from "@/app/data_access/get-projects";
-import { Card, CardContent } from "@/app/components/ui/card";
 import { DataTable } from "../_components/table/data-table";
 
 const Projects = async () => {
@@ -52,12 +51,8 @@ const Projects = async () => {
         </div>
       </header>
 
-      <div className="flex flex-1 p-4 pt-0">
-        <Card className="w-full py-6">
-          <CardContent>
-            <DataTable columns={projectsTableColumns} data={projectsData} />
-          </CardContent>
-        </Card>
+      <div className="flex-1 p-6">
+        <DataTable columns={projectsTableColumns} data={projectsData} />
       </div>
     </SidebarInset>
   );
