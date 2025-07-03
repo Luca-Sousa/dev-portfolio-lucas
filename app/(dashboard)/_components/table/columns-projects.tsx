@@ -192,7 +192,7 @@ export const projectsTableColumns: ColumnDef<Project>[] = [
           variant="outline"
           size="sm"
           asChild
-          className="group gap-2 text-xs hover:border-green-200 hover:bg-green-50 hover:text-green-700 dark:hover:border-green-800 dark:hover:bg-green-900/10 dark:hover:text-green-400"
+          className="group h-8 gap-2 text-xs hover:border-green-200 hover:bg-green-50 hover:text-green-700 dark:hover:border-green-800 dark:hover:bg-green-900/10 dark:hover:text-green-400"
         >
           <Link target="_blank" href={project.deployUrl}>
             <FaRocket className="h-3 w-3 transition-transform group-hover:scale-110" />
