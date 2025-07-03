@@ -27,7 +27,7 @@ import {
 } from "../ui/select";
 import { cn } from "@/app/lib/utils";
 import { Textarea } from "../ui/textarea";
-import { SortableTechSelector } from "../../(dashboard)/personal_projects/_components/sortable-tech-selector";
+import { SortableTechSelector } from "../../(dashboard)/personal_projects/components/sortable-tech-selector";
 
 export enum FormFieldType {
   INPUT = "input",

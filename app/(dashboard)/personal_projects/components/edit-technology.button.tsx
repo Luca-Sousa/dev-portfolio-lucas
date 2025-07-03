@@ -16,9 +16,8 @@ const EditTechnologyButton = ({ technology }: EditTechnologyButtonProps) => {
   return (
     <>
       <Button
-        variant="secondary"
+        variant="outline"
         size="icon"
-        className="relative hover:!z-[80] hover:bg-primary hover:transition-colors"
         onClick={() => setDialogIsOpen(true)}
       >
         <IconEdit size={32} />

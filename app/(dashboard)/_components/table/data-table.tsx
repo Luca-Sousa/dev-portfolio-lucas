@@ -25,9 +25,9 @@ import React from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
-import CreateNewTechnology from "../_components/create-new-technology";
+import CreateNewTechnology from "../../personal_projects/components/create-new-technology";
 import { DataTableViewOptions } from "./data-table-view-options";
-import AddProjectButton from "../_components/add-project-button";
+import AddProjectButton from "../../personal_projects/components/add-project-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

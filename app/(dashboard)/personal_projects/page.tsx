@@ -11,7 +11,7 @@ import {
   BreadcrumbPage,
 } from "@/app/components/ui/breadcrumb";
 import { redirect } from "next/navigation";
-import { projectsTableColumns } from "./columns";
+import { projectsTableColumns } from "../_components/table/columns-projects";
 import { getProjects } from "@/app/data_access/get-projects";
 import {
   Card,
@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
-import { DataTable } from "./components/data-table";
+import { DataTable } from "../_components/table/data-table";
 
 const Projects = async () => {
   const session = await getServerSession(authOptions);

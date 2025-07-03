@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import EditTechnologyButton from "../(dashboard)/personal_projects/_components/edit-technology.button";
+import EditTechnologyButton from "../(dashboard)/personal_projects/components/edit-technology.button";
 import { useEffect, useState } from "react";
 import { Technology } from "@prisma/client";
 import { getTechnology } from "../data_access/get-technology";

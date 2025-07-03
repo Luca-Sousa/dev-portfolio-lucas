@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { FileUpload } from "@/app/(dashboard)/_components/file-upload";
-import { SortableImageUpload } from "@/app/(dashboard)/personal_projects/_components/sortable-image-upload";
+import { SortableImageUpload } from "@/app/(dashboard)/personal_projects/components/sortable-image-upload";
 import { getTechnologies } from "@/app/data_access/get-technologies";
 import CustomFormField, {
   FormFieldType,

@@ -5,7 +5,7 @@ import AuthProvider from "../providers/auth";
 import { ThemeProvider } from "../components/theme-provider";
 import { Toaster } from "sonner";
 import { SidebarProvider } from "../components/ui/sidebar";
-import { AppSidebar } from "./_components/app-sidebar";
+import { AppSidebar } from "./_components/sidebar/app-sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
