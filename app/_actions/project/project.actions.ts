@@ -20,8 +20,27 @@ export const upsertProject = actionClient
       thumbnailUrl,
       imagesUrl,
       technologies,
+      filesToDelete,
       ...rest
     } = parsedInput;
+
+    // Processar arquivos marcados para deletar (substituições)
+    if (filesToDelete && filesToDelete.length > 0) {
+      await Promise.all(
+        filesToDelete.map(async (fileUrl) => {
+          try {
+            const url = new URL(fileUrl);
+            const fileKey =
+              url.pathname.startsWith("/") && url.pathname.length > 1
+                ? url.pathname.slice(1)
+                : url.pathname;
+            await deleteFileFromBucket(fileKey);
+          } catch (e) {
+            console.error("Erro ao deletar arquivo substituído:", e);
+          }
+        }),
+      );
+    }
 
     // Busca projeto anterior para comparar/remover arquivos antigos
     let previousThumbnailUrl: string | undefined = undefined;

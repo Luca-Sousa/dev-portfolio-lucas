@@ -35,6 +35,7 @@ export const upsertProjectSchema = z.object({
   technologies: z
     .array(z.string().min(1, { message: "O nome da tecnologia é obrigatório" }))
     .min(1, { message: "Selecione pelo menos uma tecnologia" }),
+  filesToDelete: z.array(z.string()).optional(),
 });
 
 export type UpsertProjectSchema = z.infer<typeof upsertProjectSchema>;

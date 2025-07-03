@@ -23,7 +23,7 @@ import CustomFormField, {
 import { useAction } from "next-safe-action/hooks";
 import { upsertTechnology } from "@/app/_actions/technology/technology.actions";
 import { z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Technology } from "@prisma/client";
 import { handleFileUpload } from "@/app/utils/create-file";
 
@@ -58,6 +58,10 @@ const UpsertTechnologyForm = ({
   defaultValues,
 }: UpsertTechnologyFormProps) => {
   const isupdate = Boolean(defaultValues?.id);
+  const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
+
+  // Arquivo original para permitir reversão
+  const originalIcon = defaultValues?.iconURL ? [defaultValues.iconURL] : [];
 
   const form = useForm({
     resolver: zodResolver(upsertTechnologySchema),
@@ -89,13 +93,25 @@ const UpsertTechnologyForm = ({
         description: "",
         iconURL: undefined,
       });
+      setFilesToDelete([]); // Reset lista de arquivos para deletar
     }
   }, [isOpen, defaultValues, form]);
+
+  // Função para lidar com substituição de ícone
+  const handleIconReplace = (oldUrl: string, newFile: File) => {
+    setFilesToDelete((prev) => [...prev, oldUrl]);
+    const currentFiles = form.getValues("iconURL") || [];
+    const updatedFiles = currentFiles.map((file) =>
+      file === oldUrl ? newFile : file,
+    );
+    form.setValue("iconURL", updatedFiles);
+  };
 
   const upsertTechnologyAction = useAction(upsertTechnology, {
     onSuccess: () => {
       form.reset();
       setIsOpen(false);
+      setFilesToDelete([]); // Reset lista de arquivos para deletar
       toast.success(
         isupdate
           ? "Tecnologia atualizada com sucesso!"
@@ -125,6 +141,7 @@ const UpsertTechnologyForm = ({
       ...values,
       id: defaultValues?.id,
       iconURL: iconUrlString || "",
+      filesToDelete, // Incluir arquivos para deletar
     });
   };
 
@@ -186,6 +203,8 @@ const UpsertTechnologyForm = ({
                     <FileUpload
                       files={field.value}
                       onChange={field.onChange}
+                      onFileReplace={handleIconReplace}
+                      originalFiles={originalIcon}
                       singleFile
                     />
                   </FormControl>

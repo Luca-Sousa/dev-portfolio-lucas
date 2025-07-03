@@ -17,7 +17,25 @@ export const upsertTechnology = actionClient
       throw new Error("Usuário não autenticado");
     }
 
-    const { id, iconURL, ...rest } = parsedInput;
+    const { id, iconURL, filesToDelete, ...rest } = parsedInput;
+
+    // Processar arquivos marcados para deletar (substituições)
+    if (filesToDelete && filesToDelete.length > 0) {
+      await Promise.all(
+        filesToDelete.map(async (fileUrl) => {
+          try {
+            const url = new URL(fileUrl);
+            const fileKey =
+              url.pathname.startsWith("/") && url.pathname.length > 1
+                ? url.pathname.slice(1)
+                : url.pathname;
+            await deleteFileFromBucket(fileKey);
+          } catch (e) {
+            console.error("Erro ao deletar arquivo substituído:", e);
+          }
+        }),
+      );
+    }
 
     // Buscar tecnologia anterior para pegar o ícone antigo
     let previousIconUrl: string | undefined = undefined;

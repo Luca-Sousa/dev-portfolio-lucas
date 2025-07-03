@@ -11,6 +11,7 @@ export const upsertTechnologySchema = z.object({
   iconURL: z.string().url({
     message: "URL do ícone inválida.",
   }),
+  filesToDelete: z.array(z.string()).optional(),
 });
 
 export type UpsertTechnologySchema = z.infer<typeof upsertTechnologySchema>;

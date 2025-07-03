@@ -9,6 +9,8 @@ import {
   IconX,
   IconEye,
   IconGripVertical,
+  IconReplace,
+  IconRotateClockwise,
 } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
@@ -37,6 +39,8 @@ type FileOrUrl = File | string;
 interface SortableImageUploadProps {
   files: FileOrUrl[] | null;
   onChange: (files: FileOrUrl[]) => void;
+  onFileReplace?: (oldUrl: string, newFile: File) => void; // Callback para substituição
+  originalFiles?: FileOrUrl[] | null; // Arquivos originais para permitir reversão
   maxFiles?: number;
   maxFileSize?: number; // em MB
   acceptedTypes?: string[];
@@ -48,7 +52,10 @@ interface SortableImageItemProps {
   index: number;
   previewUrl: string;
   onDelete: (index: number) => void;
+  onReplace?: (index: number) => void;
+  onRevert?: (index: number) => void;
   onPreview?: (url: string) => void;
+  isModified?: boolean;
   isLoading?: boolean;
 }
 
@@ -57,7 +64,10 @@ const SortableImageItem: React.FC<SortableImageItemProps> = ({
   index,
   previewUrl,
   onDelete,
+  onReplace,
+  onRevert,
   onPreview,
+  isModified = false,
   isLoading = false,
 }) => {
   const {
@@ -116,7 +126,7 @@ const SortableImageItem: React.FC<SortableImageItemProps> = ({
         {/* Informações da imagem */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
-            <p className="truncate text-sm font-medium text-foreground">
+            <p className="max-w-64 truncate text-sm font-medium text-foreground">
               {typeof file === "string" ? `Imagem ${index + 1}` : file.name}
             </p>
             <div className="flex items-center gap-1">
@@ -148,17 +158,49 @@ const SortableImageItem: React.FC<SortableImageItemProps> = ({
               <IconEye className="h-4 w-4" />
             </button>
           )}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(index);
-            }}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-destructive/90 text-destructive-foreground shadow-sm transition-colors hover:bg-destructive"
-            title="Remover imagem"
-          >
-            <IconTrash className="h-4 w-4" />
-          </button>
+
+          {/* Mostra ícone de trocar se for URL, excluir/reverter se for File */}
+          {typeof file === "string" ? (
+            onReplace && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReplace(index);
+                }}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500/90 text-white shadow-sm transition-colors hover:bg-blue-600"
+                title="Substituir imagem"
+              >
+                <IconReplace className="h-4 w-4" />
+              </button>
+            )
+          ) : // Se o arquivo foi modificado (é um File), mostra botão de reverter
+          isModified && onRevert ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onRevert(index);
+              }}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500/90 text-white shadow-sm transition-colors hover:bg-orange-600"
+              title="Reverter para original"
+            >
+              <IconRotateClockwise className="h-4 w-4" />
+            </button>
+          ) : (
+            // Se não foi modificado, mostra botão de excluir normal
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(index);
+              }}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-destructive/90 text-destructive-foreground shadow-sm transition-colors hover:bg-destructive"
+              title="Remover imagem"
+            >
+              <IconTrash className="h-4 w-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -211,7 +253,7 @@ const ImagePreviewModal: React.FC<{
           alt="Preview da imagem"
           width={1200}
           height={800}
-          className="h-auto max-h-[90vh] w-auto max-w-[90vw] object-contain"
+          className="h-auto max-h-[90vh] w-full max-w-[90vw] object-contain"
         />
       </div>
     </div>
@@ -221,6 +263,8 @@ const ImagePreviewModal: React.FC<{
 export const SortableImageUpload: React.FC<SortableImageUploadProps> = ({
   files: propFiles,
   onChange,
+  onFileReplace,
+  originalFiles,
   maxFiles = 10,
   maxFileSize = 5, // 5MB por padrão
   acceptedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"],
@@ -233,7 +277,9 @@ export const SortableImageUpload: React.FC<SortableImageUploadProps> = ({
     url: string;
   }>({ isOpen: false, url: "" });
   const [loadingFiles, setLoadingFiles] = useState<Set<number>>(new Set());
+  const [replacingIndex, setReplacingIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const replaceInputRef = useRef<HTMLInputElement>(null);
 
   // Configuração dos sensores do dnd-kit com restrições
   const sensors = useSensors(
@@ -326,6 +372,136 @@ export const SortableImageUpload: React.FC<SortableImageUploadProps> = ({
     onChange(updatedFiles);
   };
 
+  // Função para substituir arquivo
+  const handleReplaceFile = (index: number) => {
+    setReplacingIndex(index);
+
+    // Pequeno delay para garantir que o DOM esteja pronto
+    setTimeout(() => {
+      if (replaceInputRef.current) {
+        replaceInputRef.current.click();
+      }
+    }, 10);
+  };
+
+  // Função para processar a substituição
+  const handleReplaceFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newFiles = Array.from(event.target.files || []);
+    if (newFiles.length === 0 || replacingIndex === null) {
+      return;
+    }
+
+    const validFiles = validateFiles(newFiles);
+    if (validFiles.length === 0) {
+      return;
+    }
+
+    const newFile = validFiles[0];
+    const oldFile = files[replacingIndex];
+
+    // Adiciona loading state
+    const newLoadingSet = new Set(loadingFiles);
+    newLoadingSet.add(replacingIndex);
+    setLoadingFiles(newLoadingSet);
+
+    try {
+      // Se há callback para substituição, chama ele
+      if (onFileReplace && typeof oldFile === "string") {
+        onFileReplace(oldFile, newFile);
+      }
+
+      // Revoga URL antiga se for File
+      if (oldFile instanceof File) {
+        URL.revokeObjectURL(previewUrls[replacingIndex]);
+      }
+
+      // Cria nova URL para o arquivo
+      const newUrl = URL.createObjectURL(newFile);
+
+      // Atualiza arrays
+      const updatedFiles = [...files];
+      const updatedUrls = [...previewUrls];
+      updatedFiles[replacingIndex] = newFile;
+      updatedUrls[replacingIndex] = newUrl;
+
+      setFiles(updatedFiles);
+      setPreviewUrls(updatedUrls);
+      onChange(updatedFiles);
+
+      // Simula carregamento
+      setTimeout(() => {
+        const finalLoadingSet = new Set(loadingFiles);
+        finalLoadingSet.delete(replacingIndex);
+        setLoadingFiles(finalLoadingSet);
+        setReplacingIndex(null);
+      }, 500);
+    } catch (error) {
+      console.error("Erro ao substituir arquivo:", error);
+      const finalLoadingSet = new Set(loadingFiles);
+      finalLoadingSet.delete(replacingIndex);
+      setLoadingFiles(finalLoadingSet);
+      setReplacingIndex(null);
+    }
+
+    // Limpa o input
+    event.target.value = "";
+  };
+
+  // Função para reverter à imagem original
+  const handleRevertFile = (index: number) => {
+    if (!originalFiles || !originalFiles[index]) return;
+
+    const originalFile = originalFiles[index];
+
+    // Revoga URL atual se for File
+    if (files[index] instanceof File) {
+      URL.revokeObjectURL(previewUrls[index]);
+    }
+
+    // Atualiza arrays com o arquivo original
+    const updatedFiles = [...files];
+    const updatedUrls = [...previewUrls];
+    updatedFiles[index] = originalFile;
+    updatedUrls[index] =
+      typeof originalFile === "string"
+        ? originalFile
+        : URL.createObjectURL(originalFile);
+
+    setFiles(updatedFiles);
+    setPreviewUrls(updatedUrls);
+    onChange(updatedFiles);
+  };
+
+  // Verifica se o arquivo foi modificado comparado ao original
+  const isFileModified = (index: number): boolean => {
+    if (!originalFiles || !originalFiles[index]) return false;
+
+    const currentFile = files[index];
+    const originalFile = originalFiles[index];
+
+    // Se ambos são strings (URLs), compara as URLs
+    if (typeof currentFile === "string" && typeof originalFile === "string") {
+      return currentFile !== originalFile;
+    }
+
+    // Se um é File e outro é string, foi modificado
+    if (typeof currentFile !== typeof originalFile) {
+      return true;
+    }
+
+    // Se ambos são Files, compara os nomes e tamanhos
+    if (currentFile instanceof File && originalFile instanceof File) {
+      return (
+        currentFile.name !== originalFile.name ||
+        currentFile.size !== originalFile.size
+      );
+    }
+
+    return false;
+  };
+
   // Handler do drag end do dnd-kit
   const handleDragEnd = (event: import("@dnd-kit/core").DragEndEvent) => {
     const { active, over } = event;
@@ -374,6 +550,15 @@ export const SortableImageUpload: React.FC<SortableImageUploadProps> = ({
 
   return (
     <div className="w-full space-y-4">
+      {/* Input para substituição - sempre presente */}
+      <input
+        ref={replaceInputRef}
+        type="file"
+        accept={acceptedTypes.join(",")}
+        onChange={handleReplaceFileChange}
+        className="hidden"
+      />
+
       {/* Área de Upload */}
       <div
         {...getRootProps()}
@@ -450,11 +635,14 @@ export const SortableImageUpload: React.FC<SortableImageUploadProps> = ({
                     index={index}
                     previewUrl={previewUrls[index]}
                     onDelete={handleDeleteFile}
+                    onReplace={handleReplaceFile}
+                    onRevert={handleRevertFile}
                     onPreview={
                       showPreview
                         ? (url) => setPreviewModal({ isOpen: true, url })
                         : undefined
                     }
+                    isModified={isFileModified(index)}
                     isLoading={loadingFiles.has(index)}
                   />
                 ))}

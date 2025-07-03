@@ -8,6 +8,8 @@ import {
   IconUpload,
   IconX,
   IconEye,
+  IconReplace,
+  IconRotateClockwise,
 } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
@@ -17,6 +19,8 @@ type FileOrUrl = File | string;
 interface FileUploadProps {
   files: FileOrUrl[] | null;
   onChange: (files: FileOrUrl[]) => void;
+  onFileReplace?: (oldUrl: string, newFile: File) => void; // Callback para substituição
+  originalFiles?: FileOrUrl[] | null; // Arquivos originais para permitir reversão
   singleFile?: boolean;
   maxFileSize?: number; // em MB
   acceptedTypes?: string[];
@@ -79,6 +83,8 @@ const ImagePreviewModal: React.FC<{
 export const FileUpload: React.FC<FileUploadProps> = ({
   files: propFiles,
   onChange,
+  onFileReplace,
+  originalFiles,
   singleFile = false,
   maxFileSize = 5, // 5MB por padrão
   acceptedTypes = [
@@ -97,7 +103,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     url: string;
   }>({ isOpen: false, url: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [replacingIndex, setReplacingIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const replaceInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const initialFiles = Array.isArray(propFiles)
@@ -173,6 +181,129 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     onChange(updatedFiles);
   };
 
+  // Função para reverter à imagem original
+  const handleRevertFile = (index: number) => {
+    if (!originalFiles || !originalFiles[index]) return;
+
+    const originalFile = originalFiles[index];
+
+    // Revoga URL atual se for File
+    if (files[index] instanceof File) {
+      URL.revokeObjectURL(previewUrls[index]);
+    }
+
+    // Atualiza arrays com o arquivo original
+    const updatedFiles = [...files];
+    const updatedUrls = [...previewUrls];
+    updatedFiles[index] = originalFile;
+    updatedUrls[index] =
+      typeof originalFile === "string"
+        ? originalFile
+        : URL.createObjectURL(originalFile);
+
+    setFiles(updatedFiles);
+    setPreviewUrls(updatedUrls);
+    onChange(updatedFiles);
+  };
+
+  // Verifica se o arquivo foi modificado comparado ao original
+  const isFileModified = (index: number): boolean => {
+    if (!originalFiles || !originalFiles[index]) return false;
+
+    const currentFile = files[index];
+    const originalFile = originalFiles[index];
+
+    // Se ambos são strings (URLs), compara as URLs
+    if (typeof currentFile === "string" && typeof originalFile === "string") {
+      return currentFile !== originalFile;
+    }
+
+    // Se um é File e outro é string, foi modificado
+    if (typeof currentFile !== typeof originalFile) {
+      return true;
+    }
+
+    // Se ambos são Files, compara os nomes e tamanhos
+    if (currentFile instanceof File && originalFile instanceof File) {
+      return (
+        currentFile.name !== originalFile.name ||
+        currentFile.size !== originalFile.size
+      );
+    }
+
+    return false;
+  };
+
+  // Nova função para substituir arquivo
+  const handleReplaceFile = (index: number) => {
+    setReplacingIndex(index);
+
+    // Pequeno delay para garantir que o DOM esteja pronto
+    setTimeout(() => {
+      if (replaceInputRef.current) {
+        replaceInputRef.current.click();
+      }
+    }, 10);
+  };
+
+  // Função para processar a substituição
+  const handleReplaceFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newFiles = Array.from(event.target.files || []);
+    if (newFiles.length === 0 || replacingIndex === null) {
+      return;
+    }
+
+    const validFiles = validateFiles(newFiles);
+    if (validFiles.length === 0) {
+      return;
+    }
+
+    const newFile = validFiles[0];
+    const oldFile = files[replacingIndex];
+
+    setIsLoading(true);
+
+    try {
+      // Se há callback para substituição, chama ele
+      if (onFileReplace && typeof oldFile === "string") {
+        onFileReplace(oldFile, newFile);
+      }
+
+      // Revoga URL antiga se for File
+      if (oldFile instanceof File) {
+        URL.revokeObjectURL(previewUrls[replacingIndex]);
+      }
+
+      // Cria nova URL para o arquivo
+      const newUrl = URL.createObjectURL(newFile);
+
+      // Atualiza arrays
+      const updatedFiles = [...files];
+      const updatedUrls = [...previewUrls];
+      updatedFiles[replacingIndex] = newFile;
+      updatedUrls[replacingIndex] = newUrl;
+
+      setFiles(updatedFiles);
+      setPreviewUrls(updatedUrls);
+      onChange(updatedFiles);
+
+      // Simula carregamento
+      setTimeout(() => {
+        setIsLoading(false);
+        setReplacingIndex(null);
+      }, 500);
+    } catch (error) {
+      console.error("Erro ao substituir arquivo:", error);
+      setIsLoading(false);
+      setReplacingIndex(null);
+    }
+
+    // Limpa o input
+    event.target.value = "";
+  };
+
   const { getRootProps, isDragActive } = useDropzone({
     onDrop: handleFileChange,
     accept: acceptedTypes.reduce(
@@ -201,6 +332,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
     return (
       <div className="w-full">
+        {/* Input para substituição - sempre presente */}
+        <input
+          ref={replaceInputRef}
+          type="file"
+          accept={acceptedTypes.join(",")}
+          onChange={handleReplaceFileChange}
+          className="hidden"
+        />
+
         <div className="group relative overflow-hidden rounded-lg border-2 border-dashed border-border bg-card">
           {isLoading ? (
             <div className="flex h-64 w-full items-center justify-center">
@@ -230,14 +370,38 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                     <IconEye className="h-5 w-5" />
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteFile(0)}
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/90 text-destructive-foreground shadow-lg transition-colors hover:bg-destructive"
-                  title="Remover imagem"
-                >
-                  <IconTrash className="h-5 w-5" />
-                </button>
+
+                {/* Mostra ícone de trocar se for URL, excluir/reverter se for File */}
+                {typeof file === "string" ? (
+                  <button
+                    type="button"
+                    onClick={() => handleReplaceFile(0)}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/90 text-white shadow-lg transition-colors hover:bg-blue-600"
+                    title="Substituir imagem"
+                  >
+                    <IconReplace className="h-5 w-5" />
+                  </button>
+                ) : // Se o arquivo foi modificado (é um File), mostra botão de reverter
+                isFileModified(0) ? (
+                  <button
+                    type="button"
+                    onClick={() => handleRevertFile(0)}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500/90 text-white shadow-lg transition-colors hover:bg-orange-600"
+                    title="Reverter para imagem original"
+                  >
+                    <IconRotateClockwise className="h-5 w-5" />
+                  </button>
+                ) : (
+                  // Se não foi modificado, mostra botão de excluir normal
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteFile(0)}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/90 text-destructive-foreground shadow-lg transition-colors hover:bg-destructive"
+                    title="Remover imagem"
+                  >
+                    <IconTrash className="h-5 w-5" />
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -258,6 +422,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   // Área de upload
   return (
     <div className="w-full">
+      {/* Input para substituição - sempre presente */}
+      <input
+        ref={replaceInputRef}
+        type="file"
+        accept={acceptedTypes.join(",")}
+        onChange={handleReplaceFileChange}
+        className="hidden"
+      />
+
       <div
         {...getRootProps()}
         className={cn(
@@ -357,14 +530,38 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                     <IconEye className="h-4 w-4" />
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteFile(index)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-destructive/90 text-destructive-foreground shadow-sm transition-colors hover:bg-destructive"
-                  title="Remover"
-                >
-                  <IconTrash className="h-4 w-4" />
-                </button>
+
+                {/* Mostra ícone de trocar se for URL, excluir/reverter se for File */}
+                {typeof file === "string" ? (
+                  <button
+                    type="button"
+                    onClick={() => handleReplaceFile(index)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500/90 text-white shadow-sm transition-colors hover:bg-blue-600"
+                    title="Substituir"
+                  >
+                    <IconReplace className="h-4 w-4" />
+                  </button>
+                ) : // Se o arquivo foi modificado (é um File), mostra botão de reverter
+                isFileModified(index) ? (
+                  <button
+                    type="button"
+                    onClick={() => handleRevertFile(index)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500/90 text-white shadow-sm transition-colors hover:bg-orange-600"
+                    title="Reverter para original"
+                  >
+                    <IconRotateClockwise className="h-4 w-4" />
+                  </button>
+                ) : (
+                  // Se não foi modificado, mostra botão de excluir normal
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteFile(index)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-destructive/90 text-destructive-foreground shadow-sm transition-colors hover:bg-destructive"
+                    title="Remover"
+                  >
+                    <IconTrash className="h-4 w-4" />
+                  </button>
+                )}
               </div>
             </div>
           ))}

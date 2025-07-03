@@ -111,6 +111,14 @@ const UpsertProjectForm = ({
   const [technologies, setTechnologies] = useState<Technology[]>([]);
   const [status, setStatus] = useState<ProjectStatus[]>([]);
   const [currentStep, setCurrentStep] = useState<Step>("thumbnail");
+  const [filesToDelete, setFilesToDelete] = useState<string[]>([]); // URLs para deletar
+
+  // Arquivos originais para permitir reversão
+  const originalThumbnail = project?.thumbnailUrl ? [project.thumbnailUrl] : [];
+  const originalCertificate = project?.certificateUrl
+    ? [project.certificateUrl]
+    : [];
+  const originalImages = project?.imagesUrl || [];
 
   const form = useForm<UpsertProjectSchema>({
     resolver: zodResolver(upsertProjectSchema),
@@ -220,8 +228,37 @@ const UpsertProjectForm = ({
 
       form.reset(resetValues);
       setCurrentStep("thumbnail");
+      setFilesToDelete([]); // Reset lista de arquivos para deletar
     }
   }, [form, isOpen, project]);
+
+  // Funções para lidar com substituição de arquivos
+  const handleThumbnailReplace = (oldUrl: string, newFile: File) => {
+    setFilesToDelete((prev) => [...prev, oldUrl]);
+    const currentFiles = form.getValues("thumbnailUrl") || [];
+    const updatedFiles = currentFiles.map((file) =>
+      file === oldUrl ? newFile : file,
+    );
+    form.setValue("thumbnailUrl", updatedFiles);
+  };
+
+  const handleCertificateReplace = (oldUrl: string, newFile: File) => {
+    setFilesToDelete((prev) => [...prev, oldUrl]);
+    const currentFiles = form.getValues("certificateUrl") || [];
+    const updatedFiles = currentFiles.map((file) =>
+      file === oldUrl ? newFile : file,
+    );
+    form.setValue("certificateUrl", updatedFiles);
+  };
+
+  const handleGalleryReplace = (oldUrl: string, newFile: File) => {
+    setFilesToDelete((prev) => [...prev, oldUrl]);
+    const currentFiles = form.getValues("imagesUrl") || [];
+    const updatedFiles = currentFiles.map((file) =>
+      file === oldUrl ? newFile : file,
+    );
+    form.setValue("imagesUrl", updatedFiles);
+  };
 
   const upsertProjectAction = useAction(upsertProject, {
     onSuccess: () => {
@@ -299,6 +336,7 @@ const UpsertProjectForm = ({
         thumbnailUrl,
         certificateUrl,
         imagesUrl,
+        filesToDelete, // Incluir arquivos para deletar
       });
     } catch (error) {
       console.error("Erro no upload:", error);
@@ -331,6 +369,8 @@ const UpsertProjectForm = ({
                     <FileUpload
                       files={field.value}
                       onChange={field.onChange}
+                      onFileReplace={handleThumbnailReplace}
+                      originalFiles={originalThumbnail}
                       singleFile
                     />
                   </div>
@@ -361,7 +401,9 @@ const UpsertProjectForm = ({
                   <SortableImageUpload
                     files={field.value}
                     onChange={field.onChange}
-                    maxFiles={8}
+                    onFileReplace={handleGalleryReplace}
+                    originalFiles={originalImages}
+                    maxFiles={15}
                     maxFileSize={10}
                     showPreview={true}
                   />
@@ -502,6 +544,8 @@ const UpsertProjectForm = ({
                     <FileUpload
                       files={field.value}
                       onChange={field.onChange}
+                      onFileReplace={handleCertificateReplace}
+                      originalFiles={originalCertificate}
                       singleFile
                     />
                   </div>
