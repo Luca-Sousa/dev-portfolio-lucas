@@ -134,7 +134,8 @@ export const upsertProject = actionClient
       update: {
         ...projectData,
         technologies: {
-          create: technologies.map((techId: string) => ({
+          create: technologies.map((techId: string, index: number) => ({
+            order: index,
             technology: {
               connect: { id: techId },
             },
@@ -145,7 +146,8 @@ export const upsertProject = actionClient
         ...projectData,
         id: id ?? undefined,
         technologies: {
-          create: technologies.map((techId: string) => ({
+          create: technologies.map((techId: string, index: number) => ({
+            order: index,
             technology: {
               connect: { id: techId },
             },
