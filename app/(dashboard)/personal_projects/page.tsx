@@ -13,12 +13,7 @@ import {
 import { redirect } from "next/navigation";
 import { projectsTableColumns } from "../_components/table/columns-projects";
 import { getProjects } from "@/app/data_access/get-projects";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/app/components/ui/card";
+import { Card, CardContent } from "@/app/components/ui/card";
 import { DataTable } from "../_components/table/data-table";
 
 const Projects = async () => {
@@ -58,15 +53,8 @@ const Projects = async () => {
       </header>
 
       <div className="flex flex-1 p-4 pt-0">
-        <Card className="flex w-full flex-col">
-          <CardHeader className="flex-row items-center justify-between">
-            <div className="space-y-1">
-              <CardTitle className="text-2xl">Projetos</CardTitle>
-              <div className="h-1 w-10 rounded-3xl bg-primary"></div>
-            </div>
-          </CardHeader>
-
-          <CardContent className="flex h-full flex-col overflow-hidden pb-0">
+        <Card className="w-full py-6">
+          <CardContent>
             <DataTable columns={projectsTableColumns} data={projectsData} />
           </CardContent>
         </Card>

@@ -127,3 +127,60 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Remove outline de todos os elementos de tabela */
+table,
+table *,
+table tr,
+table td,
+table th,
+table tbody,
+table thead,
+table tfoot {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove focus-visible */
+table *:focus,
+table *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove especificamente o ring do Tailwind de qualquer elemento dentro da tabela */
+table .focus-visible\:ring-2:focus-visible,
+table .focus-visible\:ring-ring:focus-visible,
+table .focus-visible\:ring-offset-2:focus-visible {
+  --tw-ring-width: 0px !important;
+  --tw-ring-offset-width: 0px !important;
+  box-shadow: none !important;
+}
+
+/* Sobrescreve especificamente as classes do Button dentro de tabelas */
+table button.focus-visible\:ring-2:focus-visible,
+table button.focus-visible\:ring-ring:focus-visible,
+table button.focus-visible\:ring-offset-2:focus-visible,
+table a.focus-visible\:ring-2:focus-visible,
+table a.focus-visible\:ring-ring:focus-visible,
+table a.focus-visible\:ring-offset-2:focus-visible {
+  --tw-ring-shadow: none !important;
+  --tw-ring-width: 0px !important;
+  --tw-ring-offset-width: 0px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Remove qualquer shadow ou ring de botões dentro da tabela */
+table button:focus,
+table button:focus-visible,
+table a:focus,
+table a:focus-visible,
+table input:focus,
+table input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  --tw-ring-width: 0px !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-shadow: none !important;
+}

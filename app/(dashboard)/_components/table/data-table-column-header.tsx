@@ -8,8 +8,12 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 import { cn } from "@/app/lib/utils";
 import { Column } from "@tanstack/react-table";
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
-import { FaCaretUp, FaEyeSlash } from "react-icons/fa6";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  EyeOffIcon,
+  MoreHorizontal,
+} from "lucide-react";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -23,7 +27,7 @@ export function DataTableColumnHeader<TData, TValue>({
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>;
+    return <div className={cn("font-medium", className)}>{title}</div>;
   }
 
   return (
@@ -33,31 +37,40 @@ export function DataTableColumnHeader<TData, TValue>({
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent"
+            className="-ml-3 h-8 hover:bg-accent/50 data-[state=open]:bg-accent"
           >
-            <span>{title}</span>
+            <span className="font-medium">{title}</span>
             {column.getIsSorted() === "desc" ? (
-              <ArrowDownIcon className="ml-2 h-4 w-4" />
+              <ArrowDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
             ) : column.getIsSorted() === "asc" ? (
-              <ArrowUpIcon className="ml-2 h-4 w-4" />
+              <ArrowUpIcon className="ml-2 h-4 w-4 text-muted-foreground" />
             ) : (
-              <FaCaretUp className="ml-2 h-4 w-4" />
+              <MoreHorizontal className="ml-2 h-4 w-4 text-muted-foreground" />
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-            Asc
+        <DropdownMenuContent align="start" className="w-[160px]">
+          <DropdownMenuItem
+            onClick={() => column.toggleSorting(false)}
+            className="gap-2"
+          >
+            <ArrowUpIcon className="h-3.5 w-3.5 text-muted-foreground" />
+            Crescente
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-            Desc
+          <DropdownMenuItem
+            onClick={() => column.toggleSorting(true)}
+            className="gap-2"
+          >
+            <ArrowDownIcon className="h-3.5 w-3.5 text-muted-foreground" />
+            Decrescente
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <FaEyeSlash className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-            Hide
+          <DropdownMenuItem
+            onClick={() => column.toggleVisibility(false)}
+            className="gap-2 text-muted-foreground"
+          >
+            <EyeOffIcon className="h-3.5 w-3.5" />
+            Ocultar coluna
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

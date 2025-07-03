@@ -1,0 +1,339 @@
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Gradiente de máscara para efeitos visuais */
+.mask-gradient {
+  mask-image: radial-gradient(circle at center, transparent 0%, black 100%);
+  -webkit-mask-image: radial-gradient(circle at center, transparent 0%, black 100%);
+}
+
+/* Grid pattern para backgrounds */
+.bg-grid-slate-100 {
+  background-image: radial-gradient(circle, rgb(241 245 249) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+.bg-grid-slate-700\/25 {
+  background-image: radial-gradient(circle, rgba(51 65 85 / 0.25) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+.bg-grid-small-black\/\[0\.02\] {
+  background-image: radial-gradient(circle, rgba(0 0 0 / 0.02) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+.bg-grid-small-white\/\[0\.02\] {
+  background-image: radial-gradient(circle, rgba(255 255 255 / 0.02) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+/* Scrollbar customizada */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-muted {
+  scrollbar-color: hsl(var(--muted)) transparent;
+}
+
+.scrollbar-track-transparent {
+  scrollbar-color: transparent;
+}
+
+/* Webkit scrollbar para navegadores baseados em Chromium */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Efeitos de hover melhorados */
+.data-table-row {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.data-table-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Efeitos de foco aprimorados */
+.data-table-cell:focus-within {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Animações para badges */
+.badge-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Efeitos de shimmer para carregamento */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Micro-interações */
+.micro-bounce {
+  transition: transform 0.1s ease-in-out;
+}
+
+.micro-bounce:active {
+  transform: scale(0.98);
+}
+
+/* Efeitos de glassmorphism */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode glass effect */
+@media (prefers-color-scheme: dark) {
+  .glass-effect {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Animações de contadores */
+.counter-animate {
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.counter-animate.changed {
+  animation: counterBounce 0.5s ease-in-out;
+}
+
+@keyframes counterBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Indicadores de status visuais */
+.status-indicator {
+  position: relative;
+  overflow: hidden;
+}
+
+.status-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease-in-out;
+}
+
+.status-indicator:hover::before {
+  left: 100%;
+}
+
+/* Responsive breakpoints para melhor UX */
+@media (max-width: 768px) {
+  .data-table-mobile {
+    font-size: 0.875rem;
+  }
+  
+  .data-table-mobile .data-table-cell {
+    padding: 0.5rem;
+  }
+}
+
+/* Estados de loading */
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted-foreground) / 0.1) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Input de busca premium */
+.search-input-container {
+  position: relative;
+}
+
+.search-input-container .search-input {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-input-container .search-input::placeholder {
+  color: hsl(var(--muted-foreground));
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.search-input-container .search-input:focus {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: hsl(var(--primary) / 0.5);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.05),
+    0 0 0 4px hsl(var(--primary) / 0.1);
+}
+
+.search-input-container .search-input:focus::placeholder {
+  color: hsl(var(--muted-foreground));
+  opacity: 0.6;
+}
+
+.search-input-container .search-input:hover {
+  border-color: hsl(var(--muted-foreground) / 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode para o input */
+@media (prefers-color-scheme: dark) {
+  .search-input-container .search-input {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+  }
+  
+  .search-input-container .search-input::placeholder {
+    color: hsl(var(--muted-foreground));
+    opacity: 0.9;
+  }
+  
+  .search-input-container .search-input:focus {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  .search-input-container .search-input:focus::placeholder {
+    opacity: 0.7;
+  }
+}
+
+/* Animação do ícone de busca */
+.search-icon {
+  transition: all 0.3s ease;
+}
+
+.search-input-container:focus-within .search-icon {
+  color: hsl(var(--primary));
+  transform: scale(1.1);
+}
+
+/* Animação do contador de resultados */
+.result-counter {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pulse effect para indicadores ativos */
+.pulse-indicator {
+  animation: gentlePulse 2s infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
