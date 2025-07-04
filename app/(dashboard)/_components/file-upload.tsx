@@ -58,7 +58,7 @@ const ImagePreviewModal: React.FC<{
       onClick={onClose}
     >
       <div
-        className="relative max-h-[90vh] max-w-[90vw] overflow-hidden rounded-lg bg-background shadow-2xl duration-200 animate-in zoom-in-95"
+        className="relative max-h-[90vh] min-h-[15vh] w-full min-w-[15vw] max-w-[90vw] overflow-hidden rounded-lg bg-card p-10 shadow-2xl duration-200 animate-in zoom-in-95"
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
         <button
@@ -73,7 +73,7 @@ const ImagePreviewModal: React.FC<{
           alt="Preview da imagem"
           width={1200}
           height={800}
-          className="h-auto max-h-[90vh] w-full max-w-[90vw] object-contain"
+          className="h-auto max-h-[90vh] min-h-[15vh] w-full min-w-[15vw] max-w-[90vw] object-contain"
         />
       </div>
     </div>
