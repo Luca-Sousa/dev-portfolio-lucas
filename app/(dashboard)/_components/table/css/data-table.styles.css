@@ -48,6 +48,28 @@
   background-size: 15px 15px;
 }
 
+/* Responsividade da tabela */
+.data-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table-row {
+  min-width: fit-content;
+}
+
+/* Ajustes responsivos para telas menores */
+@media (max-width: 768px) {
+  .data-table-cell {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .search-input {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
 .bg-grid-small-black\/\[0\.02\] {
   background-image: radial-gradient(circle, rgba(0 0 0 / 0.02) 1px, transparent 1px);
   background-size: 10px 10px;

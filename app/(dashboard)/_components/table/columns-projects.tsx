@@ -47,7 +47,7 @@ export const projectsTableColumns: ColumnDef<Project>[] = [
     header: "Descrição",
     cell: ({ row: { original: project } }) => {
       return (
-        <div className="group max-w-72">
+        <div className="group max-w-xs lg:max-w-sm">
           <div className="rounded-lg border border-muted/30 bg-gradient-to-r from-background to-muted/20 p-3 shadow-sm transition-all duration-200 hover:border-muted/50 hover:shadow-md">
             <div
               dangerouslySetInnerHTML={{ __html: project.description }}

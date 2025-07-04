@@ -14,6 +14,9 @@ import { redirect } from "next/navigation";
 import { projectsTableColumns } from "../_components/table/columns-projects";
 import { getProjects } from "@/app/data_access/get-projects";
 import { DataTable } from "../_components/table/data-table";
+import { PageNameEnum } from "@/app/lib/utils";
+import CreateNewTechnology from "./components/create-new-technology";
+import AddProjectButton from "./components/add-project-button";
 
 const Projects = async () => {
   const session = await getServerSession(authOptions);
@@ -52,7 +55,17 @@ const Projects = async () => {
       </header>
 
       <div className="flex-1 p-6">
-        <DataTable columns={projectsTableColumns} data={projectsData} />
+        <DataTable
+          columns={projectsTableColumns}
+          data={projectsData}
+          pageName={PageNameEnum.PERSONAL_PROJECTS}
+          actionButtons={
+            <>
+              <CreateNewTechnology />
+              <AddProjectButton />
+            </>
+          }
+        />
       </div>
     </SidebarInset>
   );

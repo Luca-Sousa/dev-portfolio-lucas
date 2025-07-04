@@ -42,7 +42,7 @@ export function DataTableViewOptions<TData>({
         <Button
           variant="outline"
           size="lg"
-          className="group relative gap-2 border-dashed shadow-sm transition-all duration-300 hover:scale-[1.02] hover:border-solid hover:bg-accent/50 hover:shadow-md"
+          className="group relative gap-2 border-dashed px-4 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:border-solid hover:bg-accent/50 hover:shadow-md"
         >
           <div className="relative">
             <ColumnsIcon className="h-4 w-4 transition-transform group-hover:rotate-12" />

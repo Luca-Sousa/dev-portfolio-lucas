@@ -32,15 +32,20 @@ import { DataTableViewOptions } from "./data-table-view-options";
 import AddProjectButton from "../../personal_projects/components/add-project-button";
 import "./css/data-table.styles.css";
 import { IconFileLambda } from "@tabler/icons-react";
+import { PageNameEnum } from "@/app/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  pageName: PageNameEnum;
+  actionButtons?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pageName,
+  actionButtons,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -66,7 +71,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8 overflow-hidden">
       {/* Header sofisticado com gradiente sutil */}
       <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-background via-background to-muted/20">
         <div className="absolute inset-0 bg-grid-small-black/[0.02] dark:bg-grid-small-white/[0.02]" />
@@ -78,11 +83,21 @@ export function DataTable<TData, TValue>({
               </div>
               <div>
                 <h2 className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-2xl font-bold tracking-tight">
-                  Gerenciar Projetos
+                  Gerenciar{" "}
+                  {pageName === PageNameEnum.PERSONAL_PROJECTS
+                    ? "Projetos"
+                    : pageName === PageNameEnum.ACADEMIC_EXPERIENCES
+                      ? "Experiências Acadêmicas"
+                      : "Tecnologias"}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Organize, visualize e gerencie todos os seus projetos em um só
-                  lugar
+                  Organize, visualize e gerencie todos os seus{" "}
+                  {pageName === PageNameEnum.PERSONAL_PROJECTS
+                    ? "projetos"
+                    : pageName === PageNameEnum.ACADEMIC_EXPERIENCES
+                      ? "experiências acadêmicas"
+                      : "tecnologias"}{" "}
+                  em um só lugar
                 </p>
               </div>
             </div>
@@ -94,7 +109,12 @@ export function DataTable<TData, TValue>({
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-blue-500" />
                 <span className="text-xs font-medium text-muted-foreground">
-                  Total de Projetos
+                  Total de{" "}
+                  {pageName === PageNameEnum.PERSONAL_PROJECTS
+                    ? "Projetos"
+                    : pageName === PageNameEnum.ACADEMIC_EXPERIENCES
+                      ? "Experiências Acadêmicas"
+                      : "Tecnologias"}
                 </span>
                 <Badge variant="secondary" className="text-xs font-semibold">
                   {data.length}
@@ -121,8 +141,8 @@ export function DataTable<TData, TValue>({
       {/* Controles de filtro e ações */}
       <Card className="border-0 bg-gradient-to-br from-card to-card/80 shadow-lg">
         <CardHeader className="bg-muted/30 px-4">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="group relative">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="group relative max-w-md flex-1">
               {/* Ícone de busca animado */}
               <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center pl-4">
                 <SearchIcon className="search-icon h-4 w-4 text-muted-foreground transition-all duration-300 group-focus-within:scale-110 group-focus-within:text-primary" />
@@ -130,14 +150,14 @@ export function DataTable<TData, TValue>({
 
               {/* Input personalizado */}
               <Input
-                placeholder="Buscar projetos..."
+                placeholder={`Buscar ${pageName === PageNameEnum.PERSONAL_PROJECTS ? "projetos" : pageName === PageNameEnum.ACADEMIC_EXPERIENCES ? "experiências acadêmicas" : "tecnologias"}...`}
                 value={
                   (table.getColumn("title")?.getFilterValue() as string) ?? ""
                 }
                 onChange={(event) =>
                   table.getColumn("title")?.setFilterValue(event.target.value)
                 }
-                className="search-input h-11 w-[450px] rounded-xl border-2 border-muted/40 pl-11 pr-12 text-sm font-medium backdrop-blur-sm transition-all duration-300 placeholder:font-normal placeholder:text-muted-foreground hover:border-muted/60 hover:shadow-sm focus:border-primary/50 focus:bg-background focus:shadow-lg focus:shadow-primary/10 focus:ring-0 focus:ring-offset-0"
+                className="search-input h-11 w-full rounded-xl border-2 border-muted/40 pl-11 pr-12 text-sm font-medium backdrop-blur-sm transition-all duration-300 placeholder:font-normal placeholder:text-muted-foreground hover:border-muted/60 hover:shadow-sm focus:border-primary/50 focus:bg-background focus:shadow-lg focus:shadow-primary/10 focus:ring-0 focus:ring-offset-0"
               />
 
               {/* Indicador de filtro ativo */}
@@ -160,18 +180,24 @@ export function DataTable<TData, TValue>({
             </div>
 
             {/* Ações com melhor espaçamento */}
-            <div className="flex items-center gap-2">
-              <CreateNewTechnology />
-              <AddProjectButton />
+            <div className="flex flex-wrap items-center gap-2 lg:flex-nowrap">
+              {actionButtons ? (
+                actionButtons
+              ) : (
+                <>
+                  <CreateNewTechnology />
+                  <AddProjectButton />
+                </>
+              )}
               <DataTableViewOptions table={table} />
             </div>
           </div>
         </CardHeader>
 
-        {/* Tabela */}
-        <CardContent className="px-4">
-          <div className="rounded-b-lg border-t bg-background">
-            <Table>
+        {/* Tabela Responsiva */}
+        <CardContent className="p-0">
+          <div className="data-table-container">
+            <Table className="w-full">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow
@@ -179,7 +205,10 @@ export function DataTable<TData, TValue>({
                     className="border-b bg-muted/50 hover:bg-muted/50"
                   >
                     {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id} className="font-semibold">
+                      <TableHead
+                        key={header.id}
+                        className="whitespace-nowrap px-4 font-semibold"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -203,7 +232,7 @@ export function DataTable<TData, TValue>({
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className="data-table-cell py-4 transition-colors group-hover:text-foreground"
+                          className="data-table-cell px-4 py-4 transition-colors group-hover:text-foreground"
                         >
                           <div
                             className="duration-300 animate-in slide-in-from-left-2"
@@ -230,10 +259,21 @@ export function DataTable<TData, TValue>({
                         </div>
                         <div className="space-y-1">
                           <p className="text-sm font-medium">
-                            Nenhum projeto encontrado
+                            Nenhum{" "}
+                            {pageName === PageNameEnum.PERSONAL_PROJECTS
+                              ? "projeto"
+                              : pageName === PageNameEnum.ACADEMIC_EXPERIENCES
+                                ? "experiência acadêmica"
+                                : "tecnologia"}{" "}
+                            encontrado
                           </p>
                           <p className="text-xs">
-                            Tente ajustar os filtros ou crie um novo projeto
+                            Tente ajustar os filtros ou crie um novo{" "}
+                            {pageName === PageNameEnum.PERSONAL_PROJECTS
+                              ? "projeto"
+                              : pageName === PageNameEnum.ACADEMIC_EXPERIENCES
+                                ? "experiência acadêmica"
+                                : "tecnologia"}
                           </p>
                         </div>
                       </div>

@@ -1,4 +1,6 @@
-import MagicLink from "@/app/components/magic-link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
+import { redirect } from "next/navigation";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,17 +9,20 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/app/components/ui/breadcrumb";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/app/components/ui/card";
 import { Separator } from "@/app/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/components/ui/sidebar";
-import { PlusCircleIcon } from "lucide-react";
+import { DataTable } from "../_components/table/data-table";
+import { PageNameEnum } from "@/app/lib/utils";
+import { academicExperienceTableColumns } from "./components/columns-academic-experiences";
+import { getAcademicExperiences } from "@/app/data_access/get-academic-experiences";
+import AddAcademicExperienceButton from "./components/add-academic-experience-button";
 
 const AcademicExperienciePage = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect("/login");
+
+  const academicExperiences = await getAcademicExperiences();
+
   return (
     <SidebarInset>
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -38,28 +43,13 @@ const AcademicExperienciePage = async () => {
         </div>
       </header>
 
-      <div className="flex flex-1 p-4 pt-0">
-        <Card className="flex w-full flex-col">
-          <CardHeader className="flex-row items-center justify-between">
-            <div className="space-y-1">
-              <CardTitle className="text-2xl">
-                Experiências Acadêmicas
-              </CardTitle>
-              <div className="h-1 w-10 rounded-3xl bg-primary"></div>
-            </div>
-
-            <MagicLink
-              icon={<PlusCircleIcon />}
-              href="/academic-experiences/form-new-formation"
-              position="left"
-              title="Nova Formação"
-            />
-          </CardHeader>
-
-          <CardContent className="flex h-full flex-col overflow-hidden pb-0 pt-4">
-            {/* <DataTable columns={academicTableColumns} data={projectsData} /> */}
-          </CardContent>
-        </Card>
+      <div className="flex-1 p-6">
+        <DataTable
+          columns={academicExperienceTableColumns}
+          data={academicExperiences}
+          pageName={PageNameEnum.ACADEMIC_EXPERIENCES}
+          actionButtons={<AddAcademicExperienceButton />}
+        />
       </div>
     </SidebarInset>
   );
