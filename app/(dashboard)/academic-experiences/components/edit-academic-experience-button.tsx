@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
-import { AcademicExperience } from "@prisma/client";
+import { AcademicExperienceWithModules } from "@/app/types/academic-experience";
 import { EditIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
@@ -10,7 +10,7 @@ import UpsertAcademicExperienceForm from "./upsert-academic-experience-form";
 const EditAcademicExperienceButton = ({
   academicExperience,
 }: {
-  academicExperience: AcademicExperience;
+  academicExperience: AcademicExperienceWithModules;
 }) => {
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
 
