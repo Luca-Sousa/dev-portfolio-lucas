@@ -21,8 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang="en" className="h-full">
-        <body className={`${inter.className} dark h-full`}>
+      <html lang="en" className="h-full" suppressHydrationWarning>
+        <body className={`${inter.className} h-full`} suppressHydrationWarning>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
