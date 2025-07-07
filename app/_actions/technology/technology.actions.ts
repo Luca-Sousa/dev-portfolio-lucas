@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
 import { actionClient } from "@/app/lib/safe-action";
 import { upsertTechnologySchema } from "./schema";
-import { deleteFileFromBucket } from "@/app/utils/delete-file";
+import { deleteFileFromBucketByUrl } from "@/app/utils/delete-file";
 
 export const upsertTechnology = actionClient
   .schema(upsertTechnologySchema)
@@ -24,12 +24,7 @@ export const upsertTechnology = actionClient
       await Promise.all(
         filesToDelete.map(async (fileUrl) => {
           try {
-            const url = new URL(fileUrl);
-            const fileKey =
-              url.pathname.startsWith("/") && url.pathname.length > 1
-                ? url.pathname.slice(1)
-                : url.pathname;
-            await deleteFileFromBucket(fileKey);
+            await deleteFileFromBucketByUrl(fileUrl);
           } catch (e) {
             console.error("Erro ao deletar arquivo substituído:", e);
           }
@@ -51,12 +46,7 @@ export const upsertTechnology = actionClient
     let iconUrlString = iconURL;
     if (previousIconUrl && iconUrlString && previousIconUrl !== iconUrlString) {
       try {
-        const url = new URL(previousIconUrl);
-        const fileKey =
-          url.pathname.startsWith("/") && url.pathname.length > 1
-            ? url.pathname.slice(1)
-            : url.pathname;
-        await deleteFileFromBucket(fileKey);
+        await deleteFileFromBucketByUrl(previousIconUrl);
       } catch (e) {
         console.error("Erro ao deletar ícone antigo:", e);
       }

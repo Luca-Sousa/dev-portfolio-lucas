@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/app/lib/prisma";
 import { actionClient } from "@/app/lib/safe-action";
 import { authOptions } from "@/app/lib/auth";
+import { deleteFileFromBucketByUrl } from "@/app/utils/delete-file";
 
 export const upsertAcademicExperience = actionClient
   .schema(upsertAcademicExperienceSchema)
@@ -93,9 +94,64 @@ export const deleteAcademicExperience = actionClient
 
     const { id } = parsedInput;
 
+    // Buscar a experiência acadêmica com todos os módulos e conteúdos antes de deletar
+    const academicExperience = await db.academicExperience.findUnique({
+      where: { id },
+      include: {
+        modules: {
+          include: {
+            programContent: true,
+          },
+        },
+      },
+    });
+
+    if (!academicExperience) {
+      throw new Error("Experiência acadêmica não encontrada");
+    }
+
+    // Coletar todas as URLs de arquivos para deletar
+    const filesToDelete: string[] = [];
+
+    // Arquivos da experiência acadêmica principal
+    if (academicExperience.imageUrl) {
+      filesToDelete.push(academicExperience.imageUrl);
+    }
+    if (academicExperience.certificateUrl) {
+      filesToDelete.push(academicExperience.certificateUrl);
+    }
+    if (academicExperience.declarationUrl) {
+      filesToDelete.push(academicExperience.declarationUrl);
+    }
+
+    // Arquivos dos módulos
+    for (const moduleItem of academicExperience.modules) {
+      if (moduleItem.iconUrl) {
+        filesToDelete.push(moduleItem.iconUrl);
+      }
+
+      // Arquivos dos conteúdos programáticos
+      for (const content of moduleItem.programContent) {
+        if (content.certUrl) {
+          filesToDelete.push(content.certUrl);
+        }
+      }
+    }
+
+    // Deletar a experiência acadêmica do banco de dados
     await db.academicExperience.delete({
       where: { id },
     });
+
+    // Deletar arquivos do bucket (não bloqueante - se falhar, não impede a exclusão)
+    for (const fileUrl of filesToDelete) {
+      try {
+        await deleteFileFromBucketByUrl(fileUrl);
+      } catch (error) {
+        console.error(`Erro ao deletar arquivo ${fileUrl}:`, error);
+        // Continua com os outros arquivos mesmo se um falhar
+      }
+    }
 
     revalidatePath("/academic-experiences");
   });

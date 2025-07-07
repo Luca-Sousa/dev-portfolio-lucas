@@ -6,7 +6,7 @@ import { actionClient } from "@/app/lib/safe-action";
 import { authOptions } from "@/app/lib/auth";
 import { db } from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { deleteFileFromBucket } from "@/app/utils/delete-file";
+import { deleteFileFromBucketByUrl } from "@/app/utils/delete-file";
 
 export const upsertProject = actionClient
   .schema(upsertProjectSchema)
@@ -29,12 +29,7 @@ export const upsertProject = actionClient
       await Promise.all(
         filesToDelete.map(async (fileUrl) => {
           try {
-            const url = new URL(fileUrl);
-            const fileKey =
-              url.pathname.startsWith("/") && url.pathname.length > 1
-                ? url.pathname.slice(1)
-                : url.pathname;
-            await deleteFileFromBucket(fileKey);
+            await deleteFileFromBucketByUrl(fileUrl);
           } catch (e) {
             console.error("Erro ao deletar arquivo substituído:", e);
           }
@@ -69,12 +64,7 @@ export const upsertProject = actionClient
       previousThumbnailUrl !== thumbnailUrlString
     ) {
       try {
-        const url = new URL(previousThumbnailUrl);
-        const fileKey =
-          url.pathname.startsWith("/") && url.pathname.length > 1
-            ? url.pathname.slice(1)
-            : url.pathname;
-        await deleteFileFromBucket(fileKey);
+        await deleteFileFromBucketByUrl(previousThumbnailUrl);
       } catch (e) {
         console.error("Erro ao deletar thumbnail antiga:", e);
       }
@@ -91,12 +81,7 @@ export const upsertProject = actionClient
       previousCertificateUrl !== certificateUrlString
     ) {
       try {
-        const url = new URL(previousCertificateUrl);
-        const fileKey =
-          url.pathname.startsWith("/") && url.pathname.length > 1
-            ? url.pathname.slice(1)
-            : url.pathname;
-        await deleteFileFromBucket(fileKey);
+        await deleteFileFromBucketByUrl(previousCertificateUrl);
       } catch (e) {
         console.error("Erro ao deletar certificado antigo:", e);
       }
@@ -114,12 +99,7 @@ export const upsertProject = actionClient
       await Promise.all(
         toDelete.map(async (imgUrl) => {
           try {
-            const url = new URL(imgUrl);
-            const fileKey =
-              url.pathname.startsWith("/") && url.pathname.length > 1
-                ? url.pathname.slice(1)
-                : url.pathname;
-            await deleteFileFromBucket(fileKey);
+            await deleteFileFromBucketByUrl(imgUrl);
           } catch (e) {
             console.error("Erro ao deletar imagem antiga:", e);
           }
