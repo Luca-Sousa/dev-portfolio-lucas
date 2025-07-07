@@ -63,7 +63,7 @@ const TABS = [
     id: "basic",
     title: "Informações Básicas",
     icon: GraduationCap,
-    fields: ["title", "type", "dateDuration"],
+    fields: ["title", "type", "dateDuration", "description"],
   },
   {
     id: "institution",
@@ -577,6 +577,17 @@ const UpsertAcademicExperienceForm = ({
                             label="Duração"
                             placeholder="Ex: 2020 - 2024, Jan 2023 - Dez 2023"
                           />
+
+                          <div className="md:col-span-2">
+                            <CustomFormField
+                              control={form.control}
+                              fieldType={FormFieldType.TEXTAREA}
+                              name="description"
+                              label="Descrição da Formação"
+                              placeholder="Descreva brevemente a formação, principais conhecimentos adquiridos, áreas de foco..."
+                              textareaClassName="resize-none min-h-32"
+                            />
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -786,13 +797,13 @@ const UpsertAcademicExperienceForm = ({
                 <Button
                   type="submit"
                   onClick={form.handleSubmit(onSubmit)}
-                  disabled={upsertAcademicExperienceAction.isExecuting}
+                  disabled={form.formState.isSubmitting}
                   className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
                 >
-                  {upsertAcademicExperienceAction.isExecuting ? (
+                  {form.formState.isSubmitting ? (
                     <>
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                      Salvando...
+                      {academicExperience ? "Atualizando..." : "Salvando..."}
                     </>
                   ) : (
                     <>
