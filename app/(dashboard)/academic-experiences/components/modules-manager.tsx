@@ -50,7 +50,22 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
   const [moduleValidationErrors, setModuleValidationErrors] = useState<
     string[]
   >([]);
+  const [originalModuleData, setOriginalModuleData] =
+    useState<ModuleFormSchema | null>(null);
+  const [isCreatingNew, setIsCreatingNew] = useState(false);
   const modules = form.watch("modules") || [];
+
+  // Função para fazer deep copy de um módulo
+  const deepCopyModule = (module: ModuleFormSchema): ModuleFormSchema => {
+    return {
+      ...module,
+      iconUrl: [...(module.iconUrl || [])],
+      programContent: (module.programContent || []).map((content) => ({
+        ...content,
+        certUrl: [...(content.certUrl || [])],
+      })),
+    };
+  };
 
   // Função para validar se um módulo está completo
   const validateModule = (moduleIndex: number): string[] => {
@@ -106,6 +121,8 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
     setModuleValidationErrors([]);
     setShowModuleForm(false);
     setEditingModule(null);
+    setOriginalModuleData(null);
+    setIsCreatingNew(false);
   };
 
   const addModule = () => {
@@ -118,32 +135,35 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
 
     const currentModules = form.getValues("modules") || [];
     form.setValue("modules", [...currentModules, newModule]);
+
+    // Marcar como novo módulo e configurar estados
+    setIsCreatingNew(true);
+    setOriginalModuleData(null); // Não há dados originais para novo módulo
     setEditingModule(currentModules.length);
     setShowModuleForm(true);
     setModuleValidationErrors([]); // Limpar erros ao criar novo módulo
   };
 
-  // Função para verificar se um módulo está vazio
-  const isModuleEmpty = (moduleIndex: number): boolean => {
-    const moduleData = modules[moduleIndex];
-    if (!moduleData) return true;
-
-    return (
-      (!moduleData.title || moduleData.title.trim() === "") &&
-      (!moduleData.iconUrl || moduleData.iconUrl.length === 0) &&
-      (!moduleData.programContent || moduleData.programContent.length === 0)
-    );
-  };
-
   // Função para cancelar edição e remover módulo vazio se necessário
   const handleCancelModuleEditing = () => {
-    if (editingModule !== null && isModuleEmpty(editingModule)) {
-      // Se o módulo está vazio, removê-lo
+    if (editingModule === null) return;
+
+    if (isCreatingNew) {
+      // Se é um novo módulo, sempre remover da lista
       removeModule(editingModule);
     } else {
-      // Se não está vazio, apenas sair da edição
+      // Se é edição de módulo existente, reverter para dados originais
+      if (originalModuleData) {
+        const currentModules = form.getValues("modules") || [];
+        currentModules[editingModule] = deepCopyModule(originalModuleData);
+        form.setValue("modules", currentModules);
+      }
+
+      // Resetar estados
       setShowModuleForm(false);
       setEditingModule(null);
+      setOriginalModuleData(null);
+      setIsCreatingNew(false);
       setModuleValidationErrors([]);
     }
   };
@@ -156,11 +176,17 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
     if (editingModule === index) {
       setEditingModule(null);
       setShowModuleForm(false);
+      setOriginalModuleData(null);
+      setIsCreatingNew(false);
       setModuleValidationErrors([]); // Limpar erros ao remover módulo
     }
   };
 
   const editModule = (index: number) => {
+    // Salvar dados originais do módulo antes de editar
+    const moduleToEdit = modules[index];
+    setOriginalModuleData(moduleToEdit ? deepCopyModule(moduleToEdit) : null);
+    setIsCreatingNew(false); // Não é novo, é edição
     setEditingModule(index);
     setShowModuleForm(true);
     setModuleValidationErrors([]); // Limpar erros ao editar módulo diferente
