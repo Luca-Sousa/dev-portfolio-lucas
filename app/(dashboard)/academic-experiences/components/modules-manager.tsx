@@ -10,16 +10,7 @@ import {
   CardTitle,
 } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
-import { Textarea } from "@/app/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/select";
+import { SelectItem } from "@/app/components/ui/select";
 import {
   Plus,
   Trash2,
@@ -447,76 +438,49 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
               {/* Configurações do módulo */}
               <div className="grid gap-6 lg:grid-cols-2">
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor={`module-title-${editingModule}`}>
-                      Título do Módulo{" "}
-                      <span className="text-destructive">*</span>
-                    </Label>
-                    <Input
-                      id={`module-title-${editingModule}`}
-                      placeholder="Ex: Fundamentos de Programação"
-                      {...form.register(`modules.${editingModule}.title`, {
-                        onChange: clearValidationErrors,
-                      })}
-                    />
-                  </div>
+                  <CustomFormField
+                    control={form.control}
+                    fieldType={FormFieldType.INPUT}
+                    name={`modules.${editingModule}.title`}
+                    label="Título do Módulo"
+                    placeholder="Ex: Fundamentos de Programação"
+                  />
 
-                  <div className="space-y-2">
-                    <Label htmlFor={`module-status-${editingModule}`}>
-                      Status <span className="text-destructive">*</span>
-                    </Label>
-                    <Select
-                      value={modules[editingModule]?.status}
-                      onValueChange={(value) =>
-                        form.setValue(
-                          `modules.${editingModule}.status`,
-                          value as ModuleStatus,
-                        )
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value={ModuleStatus.NOT_STARTED}>
-                          Não Iniciado
-                        </SelectItem>
-                        <SelectItem value={ModuleStatus.IN_PROGRESS}>
-                          Em Progresso
-                        </SelectItem>
-                        <SelectItem value={ModuleStatus.COMPLETED}>
-                          Concluído
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <CustomFormField
+                    control={form.control}
+                    fieldType={FormFieldType.SELECT}
+                    name={`modules.${editingModule}.status`}
+                    label="Status"
+                    placeholder="Selecione o status"
+                  >
+                    {Object.values(ModuleStatus).map((status) => (
+                      <SelectItem key={status} value={status}>
+                        {getStatusLabel(status)}
+                      </SelectItem>
+                    ))}
+                  </CustomFormField>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>
-                    Ícone do Módulo <span className="text-destructive">*</span>
-                  </Label>
-                  <div className="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4">
-                    <CustomFormField
-                      control={form.control}
-                      fieldType={FormFieldType.SKELETON}
-                      name={`modules.${editingModule}.iconUrl`}
-                      label=""
-                      renderSkeleton={(field) => (
-                        <FormControl>
-                          <FileUpload
-                            files={field.value}
-                            onChange={(files) => {
-                              field.onChange(files);
-                              clearValidationErrors();
-                            }}
-                            singleFile
-                            maxFileSize={2}
-                          />
-                        </FormControl>
-                      )}
-                    />
-                  </div>
+                  <CustomFormField
+                    control={form.control}
+                    fieldType={FormFieldType.SKELETON}
+                    name={`modules.${editingModule}.iconUrl`}
+                    label="Ícone do Módulo"
+                    renderSkeleton={(field) => (
+                      <FormControl>
+                        <FileUpload
+                          files={field.value}
+                          onChange={(files) => {
+                            field.onChange(files);
+                            clearValidationErrors();
+                          }}
+                          singleFile
+                          maxFileSize={2}
+                        />
+                      </FormControl>
+                    )}
+                  />
                 </div>
               </div>
 
@@ -597,67 +561,42 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
 
                             <div className="grid gap-4 lg:grid-cols-2">
                               <div className="space-y-4">
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor={`content-title-${editingModule}-${contentIndex}`}
-                                  >
-                                    Título{" "}
-                                    <span className="text-destructive">*</span>
-                                  </Label>
-                                  <Input
-                                    id={`content-title-${editingModule}-${contentIndex}`}
-                                    placeholder="Ex: Introdução ao JavaScript"
-                                    {...form.register(
-                                      `modules.${editingModule}.programContent.${contentIndex}.title`,
-                                      {
-                                        onChange: clearValidationErrors,
-                                      },
-                                    )}
-                                  />
-                                </div>
+                                <CustomFormField
+                                  control={form.control}
+                                  fieldType={FormFieldType.INPUT}
+                                  name={`modules.${editingModule}.programContent.${contentIndex}.title`}
+                                  label="Título"
+                                  placeholder="Ex: Introdução ao JavaScript"
+                                />
 
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor={`content-description-${editingModule}-${contentIndex}`}
-                                  >
-                                    Descrição{" "}
-                                    <span className="text-destructive">*</span>
-                                  </Label>
-                                  <Textarea
-                                    id={`content-description-${editingModule}-${contentIndex}`}
-                                    placeholder="Descreva o conteúdo abordado, objetivos de aprendizagem..."
-                                    className="min-h-[200px] resize-none"
-                                    {...form.register(
-                                      `modules.${editingModule}.programContent.${contentIndex}.description`,
-                                      {
-                                        onChange: clearValidationErrors,
-                                      },
-                                    )}
-                                  />
-                                </div>
+                                <CustomFormField
+                                  control={form.control}
+                                  fieldType={FormFieldType.TEXTAREA}
+                                  name={`modules.${editingModule}.programContent.${contentIndex}.description`}
+                                  label="Descrição"
+                                  placeholder="Descreva o conteúdo abordado, objetivos de aprendizagem..."
+                                  textareaClassName="resize-none min-h-36"
+                                />
                               </div>
 
-                              <div className="space-y-2">
-                                <Label>Certificado (Opcional)</Label>
-                                <div className="rounded-lg border-2 border-dashed border-border bg-muted/20 p-4">
-                                  <CustomFormField
-                                    control={form.control}
-                                    fieldType={FormFieldType.SKELETON}
-                                    name={`modules.${editingModule}.programContent.${contentIndex}.certUrl`}
-                                    label=""
-                                    renderSkeleton={(field) => (
-                                      <FormControl>
-                                        <FileUpload
-                                          files={field.value}
-                                          onChange={field.onChange}
-                                          singleFile
-                                          maxFileSize={10}
-                                        />
-                                      </FormControl>
-                                    )}
-                                  />
-                                </div>
-                              </div>
+                              <CustomFormField
+                                control={form.control}
+                                fieldType={FormFieldType.SKELETON}
+                                name={`modules.${editingModule}.programContent.${contentIndex}.certUrl`}
+                                label="Certificado"
+                                optional
+                                renderSkeleton={(field) => (
+                                  <FormControl>
+                                    <FileUpload
+                                      files={field.value}
+                                      onChange={field.onChange}
+                                      singleFile
+                                      maxFileSize={10}
+                                      acceptedTypes={["application/pdf"]}
+                                    />
+                                  </FormControl>
+                                )}
+                              />
                             </div>
                           </CardContent>
                         </Card>

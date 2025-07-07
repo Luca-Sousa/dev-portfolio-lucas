@@ -623,14 +623,12 @@ const UpsertAcademicExperienceForm = ({
                               label="Logo da Instituição"
                               renderSkeleton={(field) => (
                                 <FormControl>
-                                  <div className="rounded-lg border-2 border-dashed border-border bg-card p-4">
-                                    <FileUpload
-                                      files={field.value}
-                                      onChange={field.onChange}
-                                      singleFile
-                                      maxFileSize={5}
-                                    />
-                                  </div>
+                                  <FileUpload
+                                    files={field.value}
+                                    onChange={field.onChange}
+                                    singleFile
+                                    maxFileSize={5}
+                                  />
                                 </FormControl>
                               )}
                             />
@@ -659,63 +657,51 @@ const UpsertAcademicExperienceForm = ({
 
                         <div className="grid gap-8 md:grid-cols-2">
                           <div className="space-y-4">
-                            <div>
-                              <h3 className="mb-2 text-sm font-medium">
-                                Certificado de Conclusão
-                              </h3>
-                              <CustomFormField
-                                control={form.control}
-                                fieldType={FormFieldType.SKELETON}
-                                name="certificateUrl"
-                                label=""
-                                renderSkeleton={(field) => (
-                                  <FormControl>
-                                    <div className="rounded-lg border-2 border-dashed border-border bg-card p-4">
-                                      <FileUpload
-                                        files={field.value}
-                                        onChange={field.onChange}
-                                        singleFile
-                                        maxFileSize={10}
-                                      />
-                                    </div>
-                                  </FormControl>
-                                )}
-                              />
-                              <p className="mt-2 text-xs text-muted-foreground">
-                                Certificado oficial de conclusão do curso. PDF
-                                até 10MB.
-                              </p>
-                            </div>
+                            <CustomFormField
+                              control={form.control}
+                              fieldType={FormFieldType.SKELETON}
+                              name="certificateUrl"
+                              label="Certificado de Conclusão"
+                              optional
+                              renderSkeleton={(field) => (
+                                <FormControl>
+                                  <FileUpload
+                                    files={field.value}
+                                    onChange={field.onChange}
+                                    singleFile
+                                    maxFileSize={10}
+                                  />
+                                </FormControl>
+                              )}
+                            />
+                            <p className="mt-2 text-xs text-muted-foreground">
+                              Certificado oficial de conclusão do curso. PDF até
+                              10MB.
+                            </p>
                           </div>
 
                           <div className="space-y-4">
-                            <div>
-                              <h3 className="mb-2 text-sm font-medium">
-                                Declaração
-                              </h3>
-                              <CustomFormField
-                                control={form.control}
-                                fieldType={FormFieldType.SKELETON}
-                                name="declarationUrl"
-                                label=""
-                                renderSkeleton={(field) => (
-                                  <FormControl>
-                                    <div className="rounded-lg border-2 border-dashed border-border bg-card p-4">
-                                      <FileUpload
-                                        files={field.value}
-                                        onChange={field.onChange}
-                                        singleFile
-                                        maxFileSize={10}
-                                      />
-                                    </div>
-                                  </FormControl>
-                                )}
-                              />
-                              <p className="mt-2 text-xs text-muted-foreground">
-                                Declaração de participação ou histórico escolar.
-                                PDF até 10MB.
-                              </p>
-                            </div>
+                            <CustomFormField
+                              control={form.control}
+                              fieldType={FormFieldType.SKELETON}
+                              name="declarationUrl"
+                              label="Declaração de Participação"
+                              optional
+                              renderSkeleton={(field) => (
+                                <FormControl>
+                                  <FileUpload
+                                    files={field.value}
+                                    onChange={field.onChange}
+                                    singleFile
+                                    maxFileSize={10}
+                                  />
+                                </FormControl>
+                              )}
+                            />
+                            <p className="mt-2 text-xs text-muted-foreground">
+                              Declaração de participação ou histórico escolar.
+                              PDF até 10MB.
+                            </p>
                           </div>
                         </div>
 
