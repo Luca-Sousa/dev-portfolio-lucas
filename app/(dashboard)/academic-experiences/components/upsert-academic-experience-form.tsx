@@ -48,6 +48,7 @@ import CustomFormField, {
   FormFieldType,
 } from "@/app/components/form/custom-form-field";
 import { FileUpload } from "@/app/(dashboard)/_components/file-upload";
+import { PdfUpload } from "@/app/(dashboard)/_components/pdf-upload";
 import { FormControl } from "@/app/components/ui/form";
 import ModulesManager from "./modules-manager";
 import { cn } from "@/app/lib/utils";
@@ -625,28 +626,22 @@ const UpsertAcademicExperienceForm = ({
                             />
                           </div>
 
-                          {/* Logo da Instituição */}
-                          <div className="space-y-3">
-                            <CustomFormField
-                              control={form.control}
-                              fieldType={FormFieldType.SKELETON}
-                              name="imageUrl"
-                              label="Logo da Instituição"
-                              renderSkeleton={(field) => (
-                                <FormControl>
-                                  <FileUpload
-                                    files={field.value}
-                                    onChange={field.onChange}
-                                    singleFile
-                                    maxFileSize={5}
-                                  />
-                                </FormControl>
-                              )}
-                            />
-                            <p className="text-xs text-muted-foreground">
-                              Formato PNG, JPG ou SVG. Máximo 5MB.
-                            </p>
-                          </div>
+                          <CustomFormField
+                            control={form.control}
+                            fieldType={FormFieldType.SKELETON}
+                            name="imageUrl"
+                            label="Logo da Instituição"
+                            renderSkeleton={(field) => (
+                              <FormControl>
+                                <FileUpload
+                                  files={field.value}
+                                  onChange={field.onChange}
+                                  singleFile
+                                  maxFileSize={5}
+                                />
+                              </FormControl>
+                            )}
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -666,71 +661,60 @@ const UpsertAcademicExperienceForm = ({
                           </Badge>
                         </div>
 
-                        <div className="grid gap-8 md:grid-cols-2">
-                          <div className="space-y-4">
-                            <CustomFormField
-                              control={form.control}
-                              fieldType={FormFieldType.SKELETON}
-                              name="certificateUrl"
-                              label="Certificado de Conclusão"
-                              optional
-                              renderSkeleton={(field) => (
-                                <FormControl>
-                                  <FileUpload
-                                    files={field.value}
-                                    onChange={field.onChange}
-                                    singleFile
-                                    maxFileSize={10}
-                                  />
-                                </FormControl>
-                              )}
-                            />
-                            <p className="mt-2 text-xs text-muted-foreground">
-                              Certificado oficial de conclusão do curso. PDF até
-                              10MB.
-                            </p>
-                          </div>
+                        <div className="space-y-6">
+                          <CustomFormField
+                            control={form.control}
+                            fieldType={FormFieldType.SKELETON}
+                            name="certificateUrl"
+                            label="Certificado de Conclusão"
+                            optional
+                            renderSkeleton={(field) => (
+                              <FormControl>
+                                <PdfUpload
+                                  file={
+                                    field.value &&
+                                    Array.isArray(field.value) &&
+                                    field.value.length > 0
+                                      ? field.value[0]
+                                      : null
+                                  }
+                                  onChange={(file: File | string | null) =>
+                                    field.onChange(file ? [file] : [])
+                                  }
+                                  maxFileSize={10}
+                                  placeholder="Selecionar certificado"
+                                  description="Certificado oficial de conclusão"
+                                />
+                              </FormControl>
+                            )}
+                          />
 
-                          <div className="space-y-4">
-                            <CustomFormField
-                              control={form.control}
-                              fieldType={FormFieldType.SKELETON}
-                              name="declarationUrl"
-                              label="Declaração de Participação"
-                              optional
-                              renderSkeleton={(field) => (
-                                <FormControl>
-                                  <FileUpload
-                                    files={field.value}
-                                    onChange={field.onChange}
-                                    singleFile
-                                    maxFileSize={10}
-                                  />
-                                </FormControl>
-                              )}
-                            />
-                            <p className="mt-2 text-xs text-muted-foreground">
-                              Declaração de participação ou histórico escolar.
-                              PDF até 10MB.
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="rounded-lg bg-muted/50 p-4">
-                          <div className="flex items-start gap-3">
-                            <FileText className="mt-0.5 h-4 w-4 text-muted-foreground" />
-                            <div className="text-sm text-muted-foreground">
-                              <p className="mb-1 font-medium">
-                                Sobre os documentos
-                              </p>
-                              <p>
-                                Os documentos são opcionais mas recomendados
-                                para comprovar sua formação. Aceitos apenas
-                                arquivos PDF. Certifique-se de que os documentos
-                                estejam legíveis.
-                              </p>
-                            </div>
-                          </div>
+                          <CustomFormField
+                            control={form.control}
+                            fieldType={FormFieldType.SKELETON}
+                            name="declarationUrl"
+                            label="Declaração de Participação"
+                            optional
+                            renderSkeleton={(field) => (
+                              <FormControl>
+                                <PdfUpload
+                                  file={
+                                    field.value &&
+                                    Array.isArray(field.value) &&
+                                    field.value.length > 0
+                                      ? field.value[0]
+                                      : null
+                                  }
+                                  onChange={(file: File | string | null) =>
+                                    field.onChange(file ? [file] : [])
+                                  }
+                                  maxFileSize={10}
+                                  placeholder="Selecionar declaração"
+                                  description="Declaração ou histórico escolar"
+                                />
+                              </FormControl>
+                            )}
+                          />
                         </div>
                       </CardContent>
                     </Card>

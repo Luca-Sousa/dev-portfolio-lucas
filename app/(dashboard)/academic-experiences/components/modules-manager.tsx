@@ -30,6 +30,7 @@ import { FormControl } from "@/app/components/ui/form";
 import CustomFormField, {
   FormFieldType,
 } from "@/app/components/form/custom-form-field";
+import PdfUpload from "../../_components/pdf-upload";
 
 interface ModulesManagerProps {
   form: UseFormReturn<UpsertAcademicExperienceFormSchema>;
@@ -461,27 +462,25 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
                   </CustomFormField>
                 </div>
 
-                <div className="space-y-2">
-                  <CustomFormField
-                    control={form.control}
-                    fieldType={FormFieldType.SKELETON}
-                    name={`modules.${editingModule}.iconUrl`}
-                    label="Ícone do Módulo"
-                    renderSkeleton={(field) => (
-                      <FormControl>
-                        <FileUpload
-                          files={field.value}
-                          onChange={(files) => {
-                            field.onChange(files);
-                            clearValidationErrors();
-                          }}
-                          singleFile
-                          maxFileSize={2}
-                        />
-                      </FormControl>
-                    )}
-                  />
-                </div>
+                <CustomFormField
+                  control={form.control}
+                  fieldType={FormFieldType.SKELETON}
+                  name={`modules.${editingModule}.iconUrl`}
+                  label="Ícone do Módulo"
+                  renderSkeleton={(field) => (
+                    <FormControl>
+                      <FileUpload
+                        files={field.value}
+                        onChange={(files) => {
+                          field.onChange(files);
+                          clearValidationErrors();
+                        }}
+                        singleFile
+                        maxFileSize={2}
+                      />
+                    </FormControl>
+                  )}
+                />
               </div>
 
               {/* Conteúdo Programático */}
@@ -559,25 +558,23 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
                               </Button>
                             </div>
 
-                            <div className="grid gap-4 lg:grid-cols-2">
-                              <div className="space-y-4">
-                                <CustomFormField
-                                  control={form.control}
-                                  fieldType={FormFieldType.INPUT}
-                                  name={`modules.${editingModule}.programContent.${contentIndex}.title`}
-                                  label="Título"
-                                  placeholder="Ex: Introdução ao JavaScript"
-                                />
+                            <div className="space-y-6">
+                              <CustomFormField
+                                control={form.control}
+                                fieldType={FormFieldType.INPUT}
+                                name={`modules.${editingModule}.programContent.${contentIndex}.title`}
+                                label="Título"
+                                placeholder="Ex: Introdução ao JavaScript"
+                              />
 
-                                <CustomFormField
-                                  control={form.control}
-                                  fieldType={FormFieldType.TEXTAREA}
-                                  name={`modules.${editingModule}.programContent.${contentIndex}.description`}
-                                  label="Descrição"
-                                  placeholder="Descreva o conteúdo abordado, objetivos de aprendizagem..."
-                                  textareaClassName="resize-none min-h-36"
-                                />
-                              </div>
+                              <CustomFormField
+                                control={form.control}
+                                fieldType={FormFieldType.TEXTAREA}
+                                name={`modules.${editingModule}.programContent.${contentIndex}.description`}
+                                label="Descrição"
+                                placeholder="Descreva o conteúdo abordado, objetivos de aprendizagem..."
+                                textareaClassName="resize-none min-h-28"
+                              />
 
                               <CustomFormField
                                 control={form.control}
@@ -587,12 +584,20 @@ const ModulesManager = ({ form }: ModulesManagerProps) => {
                                 optional
                                 renderSkeleton={(field) => (
                                   <FormControl>
-                                    <FileUpload
-                                      files={field.value}
-                                      onChange={field.onChange}
-                                      singleFile
+                                    <PdfUpload
+                                      file={
+                                        field.value &&
+                                        Array.isArray(field.value) &&
+                                        field.value.length > 0
+                                          ? field.value[0]
+                                          : null
+                                      }
+                                      onChange={(file: File | string | null) =>
+                                        field.onChange(file ? [file] : [])
+                                      }
                                       maxFileSize={10}
-                                      acceptedTypes={["application/pdf"]}
+                                      placeholder="Selecionar certificado"
+                                      description="Certificado de conclusão"
                                     />
                                   </FormControl>
                                 )}
