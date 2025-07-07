@@ -216,8 +216,10 @@ const CustomFormField = (props: CustomFormFieldPros) => {
       name={name}
       render={({ field }) => (
         <FormItem className={cn("flex-1", formItemsClassName)}>
-          <FormLabel className={`${optional && "flex gap-1"}`}>
-            {label}
+          <FormLabel className="flex gap-1.5">
+            <p>
+              {label} {!optional && <span className="text-destructive">*</span>}
+            </p>
             {optional && (
               <span className="text-xs text-muted-foreground">(opcional)</span>
             )}
